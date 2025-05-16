@@ -45,7 +45,7 @@ export default async function fuzzySearch(stringToSearch: string) {
         const nameWords = product.name.split(" ");
 
         queryWords.map((queryWord) => {
-            nameWords.map((nameWord) => {
+            nameWords.map((nameWord: string) => {
                 const distance = levenstainDistance(
                     queryWord.toLowerCase(),
                     nameWord.toLowerCase()

@@ -42,7 +42,7 @@ export default function ModalDescription() {
                     </button>
 
                     <a
-                        href={`${process.env.domenUrl}/catalog/product/${productData.sku}`}
+                        href={`${process.env.NEXT_PUBLIC_DOMEN}/catalog/product/${productData.sku}`}
                         className={
                             styles.productLink
                         }>{`${process.env.domenUrl}/catalog/product/${productData.sku}`}</a>

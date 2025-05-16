@@ -1,17 +1,12 @@
 import { Product } from "@/types/productsType";
-import { promises as fs } from "node:fs";
-import loadAllProducts from "./loadAllProducts";
-import writeAllProductsFile from "./writeAllProductsFile";
+import loadAllProducts from "../../../../../scripts/utils/loadAllProducts";
+import writeAllProductsFile from "../../../../../scripts/utils/writeAllProductsFile";
+import allProducts from "@/app/content/allProducts.json";
 
 export async function readAllProductsFile() {
-    try {
-        const json = await fs.readFile(process.cwd() + "/app/content/allProducts.json", {
-            encoding: "utf8",
-        });
-        const data: Product[] = JSON.parse(json);
-
-        return data.filter((item) => item.status === "publish");
-    } catch {
+    if (allProducts)
+        return (allProducts as Array<Product>).filter((item) => item.status === "publish");
+    else {
         const allProductsLoaded = await loadAllProducts();
         writeAllProductsFile(allProductsLoaded);
 

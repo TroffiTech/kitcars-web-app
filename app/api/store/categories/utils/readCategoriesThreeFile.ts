@@ -1,21 +1,14 @@
-import { CategoriesThree } from "@/types/productsType";
-import { promises as fs } from "node:fs";
-import loadCategories from "./loadCategories";
-import generateCategoriesThree from "./generateCategoriesThree";
-import writeCategoriesThreeFile from "./writeCategoriesThreeFile";
+import categoriesThree from "@/app/content/categoriesThree.json";
+import loadCategories from "../../../../../scripts/utils/loadCategories";
+import generateCategoriesThree from "../../../../../scripts/utils/generateCategoriesThree";
+import writeCategoriesThreeFile from "../../../../../scripts/utils/writeCategoriesThreeFile";
 
 export default async function readCategoriesThreeFile() {
-    try {
-        const json = await fs.readFile(process.cwd() + "/app/content/categoriesThree.json", {
-            encoding: "utf-8",
-        });
-        const data: CategoriesThree = JSON.parse(json);
-        return data;
-    } catch {
+    if (categoriesThree) return categoriesThree;
+    else {
         const loadedCategories = await loadCategories();
-        const categoriesThree = generateCategoriesThree(loadedCategories);
-        writeCategoriesThreeFile(categoriesThree);
-
-        return categoriesThree;
+        const loadedCategoriesThree = generateCategoriesThree(loadedCategories);
+        writeCategoriesThreeFile(loadedCategoriesThree);
+        return loadedCategoriesThree;
     }
 }

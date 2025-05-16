@@ -1,5 +1,6 @@
 import { getQueries } from "@/app/api/utils/readQueries";
 import readCategoriesThreeFile from "../utils/readCategoriesThreeFile";
+import { Category } from "@/types/productsType";
 
 export async function GET(req: Request) {
     const { category } = getQueries(req.url);
@@ -10,7 +11,7 @@ export async function GET(req: Request) {
     categoriesThree.map((parentCategory) => {
         if (parentCategory.slug === category) objToReturn = { ...parentCategory };
         else {
-            parentCategory.childrens?.map((childrenCategory) => {
+            parentCategory.childrens?.map((childrenCategory: Category) => {
                 if (childrenCategory.slug === category) objToReturn = { ...parentCategory };
             });
         }

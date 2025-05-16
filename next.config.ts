@@ -1,12 +1,11 @@
+// import { execSync } from "child_process";
 import type { NextConfig } from "next";
 
+// execSync("node scripts/updateContent.js", { stdio: "inherit" });
+
 const nextConfig: NextConfig = {
-    /* config options here */
     images: {
         remotePatterns: [new URL("https://static-maps.yandex.ru")],
-    },
-    env: {
-        domenUrl: "http://localhost:3000",
     },
 };
 

@@ -2,7 +2,7 @@ import { getQueries } from "@/app/api/utils/readQueries";
 import findRelatedCategoriesIdBySlug from "../utils/findRelatedCategoriesIdBySlug";
 import readCategoriesThreeFile from "../utils/readCategoriesThreeFile";
 import { readAllProductsFile } from "../../products/utils/readAllProductsFile";
-import { Product } from "@/types/productsType";
+import { Category, Product } from "@/types/productsType";
 
 export async function GET(req: Request) {
     const queries = getQueries(req.url);
@@ -19,7 +19,7 @@ export async function GET(req: Request) {
 
     relatedCategoriesId.map((categoryId) => {
         allProducts.map((product) => {
-            product.categories.map((categoryOfProduct) => {
+            product.categories.map((categoryOfProduct: Category) => {
                 if (categoryId === +categoryOfProduct.id) data.push(product);
             });
         });
