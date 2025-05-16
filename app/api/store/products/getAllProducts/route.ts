@@ -13,8 +13,8 @@ export async function GET(req: Request) {
     return new Response(JSON.stringify(data.slice(page * 10 - 10, page * 10)), {
         headers: {
             "content-type": "application/json",
+            "x-total-count": `${Math.ceil(data.length / 10)}`,
         },
-        statusText: `${Math.ceil(data.length / 10)}`,
         status: 200,
     });
 }

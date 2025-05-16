@@ -20,10 +20,10 @@ import { LinkButton } from "../ctaButtons/ctaButtons";
 
 async function fetcher(url: string) {
     const res = await fetch(url);
-    const totalPages = +res.statusText;
+    const totalPages = res.headers.get("x-total-count");
     return {
         data: (await res.json()) as Product[],
-        totalPages,
+        totalPages: totalPages ? +totalPages : 0,
     };
 }
 
