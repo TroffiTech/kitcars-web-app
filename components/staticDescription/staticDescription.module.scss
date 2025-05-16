@@ -31,6 +31,8 @@
 
 
 .modal {
+    @include flex-col(0,center ,center );
+
     width: 100vw;
     transition: all ease 0.4s;
     
