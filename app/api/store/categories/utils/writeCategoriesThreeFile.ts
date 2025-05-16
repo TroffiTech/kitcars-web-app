@@ -1,7 +1,7 @@
 import { CategoriesThree } from "@/types/productsType";
-import fs from "node:fs";
+import { promises as fs } from "node:fs";
 
 export default function writeCategoriesThreeFile(categoriesThree: CategoriesThree) {
     const data = JSON.stringify(categoriesThree);
-    fs.writeFileSync("./categoriesThree.json", data, { encoding: "utf8" });
+    fs.writeFile(process.cwd() + "/app/content/categoriesThree.json", data, { encoding: "utf8" });
 }

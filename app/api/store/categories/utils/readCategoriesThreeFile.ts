@@ -1,12 +1,14 @@
 import { CategoriesThree } from "@/types/productsType";
-import fs from "node:fs";
+import { promises as fs } from "node:fs";
 import loadCategories from "./loadCategories";
 import generateCategoriesThree from "./generateCategoriesThree";
 import writeCategoriesThreeFile from "./writeCategoriesThreeFile";
 
 export default async function readCategoriesThreeFile() {
     try {
-        const json = fs.readFileSync("./categoriesThree.json", { encoding: "utf-8" });
+        const json = await fs.readFile(process.cwd() + "/app/content/categoriesThree.json", {
+            encoding: "utf-8",
+        });
         const data: CategoriesThree = JSON.parse(json);
         return data;
     } catch {
