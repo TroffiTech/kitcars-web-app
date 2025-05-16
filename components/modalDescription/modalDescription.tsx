@@ -45,7 +45,7 @@ export default function ModalDescription() {
                         href={`${process.env.NEXT_PUBLIC_DOMEN}/catalog/product/${productData.sku}`}
                         className={
                             styles.productLink
-                        }>{`${process.env.domenUrl}/catalog/product/${productData.sku}`}</a>
+                        }>{`${process.env.NEXT_PUBLIC_DOMEN}/catalog/product/${productData.sku}`}</a>
                     <ImageCarousel images={productData.images} />
                 </div>
                 <div className={styles.lowerInner}>
