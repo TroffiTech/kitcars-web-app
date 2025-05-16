@@ -1,0 +1,46 @@
+.sideSlide {
+    position: fixed;
+    background: var(--foreground-color);
+    bottom: 30%;
+
+    height: 50px;
+    width: 130px;
+
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+
+    box-shadow: var(--box-shadow);
+    transition: all 0.3s ease;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    z-index: 1000;
+
+    .arrow {
+        height: 25px;
+        width:  25px;
+        
+        color: var(--background-color);
+        background: transparent;
+    }
+
+    .cart, .chat, .star {
+        color: var(--background-color);
+        background: transparent;
+        height: 25px;
+        width:  25px;
+    }
+
+    .cartIndicator {
+        position: absolute;
+        top: -10px;
+        left: 14px;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+
+        background-color: var(--red-color);
+    }
+}

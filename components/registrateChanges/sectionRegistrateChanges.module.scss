@@ -1,0 +1,75 @@
+.mainContainer {
+    position: relative;
+
+    width: 100vw;
+    max-width: 1600px;
+    justify-self: center;
+
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    padding: 100px 50px;
+
+    background-color: var(--foreground-color);
+    border-radius: 32px;
+    
+    overflow: hidden;
+
+    @media (max-width:900px) {
+        padding: 50px 10px;
+
+        border-top-right-radius: 16px;
+        border-top-left-radius: 16px;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    h2 {
+        font-size: 3.2rem;
+        background: transparent;
+        color: var(--orange-color);
+        z-index: 1;
+
+        @media (max-width:900px) {
+            width: 100%;
+            font-size: 1.8rem;
+            line-height: 30px;
+        }
+    }
+
+    p {
+        max-width: 800px;
+        line-height: 25px;
+    
+        padding-left: 20px;
+    
+        background: transparent;
+        color: var(--background-color);
+    
+        margin-bottom: 50px;
+        z-index: 1;
+
+        @media (max-width:900px) {
+            width: 100%;
+            font-size: 1rem;
+            line-height: 20px;
+            padding-left: 0;
+        }
+    }
+
+    .mapContainer {
+        position: absolute;
+        background: transparent;
+    
+        bottom: 6rem;
+        right: -1rem;
+
+        @media (max-width:900px) {
+            bottom: 1rem;
+            left: -6rem;
+            scale: 0.7;
+        }
+    }
+}
+

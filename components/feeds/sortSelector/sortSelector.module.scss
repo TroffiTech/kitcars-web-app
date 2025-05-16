@@ -1,0 +1,51 @@
+.sortOrderSelector{
+    position: relative;
+    height: 3rem;
+    width:220px ;
+    padding: 0 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background: var(--background-color);
+    border: 1px solid var(--background-color);
+    border-radius: 4px;
+    box-shadow: var(--box-shadow);
+
+    transition: all 0.2s ease;
+
+    cursor: pointer;
+
+    .icon{
+        width: 28px;
+        height: 28px;
+
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .expandedList{
+        position: absolute;
+        padding: 10px 5px;
+        min-height: 50px;
+        width: 100%;
+        top: 120%;
+        left: 0;
+
+        border-radius: 4px;
+        box-shadow: var(--box-shadow-variant);
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 1rem;
+
+        transition: all 0.3s ease;
+        z-index: 1;
+
+        li{
+            background: transparent;
+        }
+    }
+}

@@ -1,0 +1,241 @@
+.form {
+    justify-self: center;
+    width: 500px;
+    height: 350px;
+    padding: 0 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+
+    background-color: var(--transparent-dark-color);
+    backdrop-filter: blur(2px);
+    border-radius: 20px;
+}
+
+.form_inputGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+
+    align-items: start;
+    background: transparent;
+}
+
+.form_inputGroup label {
+    background: transparent;
+    color: var(--background-color);
+}
+
+.form input {
+    border: none;
+    background-color: var(--foreground-color);
+
+    height: 3rem;
+    width: 400px;
+
+    padding-left: 10px;
+
+    color: var(--background-color);
+    font-family: inherit;
+    font-size: 1rem;
+
+    border: 1px solid var(--transparent-dark-color);
+    border-radius: 4px;
+
+    transition: all 0.3s ease;
+}
+
+.form input:focus {
+    outline: none;
+    border: 1px solid var(--background-color);
+}
+
+.form input::placeholder {
+    color: var(--background-color);
+    font-weight: 300;
+    font-size: 1rem;
+}
+
+.form button {
+    align-self: start;
+
+    font-family: inherit;
+    font-size: 1rem;
+    text-transform: uppercase;
+
+    padding: 15px 20px;
+
+    border: none;
+    border-radius: 8px;
+    color: var(--background-color);
+    background: var(--foreground-color);
+}
+
+/* Variant */
+
+.formVariant {
+    width: 100%;
+    max-width: 1200px;
+    align-self: center;
+    padding: 50px 50px;
+    gap: 20px;
+
+    border-radius: 10px;
+    background: var(--transparent-dark-color);
+    box-shadow: var(--box-shadow);
+
+    backdrop-filter: blur(2);
+    z-index: 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    @media (max-width: 900px){
+        flex-direction: column;
+        padding: 10px 5px;
+        gap: 10px;
+    }
+}
+
+.formVariant_ctaContainer {
+    grid-column: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background: transparent;
+
+    @media (max-width: 900px){
+        gap: 0px;
+    }
+}
+
+.formVariant_ctaContainer h3 {
+    font-size: 2.8rem;
+    font-weight: 800;
+    background: transparent;
+    color: var(--orange-color);
+
+    @media (max-width: 900px){
+        font-size: 2rem;
+        text-align: center;
+    }
+}
+
+.formVariant_ctaContainer p:nth-child(2) {
+    text-align: start;
+    padding: 0;
+
+    font-size: 1rem;
+    color: var(--background-color);
+    background: transparent;
+
+    @media (max-width: 900px){
+        text-align: center;
+    }
+}
+
+.formVariant_ctaContainer p:last-child {
+    padding: 0;
+    font-size: 0.8rem;
+    font-weight: 300;
+    background: transparent;
+    color: var(--background-color);
+}
+
+.formVariant_ctaContainer_inputGoup {
+    display: flex;
+    gap: 2rem;
+
+    background: transparent;
+
+    @media (max-width: 900px){
+        align-items: start;
+        flex-direction: column;
+        gap: 5px;
+        padding-left: 5px;
+    }
+}
+
+.formVariant_ctaContainer_inputGoup div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    background: transparent;
+}
+
+.formVariant_ctaContainer_inputGoup input {
+    border: none;
+    background-color: var(--foreground-color);
+
+    height: 3rem;
+    max-width: 400px;
+
+    padding-left: 10px;
+
+    color: var(--background-color);
+    font-family: inherit;
+    font-size: 1rem;
+
+    border: 1px solid var(--transparent-light-color);
+    border-radius: 4px;
+
+    transition: all 0.3s ease;
+}
+
+.formVariant_ctaContainer_inputGoup label {
+    background: transparent;
+    color: var(--background-color);
+    font-size: 0.8rem;
+}
+
+.formVariant_ctaContainer_inputGoup input:focus {
+    outline: none;
+    border: 1px solid var(--background-color);
+}
+
+.formVariant_ctaContainer_inputGoup input::placeholder {
+    color: var(--background-color);
+    font-weight: 300;
+    font-size: 1rem;
+}
+
+.formVariant_ctaContainer_inputGoup button {
+    align-self: flex-end;
+
+    border: none;
+    height: 3.1rem;
+    padding: 0 20px;
+    border-radius: 4px;
+
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 500;
+    background-color: var(--orange-color);
+    color: var(--background-color);
+
+    box-shadow: var(--box-shine-variant);
+
+    transition: all 0.2s ease-in;
+
+    cursor: pointer;
+
+    @media (max-width: 900px){
+        align-self: flex-start;
+    }
+}
+
+.formVariant_ctaContainer_inputGoup button:hover {
+    box-shadow: var(--box-shine);
+}
+
+.descriptionText{
+    @media (max-width: 900px){
+        justify-content: center;
+        text-align: center;
+        font-size: 1rem;
+        margin-top: 5px;
+    }
+}

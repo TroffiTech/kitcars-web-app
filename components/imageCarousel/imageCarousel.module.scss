@@ -1,0 +1,97 @@
+.carouselContainer {
+    width: 40vw;
+    align-self: center;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+    overflow: hidden;
+
+    @media (max-width: 900px){
+        width: 90vw !important;
+    }
+    
+    .carousel {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+        border-radius: 16px;
+        
+        .carouselInner {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: start;
+
+            transition: all 0.3s linear;
+            
+            .img {
+                min-width: 40vw ;
+                height: 520px;
+                border-radius: 16px;
+                background-size: cover !important;
+                background-repeat: no-repeat !important;
+                background-position: center !important;
+
+                @media (max-width: 1200px){
+                    height: 360px !important;
+                }
+
+                @media (max-width: 900px){
+                    min-width: 90vw !important;
+                    height: 30vh !important;
+                }
+            }
+        }
+
+        button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 30px;
+            height: 30px;
+            background: var(--foreground-color);
+            border: 1px solid var(--foreground-color);
+            border-radius:50%;
+
+            box-shadow: var(--box-shadow);
+
+            transition: all 0.2s ease;
+
+            &:active {
+                box-shadow: var(--box-shadow-variant) ;
+            }
+        }
+        .buttonController_left{
+            left: 5px;
+        }
+        .buttonController_right{
+            right: 5px;
+        }
+    }
+
+    .indicatorsContainer {
+        position: relative;
+
+        max-width: 100%;
+        width: fit-content;
+
+        padding: 10px 0;
+
+        display: grid;
+        gap: 5px;
+        grid-template-columns: repeat(5, 1fr);
+
+        .img {
+            width: 80px ;
+            height: 80px;
+            border-radius: 4px;
+            background-size: cover !important;
+            background-repeat: no-repeat !important;
+            background-position: center !important;
+            border: 2px solid transparent;
+        }
+    }
+}
