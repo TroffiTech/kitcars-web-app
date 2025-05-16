@@ -10,7 +10,7 @@ export default async function ProductPage({ params }: { params: Promise<{ sku: s
 
     return (
         <main>
-            <section className='.flex-box__column'>
+            <section className='flex-box__column'>
                 <Header />
                 <StaticDescription productData={productData} />
                 <Footer />

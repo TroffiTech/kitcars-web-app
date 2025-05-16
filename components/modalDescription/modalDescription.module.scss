@@ -31,6 +31,8 @@
 
 
 .modal {
+    @include flex-col(0,center ,center );
+
     position: fixed;
     top: 0;
 
@@ -40,7 +42,6 @@
     transition: all ease 0.4s;
     z-index: 999;
     overflow-y: scroll;
-    
     
     .innerContent {
         width: 100vw;
@@ -84,6 +85,8 @@
             @media (max-width: 900px) {
                 gap: 1rem;
                 padding: 10px 0;
+                height: fit-content;
+                overflow: hidden;
             }
             
             .categoriesString{

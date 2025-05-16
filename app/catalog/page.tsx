@@ -9,7 +9,7 @@ import ReduxStoreProvider from "@/hooks/reduxStoreProvider";
 export default function Catalog() {
     return (
         <main>
-            <section className='.flex-box__column'>
+            <section className='flex-box__column'>
                 <Header />
                 <ReduxStoreProvider>
                     <SmallPopupProvider>

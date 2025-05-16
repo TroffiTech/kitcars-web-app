@@ -15,7 +15,7 @@ import HeroArticle from "@/components/heroArticle/heroArticle";
 export default function Home() {
     return (
         <main>
-            <section className='.flex-box__column'>
+            <section className='flex-box__column'>
                 <Header />
                 <HeroGallery />
                 <BrandLine />

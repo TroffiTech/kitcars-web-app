@@ -10,7 +10,7 @@ export default async function Category(props: { params: Promise<{ "category-slug
     const searchedCategorySlug = (await props.params)["category-slug"];
     return (
         <main>
-            <section className='.flex-box__column'>
+            <section className='flex-box__column'>
                 <Header />
                 <ReduxStoreProvider>
                     <SmallPopupProvider>
