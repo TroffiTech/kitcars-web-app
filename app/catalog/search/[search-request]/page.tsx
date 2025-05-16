@@ -12,7 +12,7 @@ export default async function SearchResultPage(props: {
     const searchRequest = (await props.params)["search-request"];
     return (
         <main>
-            <section className='.flex-box__column'>
+            <section className='flex-box__column'>
                 <Header />
                 <ReduxStoreProvider>
                     <SmallPopupProvider>
