@@ -42,10 +42,14 @@
     transition: all ease 0.4s;
     z-index: 999;
     overflow-y: scroll;
+
+    @media (max-width: 900px) {
+        @include flex-col(0,center ,start )
+    }
     
     .innerContent {
         width: 100vw;
-        min-height: 100%;
+        height: fit-content;
         max-width: 1600px;
         justify-self: center;
         
