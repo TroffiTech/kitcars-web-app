@@ -49,6 +49,9 @@
 }
 
 .tabs_head_selector_selected {
+    position: relative;
+    border: 1px solid red;
+
     cursor: pointer;
     height: 50px;
     padding: 0 20px;
@@ -66,9 +69,29 @@
 
     box-shadow: var(--box-shadow-variant);
     transition: all 0.2s ease;
+
+    span{
+        @include center-all();
+
+        position: absolute;
+        right: -6px;
+        top: -6px;
+        width: fit-content;
+        min-width: 30px;
+        height: 30px;
+
+        background: transparent;
+
+        color: var(--red-color);
+        text-transform: uppercase;
+        font-size: 1rem;
+        font-weight: 800;
+    }
 }
 
 .tabs_head_selector {
+    position: relative;
+
     cursor: pointer;
     height: 50px;
     padding: 0 20px;
@@ -86,6 +109,24 @@
 
     box-shadow: var(--box-shadow);
     transition: all 0.2s ease;
+
+    span{
+        @include center-all();
+
+        position: absolute;
+        right: -6px;
+        top: -6px;
+        min-width: 30px;
+        width: fit-content;
+        height: 30px;
+
+        background: transparent;
+
+        color: var(--red-color);
+        text-transform: uppercase;
+        font-size: 1rem;
+        font-weight: 800;
+    }
 }
 
 /* Tabs Feed */

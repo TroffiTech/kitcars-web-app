@@ -37,8 +37,20 @@
     height: 540px;
     border-radius: 12px;
 
-    overflow: hidden;
+    // overflow: hidden;
     box-shadow: var(--box-shadow);
+
+    .saleBadge{
+        position: absolute;
+        right: -5px;
+        top: 0.5rem;
+        padding: 2px 5px;
+        border-radius: 999px;
+
+        background-color: var(--red-color);
+        color: var(--background-color);
+        font-weight: 600;
+    }
 
     .imageContainer{
         @include center-all();

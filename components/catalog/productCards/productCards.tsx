@@ -22,6 +22,7 @@ export function FeedProductCard({ product }: { product: Product }) {
 
     return (
         <div className={styles.feedProductCard}>
+            {sale_price && <div className={styles.saleBadge}>% Скидки</div>}
             <div className={styles.imageContainer}>
                 <img src={images[0].src} alt={images[0].alt} />
             </div>

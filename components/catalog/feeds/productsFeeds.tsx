@@ -178,7 +178,52 @@ export function DefaultFeed() {
     );
 }
 
-export function OnSaleFeed() {
+export function SalesFeed() {
+    const [curPage, setCurPage] = useState(1);
+    const [priceSortOrder, setPriceSortOrder] = useState("increase");
+
+    const { data, isLoading } = useSWR(
+        `/api/store/products/getAllOnSaleProducts/?page=${curPage}&order=${priceSortOrder}`,
+        fetcher
+    );
+
+    return (
+        <div className={styles.defaultFeed_container}>
+            <div className={styles.topInner}>
+                <div className={styles.searchBar}>
+                    <Search />
+                </div>
+                <SortOrderSelector
+                    currentSortOrder={priceSortOrder}
+                    sortOrderSetter={setPriceSortOrder}
+                />
+            </div>
+            <div className={styles.defaultFeed}>
+                {isLoading &&
+                    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((item) => (
+                        <ProductCardSkeleton key={item} />
+                    ))}
+                {data &&
+                    insertMockCardsInFeed(data.data).map((product, index) => {
+                        if (product === "firstFlag")
+                            return <CardReplacerFirstVariant key={index} />;
+                        if (product === "secondFlag")
+                            return <CardReplacerSecondVariant key={index} />;
+                        return <FeedProductCard key={index} product={product} />;
+                    })}
+            </div>
+            {data && (
+                <Paginator
+                    pagesStateSetter={setCurPage}
+                    totalPages={data.totalPages}
+                    curPage={curPage}
+                />
+            )}
+        </div>
+    );
+}
+
+export function HeroSaleFeed() {
     const { data, isLoading } = useSWR("/api/store/products/getOnSaleProducts", fetcher);
 
     return (
