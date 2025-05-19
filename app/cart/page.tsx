@@ -8,7 +8,7 @@ import Footer from "@/components/shared/footer/Footer";
 export default function Cart() {
     return (
         <main>
-            <section className='.flex-box__column'>
+            <section className='flex-box__column'>
                 <Header />
                 <ReduxStoreProvider>
                     <SmallPopupProvider>
