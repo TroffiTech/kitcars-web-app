@@ -1,8 +1,9 @@
 "use client";
 
 import { createContext, Dispatch, SetStateAction, useState } from "react";
-import ModalDescription from "@/components/modalDescription/modalDescription";
+
 import { Product } from "@/types/productsType";
+import ModalDescription from "@/components/catalog/modalDescription/modalDescription";
 
 export const ModalDescriptionContext = createContext<{
     isVisible: boolean;

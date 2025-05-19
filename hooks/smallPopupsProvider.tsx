@@ -1,7 +1,7 @@
 "use client";
 
+import DynamicPopup from "@/components/shared/popups/dynamicPopup/dynamicPopup";
 import { createContext, Dispatch, SetStateAction, useState } from "react";
-import DynamicPopup from "@/components/popups/dynamicPopup/dynamicPopup";
 
 const initialContext: {
     isVisible: boolean;

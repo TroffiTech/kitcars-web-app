@@ -1,21 +1,51 @@
-import styles from "./staticDescription.module.scss";
-import SideSlideWidget from "../shared/sideSlideWidget/sideSlideWidget";
-import { Product } from "@/types/productsType";
-import ReduxStoreProvider from "@/hooks/reduxStoreProvider";
-import SmallPopupProvider from "@/hooks/smallPopupsProvider";
-import ImageCarousel from "../shared/imageCarousel/imageCarusel";
-import { AddToCartButton } from "../catalog/cartButtons/cartButtons";
+"use client";
 
-export default function StaticDescription({ productData }: { productData: Product }) {
+import { useContext, useEffect } from "react";
+import styles from "./modalDescription.module.scss";
+import { ModalDescriptionContext } from "@/hooks/modalDescriptionProvider";
+import { AddToCartButton } from "../cartButtons/cartButtons";
+import { arrowRightSVG } from "@/components/shared/icons/icons";
+import ImageCarousel from "@/components/shared/imageCarousel/imageCarusel";
+
+export default function ModalDescription() {
+    const isVisible = useContext(ModalDescriptionContext).isVisible;
+    const setIsVisible = useContext(ModalDescriptionContext)?.setIsVisible;
+    const productData = useContext(ModalDescriptionContext)?.productData;
+
     function generateDescription(hmtlText: string) {
         const description = { __html: hmtlText };
         return <div dangerouslySetInnerHTML={description} />;
     }
 
+    useEffect(() => {
+        if (isVisible) {
+            document.body.classList.add("blockScroll");
+        } else {
+            document.body.classList.remove("blockScroll");
+        }
+    });
+
+    if (!productData) return;
+
     return (
-        <div className={styles.modal}>
+        <div
+            className={styles.modal}
+            style={{
+                right: `${isVisible ? "0" : "-100vw"}`,
+            }}>
             <div className={styles.innerContent}>
                 <div className={styles.upperInner}>
+                    <button
+                        className={styles.closeButton}
+                        onClick={setIsVisible ? () => setIsVisible(false) : () => {}}>
+                        {arrowRightSVG}
+                    </button>
+
+                    <a
+                        href={`${process.env.NEXT_PUBLIC_DOMEN}/catalog/product/${productData.sku}`}
+                        className={
+                            styles.productLink
+                        }>{`${process.env.NEXT_PUBLIC_DOMEN}/catalog/product/${productData.sku}`}</a>
                     <ImageCarousel images={productData.images} />
                 </div>
                 <div className={styles.lowerInner}>
@@ -42,12 +72,7 @@ export default function StaticDescription({ productData }: { productData: Produc
                     </div>
 
                     <div className={styles.addToCartButton}>
-                        <ReduxStoreProvider>
-                            <SmallPopupProvider>
-                                <AddToCartButton productData={productData} />
-                                <SideSlideWidget />
-                            </SmallPopupProvider>
-                        </ReduxStoreProvider>
+                        <AddToCartButton productData={productData} />
                     </div>
 
                     <h3>О товаре</h3>

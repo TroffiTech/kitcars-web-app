@@ -1,9 +1,9 @@
-import { CartFeed } from "@/components/feeds/productsFeeds";
-import Footer from "@/components/footer/Footer";
-import Header from "@/components/header/Header";
-import CookiePopup from "@/components/popups/cookiePopup/cookiePopup";
 import SmallPopupProvider from "@/hooks/smallPopupsProvider";
 import ReduxStoreProvider from "@/hooks/reduxStoreProvider";
+import Header from "@/components/shared/header/Header";
+import { CartFeed } from "@/components/catalog/feeds/productsFeeds";
+import CookiePopup from "@/components/shared/popups/cookiePopup/cookiePopup";
+import Footer from "@/components/shared/footer/Footer";
 
 export default function Cart() {
     return (

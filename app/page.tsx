@@ -1,16 +1,16 @@
-import BrandLine from "@/components/brandLine/BrandLine";
-import Footer from "@/components/footer/Footer";
-import Header from "@/components/header/Header";
-import HeroGallery from "@/components/heroGallery/HeroGallery";
+import HeroArticle from "@/components/main/heroArticle/heroArticle";
+import HeroGallery from "@/components/main/heroGallery/HeroGallery";
+import SubcategoriesCarousel from "@/components/main/subCategoriesCarousel/SubCategoriesCarousel";
+import Tabs from "@/components/main/tabs/Tabs";
+import BrandLine from "@/components/shared/brandLine/BrandLine";
+import Footer from "@/components/shared/footer/Footer";
+import Header from "@/components/shared/header/Header";
+import CookiePopup from "@/components/shared/popups/cookiePopup/cookiePopup";
+import SectionRegistrateChanges from "@/components/shared/registrateChanges/sectionRegistrateChanges";
+import SideSlideWidget from "@/components/shared/sideSlideWidget/sideSlideWidget";
 import ModalDescriptionProvider from "@/hooks/modalDescriptionProvider";
-import SectionRegistrateChanges from "@/components/registrateChanges/sectionRegistrateChanges";
-import SubcategoriesCarousel from "@/components/subCategoriesCarousel/SubCategoriesCarousel";
-import Tabs from "@/components/tabs/Tabs";
 import ReduxStoreProvider from "@/hooks/reduxStoreProvider";
-import SideSlideWidget from "@/components/sideSlideWidget/sideSlideWidget";
-import CookiePopup from "@/components/popups/cookiePopup/cookiePopup";
 import SmallPopupProvider from "@/hooks/smallPopupsProvider";
-import HeroArticle from "@/components/heroArticle/heroArticle";
 
 export default function Home() {
     return (

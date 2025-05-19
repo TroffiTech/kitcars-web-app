@@ -1,10 +1,10 @@
-import Footer from "@/components/footer/Footer";
-import Header from "@/components/header/Header";
+import Footer from "@/components/shared/footer/Footer";
+import Header from "@/components/shared/header/Header";
 
 export default async function Sales() {
     return (
         <main>
-            <section className='.flex-box__column'>
+            <section className='flex-box__column'>
                 <Header />
                 <h1
                     style={{

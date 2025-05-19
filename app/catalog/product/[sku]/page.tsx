@@ -1,6 +1,7 @@
 import { readAllProductsFile } from "@/app/api/store/products/utils/readAllProductsFile";
-import Footer from "@/components/footer/Footer";
-import Header from "@/components/header/Header";
+import Footer from "@/components/shared/footer/Footer";
+import Header from "@/components/shared/header/Header";
+
 import StaticDescription from "@/components/staticDescription/staticDescription";
 
 export default async function ProductPage({ params }: { params: Promise<{ sku: string }> }) {
