@@ -1,7 +1,7 @@
 "use client";
 
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import useSWR from "swr";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { MenuPopup, MenuTrigger } from "./menu/Menu";
 import styles from "./Header.module.scss";
 import Logo from "./logo/Logo";

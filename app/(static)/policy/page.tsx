@@ -1,3 +1,5 @@
+import PolicyInfo from "@/components/policy/policyInfo/policyInfo";
+import PolicyIntro from "@/components/policy/policyIntro/policyIntro";
 import Footer from "@/components/shared/footer/Footer";
 import Header from "@/components/shared/header/Header";
 
@@ -6,13 +8,8 @@ export default async function Sales() {
         <main>
             <section className='flex-box__column'>
                 <Header />
-                <h1
-                    style={{
-                        height: "90vh",
-                    }}>
-                    {" "}
-                    тут будет страница Политика конфиденциальности
-                </h1>
+                <PolicyIntro />
+                <PolicyInfo />
                 <Footer />
             </section>
         </main>

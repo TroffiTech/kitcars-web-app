@@ -75,7 +75,7 @@ export default function Footer() {
                 <p>
                     © ООО &quot;Вип&quot;, {new Date(Date.now()).getFullYear()}. Все права защищены.
                 </p>
-                <a href='/info'>Договор публичной оферты</a>
+                <a href='/offer'>Договор публичной оферты</a>
                 <a href='/policy'>Политика конфиденциальности</a>
             </div>
         </footer>
