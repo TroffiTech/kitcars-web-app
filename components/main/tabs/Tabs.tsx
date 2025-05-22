@@ -3,7 +3,6 @@
 import { useState } from "react";
 import styles from "./Tabs.module.scss";
 import { HitsFeed, HeroSaleFeed } from "@/components/catalog/feeds/productsFeeds";
-import { procentageSVG } from "@/components/shared/icons/icons";
 
 export default function Tabs() {
     const [tab, setTab] = useState<"Выгодно" | "Новинки">("Выгодно");
@@ -19,7 +18,6 @@ export default function Tabs() {
                             : styles.tabs_head_selector
                     }>
                     Скидки
-                    <span>{procentageSVG}</span>
                 </div>
                 <div
                     onClick={() => setTab("Новинки")}
@@ -29,7 +27,6 @@ export default function Tabs() {
                             : styles.tabs_head_selector
                     }>
                     Новинки
-                    <span>new</span>
                 </div>
             </div>
             <div className={styles.tabs_feed}>
