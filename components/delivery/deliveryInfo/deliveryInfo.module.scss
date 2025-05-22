@@ -1,0 +1,264 @@
+@mixin flex-col($gap, $align, $justify){
+    display: flex;
+    flex-direction: column;
+    align-items: $align;
+    justify-content: $justify;
+    gap: $gap;
+}
+
+@mixin flex-row($gap, $align, $justify){
+    display: flex;
+    flex-direction: row;
+    align-items: $align;
+    justify-content: $justify;
+    gap: $gap;
+}
+
+@mixin default-cont(){
+    width: 100vw;
+    max-width: 1600px;
+    padding: 5px 15px;
+    justify-self: center;
+}
+
+@mixin center-all{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center
+}
+
+
+.deliveryInfo{
+    @include default-cont();
+    @include flex-col(4rem, start, start);
+    padding: 2rem 10px;
+
+    .deliveryCard{
+        width: 100%;
+        border-radius: 16px;
+        box-shadow: var(--box-shadow);
+        padding: 50px;
+
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+
+        @media (max-width: 1500px){
+            grid-template-columns: repeat(1, 1fr);
+            align-items: center;
+            padding: 50px 10px;
+        }
+
+        .title{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            h2 {
+                font-size: 2.8rem;
+                font-weight: 800;
+
+                @media (max-width: 900px){
+                    font-size: 1.8rem;
+                    font-weight: 800;
+                }   
+            }
+
+            p{
+                font-size: 1.5rem;
+                font-weight: 300;
+
+                @media (max-width: 900px){
+                    font-size: 1rem;
+                }   
+            }
+        }
+
+        ul {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+
+            @media (max-width: 900px){
+                gap: 0;
+            }
+            
+
+            li {
+                height: 200px;
+                padding: 0 20px;
+                display: flex;
+                
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                
+                font-size: 2rem;
+                font-weight: 800;
+                color: var(--transparent-dark-color);
+                
+                background-size:cover ;
+                background-position: center;
+
+                @media (max-width: 1500px){
+                    height: 340px;
+                    width: 90%;
+                }
+
+                @media (max-width: 900px){
+                    height: 90px;
+                     width: 100%;
+                }   
+                
+                &:nth-child(1){
+                    background-image: url("/logisticCompanyLogos/ПЭК.webp");
+                }
+                &:nth-child(2){
+                    background-image: url("/logisticCompanyLogos/Анкор.jpeg");
+                }
+                &:nth-child(3){
+                    background-image: url("/logisticCompanyLogos/Байкал_Сервис.png");
+                }
+                &:nth-child(4){
+                    background-image: url("/logisticCompanyLogos/вл_лоджистик.jpeg");
+                }
+                &:nth-child(8){
+                    background-image: url("/logisticCompanyLogos/Деловые_Линии.jpg");
+                }
+                &:nth-child(6){
+                    background-image: url("/logisticCompanyLogos/ЖелДорЭкспедиция.png");
+                }
+                &:nth-child(7){
+                    background-image: url("/logisticCompanyLogos/КИТ.png");
+                }
+                &:nth-child(5){
+                    background-image: url("/logisticCompanyLogos/РАТЭК.png");
+                }
+                &:nth-child(9){
+                    background-image: url("/logisticCompanyLogos/Энергия.png");
+                }
+            }
+        }
+    }
+
+    .cardsContainer {
+        width: 100%;
+        padding-bottom: 4rem;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 4rem;
+
+        border-bottom:1px solid var(--transparent-dark-color);
+
+        @media (max-width: 1400px){
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        @media (max-width: 900px){
+            display: flex;
+            flex-direction: column;
+        }
+
+        .deliveryCard{
+            @include flex-col(0, start, space-between);
+            height: 280px;
+            text-align: start;
+            background-color: var(--foreground-color);
+
+            h2 {
+                background: transparent;
+                font-size: 1.4rem;
+                font-weight: 900;
+
+                color: var(--orange-color);
+            }
+
+            p{
+                background: transparent;
+                font-size: 1rem;
+                font-weight: 300;
+                letter-spacing: 1px;
+                color: var(--background-color);
+            }
+        }
+    }
+
+    .payInfoContainer{
+        width: 100%;
+        padding: 50px;
+
+        border-radius: 32px;
+        box-shadow: var(--box-shadow);
+        background: var(--foreground-color);
+
+        @media (max-width: 900px){
+            padding: 30px 10px;
+        } 
+
+        h2 {
+            background: transparent;
+            color: var(--background-color);
+            font-size: 1.8rem;
+            font-weight: 600;
+
+            @media (max-width: 900px){
+                font-size: 1.4rem;
+                font-weight: 800;
+            }   
+        }
+
+        ul {
+            @include flex-col(1rem, start, center);
+            padding-bottom: 2rem;
+            margin:2rem 0;
+            background: transparent;
+
+            border-bottom: 1px solid var(--transparent-light-color);
+
+            li{
+                background: transparent;
+                padding-left: 15px;
+                color: var(--background-color);
+                font-size: 1.4rem;
+                font-weight: 300;
+
+                @media (max-width: 900px){
+                    font-size: 1rem;
+                    font-weight: 300;
+                }   
+            }
+        }
+
+        h3{
+            background: transparent;
+            color: var(--background-color);
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+
+            @media (max-width: 900px){
+                font-size: 1.4rem;
+                font-weight: 800;
+            }  
+        }
+
+        p {
+            padding-left: 15px;
+            margin-bottom: 2rem;
+            background: transparent;
+            color: var(--background-color);
+            font-size: 1.2rem;
+            font-weight: 300;
+            line-height: 24px;
+
+            @media (max-width: 900px){
+                font-size: 1rem;
+                font-weight: 300;
+            }  
+        }
+    }
+}
