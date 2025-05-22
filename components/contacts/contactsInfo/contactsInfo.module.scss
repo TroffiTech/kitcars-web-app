@@ -1,0 +1,77 @@
+@mixin flex-col($gap, $align, $justify){
+    display: flex;
+    flex-direction: column;
+    align-items: $align;
+    justify-content: $justify;
+    gap: $gap;
+}
+
+@mixin flex-row($gap, $align, $justify){
+    display: flex;
+    flex-direction: row;
+    align-items: $align;
+    justify-content: $justify;
+    gap: $gap;
+}
+
+@mixin default-cont(){
+    width: 100vw;
+    max-width: 1600px;
+    padding: 5px 15px;
+    justify-self: center;
+}
+
+@mixin center-all{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center
+}
+
+.contactsInfo{
+    @include default-cont();
+    @include flex-col(1rem, start, start );
+    margin-bottom: 4rem;
+
+    h2 {
+        margin-top: 2rem;
+        font-size: 2.4rem;
+        font-weight: 300;
+        color: var(--foreground-color);
+        background: transparent;
+
+        @media (max-width:900px){
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+    }
+
+    ul {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        background: transparent;
+
+        p, a{
+            padding-left: 40px;
+            font-size: 1.4rem;
+            font-weight: 300;
+            background: transparent;
+            color: var(--foreground-color);
+
+            @media (max-width:900px){
+                font-size: 1rem;
+            }
+        }
+    }
+
+    p {
+        font-size: 1.4rem;
+        font-weight: 300;
+        padding-left: 40px;
+
+        @media (max-width:900px){
+            font-size: 1rem;
+        }
+    }
+}

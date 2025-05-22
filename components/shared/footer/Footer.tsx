@@ -31,7 +31,7 @@ export default function Footer() {
                 <div className={styles.footer_sectionThree}>
                     <h2>Наш Адрес</h2>
                     <a href='https://yandex.ru/maps/44/izhevsk/house/spartakovskiy_pereulok_13/YUoYdAFiTEMPQFtsfXR0cHRrbQ==/?ll=53.262569%2C56.851889&z=17.09'>
-                        426065, Удмуртская Республика, г. Ижевск, пер. Спартаковский, д. 13
+                        {process.env.NEXT_PUBLIC_ADDRESS}
                     </a>
                     <img
                         height={300}
