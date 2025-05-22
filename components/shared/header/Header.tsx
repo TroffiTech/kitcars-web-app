@@ -9,6 +9,7 @@ import { checkIsMobile } from "@/lib/deviceTypeChecker";
 import { infoLinks } from "./categoriesList";
 import CallBackButton from "../ctaButtons/ctaButtons";
 import { Category } from "@/types/productsType";
+import Link from "next/link";
 
 async function fetcher(url: string) {
     const res = await fetch(url);
@@ -53,7 +54,7 @@ function DesctopHeader() {
                 <ul className={styles.header_infoLinks}>
                     {infoLinks.map((infoLink, index) => (
                         <li key={index}>
-                            <a href={infoLink.link}>{infoLink.name}</a>
+                            <Link href={infoLink.link}>{infoLink.name}</Link>
                         </li>
                     ))}
                 </ul>
@@ -71,7 +72,9 @@ function DesctopHeader() {
                     {data &&
                         data.map((category: Category, index: number) => (
                             <li key={index}>
-                                <a href={`/catalog/category/${category.slug}`}>{category.name}</a>
+                                <Link href={`/catalog/category/${category.slug}`}>
+                                    {category.name}
+                                </Link>
                             </li>
                         ))}
                 </ul>

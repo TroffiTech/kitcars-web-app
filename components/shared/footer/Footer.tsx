@@ -5,6 +5,7 @@ import Logo from "../header/logo/Logo";
 import { mailSVG, personSVG, phoneSVG } from "../icons/icons";
 
 import styles from "./Footer.module.scss";
+import Link from "next/link";
 
 export default function Footer() {
     return (
@@ -22,17 +23,17 @@ export default function Footer() {
                 <div className={styles.footer_sectionTwo}>
                     <h2>Навигация</h2>
                     {infoLinks.map((link, index) => (
-                        <a href={link.link} key={index}>
+                        <Link href={link.link} key={index}>
                             {link.name}
-                        </a>
+                        </Link>
                     ))}
                 </div>
                 {/* 3 */}
                 <div className={styles.footer_sectionThree}>
                     <h2>Наш Адрес</h2>
-                    <a href='https://yandex.ru/maps/44/izhevsk/house/spartakovskiy_pereulok_13/YUoYdAFiTEMPQFtsfXR0cHRrbQ==/?ll=53.262569%2C56.851889&z=17.09'>
+                    <Link href='https://yandex.ru/maps/44/izhevsk/house/spartakovskiy_pereulok_13/YUoYdAFiTEMPQFtsfXR0cHRrbQ==/?ll=53.262569%2C56.851889&z=17.09'>
                         {process.env.NEXT_PUBLIC_ADDRESS}
-                    </a>
+                    </Link>
                     <img
                         height={300}
                         width={300}
@@ -52,19 +53,19 @@ export default function Footer() {
                             </div>
                             <div className='flex-box__gap-20'>
                                 {phoneSVG}
-                                <a
+                                <Link
                                     className={styles.header_topInner_contacts_phoneNumber}
                                     href={`tel:${contactData.phone}`}>
                                     {contactData.phone}
-                                </a>
+                                </Link>
                             </div>
                             <div className='flex-box__gap-20'>
                                 {mailSVG}
-                                <a
+                                <Link
                                     className={styles.header_topInner_contacts_phoneNumber}
                                     href={`mailto:${contactData.email}`}>
                                     {contactData.email}
-                                </a>
+                                </Link>
                             </div>
                         </ul>
                     ))}
@@ -75,8 +76,8 @@ export default function Footer() {
                 <p>
                     © ООО &quot;Вип&quot;, {new Date(Date.now()).getFullYear()}. Все права защищены.
                 </p>
-                <a href='/offer'>Договор публичной оферты</a>
-                <a href='/policy'>Политика конфиденциальности</a>
+                <Link href='/offer'>Договор публичной оферты</Link>
+                <Link href='/policy'>Политика конфиденциальности</Link>
             </div>
         </footer>
     );

@@ -4,6 +4,7 @@ import styles from "./Menu.module.css";
 import { infoLinks } from "../categoriesList";
 import { CategoriesThree } from "@/types/productsType";
 import CallBackButton from "../../ctaButtons/ctaButtons";
+import Link from "next/link";
 
 export function MenuPopup({
     isVisible,
@@ -34,7 +35,9 @@ export function MenuPopup({
                     {data &&
                         data.map((category, index) => (
                             <li key={index}>
-                                <a href={`/catalog/category/${category.slug}`}>{category.name}</a>
+                                <Link href={`/catalog/category/${category.slug}`}>
+                                    {category.name}
+                                </Link>
                             </li>
                         ))}
                 </ul>
@@ -43,7 +46,7 @@ export function MenuPopup({
                 <ul className={styles.menuPopup_innerContent_infoLinks}>
                     {infoLinks.map((category, index) => (
                         <li key={index}>
-                            <a href={category.link}>{category.name}</a>
+                            <Link href={category.link}>{category.name}</Link>
                         </li>
                     ))}
                 </ul>
@@ -54,11 +57,11 @@ export function MenuPopup({
                         <p>Мы работаем ежедневно</p>
                         <p>9:00 - 19:00, без выходных</p>
                     </div>
-                    <a
+                    <Link
                         className={styles.menuPopup_innerContent_contacts_phoneNumber}
                         href='tel:+7 (800) 555 35 35'>
                         8 (800) 555 35 35
-                    </a>
+                    </Link>
                     <CallBackButton text='Заказать звонок' />
                 </div>
             </div>
