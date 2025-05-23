@@ -1,0 +1,109 @@
+@mixin flex-col($gap, $align, $justify){
+    display: flex;
+    flex-direction: column;
+    align-items: $align;
+    justify-content: $justify;
+    gap: $gap;
+}
+
+@mixin flex-row($gap, $align, $justify){
+    display: flex;
+    flex-direction: row;
+    align-items: $align;
+    justify-content: $justify;
+    gap: $gap;
+}
+
+@mixin default-cont(){
+    width: 100vw;
+    max-width: 1600px;
+    padding: 5px 15px;
+    justify-self: center;
+}
+
+@mixin center-all{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center
+}
+
+.benefits {
+    @include default-cont();
+
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    padding: 120px 15px;
+
+    @media (max-width:1500px){
+        @include flex-col(4rem, center, start)
+    }
+
+    @media (max-width:900px){
+       padding: 60px 15px;
+    }
+
+    ul{
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 4rem;
+
+        @media (max-width:900px){
+            @include flex-col(2rem, center, start);
+        }
+        
+        li {
+            @include flex-col(1rem, center, center);
+            @include center-all();
+            width: 340px;
+            height: 300px;
+            box-shadow: var(--box-shadow);
+            border-radius: 16px;
+
+            background-color: var(--foreground-color);
+
+            .image {
+                width: fit-content;
+                border-radius: 50%;
+                border: 4px solid var(--orange-color);
+                background: transparent;
+                box-shadow: var(--box-shadow);
+            }
+            
+            h3 {
+                font-size: 1.8rem;
+                font-weight: 300;
+                background: transparent;
+                color: var(--background-color);
+
+                @media (max-width:900px){
+                    font-size: 1.4rem;
+                }
+
+                span {
+                    font-weight: 600;
+                    color: var(--blue-color);
+                    background: transparent;
+                }
+            }
+        }
+    }
+
+    .title {
+        @include center-all();
+
+        h1{
+            font-size: 3.2rem;
+            font-weight: 900;
+            text-align: end;
+
+            @media (max-width:900px){
+                font-size: 1.8rem;
+            }
+
+            span{
+                color: var(--blue-color);
+            }
+        }
+    }
+}

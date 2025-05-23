@@ -1,0 +1,144 @@
+@mixin flex-col($gap, $align, $justify){
+    display: flex;
+    flex-direction: column;
+    align-items: $align;
+    justify-content: $justify;
+    gap: $gap;
+}
+
+@mixin flex-row($gap, $align, $justify){
+    display: flex;
+    flex-direction: row;
+    align-items: $align;
+    justify-content: $justify;
+    gap: $gap;
+}
+
+@mixin default-cont(){
+    width: 100vw;
+    max-width: 1600px;
+    padding: 5px 15px;
+    justify-self: center;
+}
+
+@mixin center-all{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center
+}
+
+.tarrifsCards{
+    @include default-cont();
+    @include flex-col(4rem, center, center);
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+
+    h2 {
+        font-size: 3.2rem;
+        span{
+            color: var(--blue-color);
+        }
+
+        @media (max-width:900px){
+            font-size: 2rem;
+        }
+    }
+
+    .cards {
+        @include flex-row(0, start, space-around);
+        width: 100%;
+
+        @media (max-width:1150px){
+            @include flex-col(2rem, center, center);
+        }
+
+        .card{
+            @include flex-col(2rem, center, center);
+            width: 340px;
+            padding: 20px;
+            box-shadow: var(--box-shadow);
+            border-radius: 16px;
+
+            background: var(--foreground-color);
+
+            h3 {
+                font-size: 2rem;
+                font-weight: 800;
+                color: var(--blue-color);
+                text-align: center;
+
+                min-height: 5rem;
+                background: transparent;
+
+                @media (max-width:900px){
+                    font-size: 1.8rem;
+                    min-height: 2rem;
+                }
+            }
+
+            .price {
+                background-color: var(--orange-color);
+                color: var(--background-color);
+
+                font-size: 1.4rem;
+                font-weight: 600;
+
+                padding: 20px 40px;
+                border-radius: 4px;
+
+                @media (max-width:900px){
+                    font-size: 1rem;
+                    align-self: start;
+                }
+            }
+
+            .description {
+                font-size: 1.2rem;
+                letter-spacing: 1px;
+                min-height: 8rem;
+
+                border-bottom:1px solid var(--transparent-light-color);
+
+                background: transparent;
+                color: var(--background-color);
+
+                @media (max-width:900px){
+                    font-size: 1rem;
+                    min-height: 5rem;
+                }
+            }
+
+            .tarrifInfo{
+                font-size: 1.2rem;
+                letter-spacing: 1px;
+                font-weight: 300;
+                min-height: 18rem;
+
+                background: transparent;
+                color: var(--background-color);
+
+                @media (max-width:900px){
+                    font-size: 1rem;
+                    min-height: 12rem;
+                }
+
+                p{
+                    background: transparent;
+                    color: var(--background-color);
+                }
+
+                ul {
+                    @include flex-col(0.5rem, start, center);
+                    padding:15px;
+                    background: transparent;
+
+                    li{
+                        background: transparent;
+                        color: var(--orange-color);
+                    }
+                }
+            }
+        }
+    }
+}

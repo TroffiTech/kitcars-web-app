@@ -35,7 +35,7 @@ export function FormRegisterChangesVariant() {
                         <label htmlFor='tel'>Ваш телефонный номер</label>
                         <input type='tel' id='tel' placeholder='88005553535' />
                     </div>
-                    <button>Apply</button>
+                    <button>Отправить</button>
                 </div>
                 <p>Отправляя форму, вы соглашаетесь с политикой обработки персональных данных</p>
             </div>
