@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import styles from "./sideSlideWidget.module.scss";
-import { chatSVG, dotsSVG, starSVG } from "../icons/icons";
+import { dotsSVG } from "../icons/icons";
 import CartButton from "./cartButton/cartButton";
 import { RootState } from "@/store/store";
 
@@ -18,7 +18,7 @@ export default function SideSlideWidget() {
     return (
         <nav
             style={{
-                right: isExpanded ? "0" : "-100px",
+                right: isExpanded ? "0" : "-60px",
             }}
             className={styles.sideSlide}>
             {!isExpanded && count !== 0 && <div className={styles.cartIndicator} />}
@@ -26,8 +26,6 @@ export default function SideSlideWidget() {
                 {dotsSVG}
             </div>
             <CartButton count={count} />
-            <div className={styles.star}>{starSVG}</div>
-            <div className={styles.chat}>{chatSVG}</div>
         </nav>
     );
 }

@@ -3,8 +3,8 @@
     background: var(--foreground-color);
     bottom: 30%;
 
-    height: 50px;
-    width: 130px;
+    height: 70px;
+    width: 90px;
 
     border-top-left-radius: 8px;
     border-bottom-left-radius: 8px;
@@ -14,23 +14,19 @@
 
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: center;
 
     z-index: 1000;
 
     .arrow {
-        height: 25px;
-        width:  25px;
+        height: 35px;
+        width:  35px;
         
+        transform: translateX(-10px);
         color: var(--background-color);
         background: transparent;
-    }
 
-    .cart, .chat, .star {
-        color: var(--background-color);
-        background: transparent;
-        height: 25px;
-        width:  25px;
+        cursor: pointer;
     }
 
     .cartIndicator {
