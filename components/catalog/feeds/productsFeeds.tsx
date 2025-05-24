@@ -274,7 +274,7 @@ export function CartFeed() {
                     </div>
                     <div className={styles.cartFeed_cta}>
                         <div className={styles.buttonContainer}>
-                            <LinkButton text='Оформить заказ' link='/' />
+                            <LinkButton text='Оформить заказ' link='/checkout' />
                             <p>
                                 Способ доставки и оплаты можно будет выбрать при оформлении заказа
                             </p>

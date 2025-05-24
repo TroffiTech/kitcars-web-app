@@ -1,0 +1,157 @@
+@mixin flex-col($gap, $align, $justify){
+    display: flex;
+    flex-direction: column;
+    align-items: $align;
+    justify-content: $justify;
+    gap: $gap;
+}
+
+@mixin flex-row($gap, $align, $justify){
+    display: flex;
+    flex-direction: row;
+    align-items: $align;
+    justify-content: $justify;
+    gap: $gap;
+}
+
+@mixin default-cont(){
+    width: 100vw;
+    max-width: 1600px;
+    padding: 5px 15px;
+    justify-self: center;
+}
+
+@mixin center-all{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center
+}
+
+@keyframes movebeam {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.checkoutForm{
+    @include flex-col(2rem, start, start);
+    grid-column: 1/4;
+
+    h2{
+        font-size: 3.2rem;
+        font-weight: 900;
+        color: var(--orange-color);
+
+        @media (max-width:900px){
+            font-size: 2rem;
+        }
+    }
+
+    .inputGroup{
+        @include flex-col(1rem, start, center);
+        width: 450px;
+
+        @media (max-width:900px){
+            width: 90%;
+        }
+
+        label {
+            font-size: 1rem;
+            letter-spacing: 1px;
+            font-weight: 200;
+
+            transform: translateY(10px);
+        }
+
+        input, textarea {
+            font-family: inherit;
+            font-size: 1rem;
+
+            border: 1px solid var(--transparent-dark-color);
+            height: 50px;
+            width: 400px;
+            border-radius: 4px;
+            box-shadow: var(--box-shadow-variant);
+
+            padding: 10px;
+
+            transition: all 0.2s ease;
+
+            &:focus {
+                outline: none;
+                box-shadow: var(--box-shadow);
+            }
+
+            @media (max-width:900px){
+              width: 90vw;
+            }
+        }
+
+        .additionalInput{
+            height: 150px;
+            width: 460px;
+
+            @media (max-width:900px){
+                width: 96vw;
+            }
+        }
+    }
+
+
+
+    .buttonBackground {
+        position: relative;
+
+        width: 250px;
+        height: 4rem;
+        border-radius: 0.6rem;
+        
+        background: linear-gradient(-45deg, var(--orange-color), #ef911f, #ee9324, var(--orange-color));
+        background-size: 400% 400%;
+        animation: movebeam 10s ease infinite;
+        
+        transition: all 0.2s ease-in;
+        
+        box-shadow: var(--box-shadow);
+
+        &:hover {
+             animation-duration: 2s;
+            box-shadow: var(--box-shadow-variant);
+        }
+
+        button {
+            border: none;
+            font-family: inherit;
+            font-weight: 500;
+            font-size: 1rem;
+            background-color: transparent;
+            
+            width: 100%;
+            height: 100%;
+            
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            
+            border-radius: 0.6rem;
+
+            color: var(--background-color);
+            font-size: 1.2rem;
+            
+            cursor: pointer;
+        }
+    }
+
+    .policyWarn{
+        font-size: 0.9rem;
+        font-weight: 200;
+        max-width: 400px;
+    }
+}
