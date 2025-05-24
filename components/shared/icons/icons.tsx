@@ -456,7 +456,7 @@ export const dotsSVG = (
         fill='none'
         viewBox='0 0 24 24'
         strokeWidth={2}
-        stroke='var(--orange-color)'>
+        stroke='var(--background-color)'>
         <path
             strokeLinecap='round'
             strokeLinejoin='round'
@@ -473,8 +473,8 @@ export const cartSVG = (
         xmlns='http://www.w3.org/2000/svg'
         fill='none'
         viewBox='0 0 24 24'
-        strokeWidth={2}
-        stroke='var(--orange-color)'>
+        strokeWidth={1.2}
+        stroke='var(--background-color)'>
         <path
             strokeLinecap='round'
             strokeLinejoin='round'
