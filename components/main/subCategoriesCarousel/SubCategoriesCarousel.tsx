@@ -5,7 +5,7 @@ import { useState } from "react";
 import styles from "./SubCategoriesCarousel.module.scss";
 
 import Link from "next/link";
-import CallBackButton, { LinkButton } from "@/components/shared/ctaButtons/ctaButtons";
+import { LinkButton } from "@/components/shared/ctaButtons/ctaButtons";
 import { arrowLeftSVG, arrowRightSVG } from "@/components/shared/icons/icons";
 
 export default function SubcategoriesCarousel() {
@@ -51,11 +51,7 @@ export default function SubcategoriesCarousel() {
                 ))}
                 <div className={styles.carousel_card}>
                     <h3>Больше товаров в каталоге</h3>
-                    <LinkButton text='Каталог' link='/' />
-                </div>
-                <div className={styles.carousel_card}>
-                    <p>Не нашли, что искали? Наш менеджер поможет Вам!</p>
-                    <CallBackButton text='Перезвоните мне' />
+                    <LinkButton text='Каталог' link='/catalog' />
                 </div>
             </div>
 
