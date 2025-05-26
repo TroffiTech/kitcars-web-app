@@ -7,7 +7,7 @@
         opacity: 1;
     }
 
-    50% {
+    90% {
         opacity: 1;
     }
 
@@ -32,7 +32,7 @@
 
     z-index: 999;
 
-    animation: flicker 3s ;
+    animation: flicker 5s;
 
     @media (max-width: 700px){
         left: 50vw;

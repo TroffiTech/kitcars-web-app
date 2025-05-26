@@ -5,6 +5,7 @@ import TarrifsCards from "@/components/registry/tariffs/tariffs";
 import Footer from "@/components/shared/footer/Footer";
 import Header from "@/components/shared/header/Header";
 import SectionRegistrateChanges from "@/components/shared/registrateChanges/sectionRegistrateChanges";
+import SmallPopupProvider from "@/hooks/smallPopupsProvider";
 
 export default async function Registry() {
     return (
@@ -16,7 +17,9 @@ export default async function Registry() {
                 <SecondArticle />
                 <FirstArticle />
                 <TarrifsCards />
-                <SectionRegistrateChanges />
+                <SmallPopupProvider>
+                    <SectionRegistrateChanges />
+                </SmallPopupProvider>
                 <Footer />
             </section>
         </main>

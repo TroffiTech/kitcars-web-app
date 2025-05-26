@@ -70,7 +70,6 @@
 
     transition: all ease 0.4s;
     z-index: 999;
-
     overflow-y: scroll;
 }
 

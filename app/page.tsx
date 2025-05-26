@@ -20,16 +20,16 @@ export default function Home() {
                 <HeroGallery />
                 <BrandLine />
                 <SubcategoriesCarousel />
-                <ReduxStoreProvider>
-                    <SmallPopupProvider>
+                <SmallPopupProvider>
+                    <ReduxStoreProvider>
                         <ModalDescriptionProvider>
                             <Tabs />
                         </ModalDescriptionProvider>
-                    </SmallPopupProvider>
-                    <SideSlideWidget />
-                    <CookiePopup />
-                </ReduxStoreProvider>
-                <SectionRegistrateChanges />
+                        <SideSlideWidget />
+                        <CookiePopup />
+                    </ReduxStoreProvider>
+                    <SectionRegistrateChanges />
+                </SmallPopupProvider>
                 <HeroArticle />
                 <Footer />
             </section>

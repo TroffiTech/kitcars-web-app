@@ -16,8 +16,16 @@ export default function CallBackPopup({ closePopup }: { closePopup: () => void }
         return () => document.body.classList.remove("blockScroll");
     });
 
+    function clearFields() {
+        if (!inputNameRef.current || !inputTelRef.current) return;
+        inputNameRef.current.value = "";
+        inputTelRef.current.value = "";
+    }
+
     function submit(e: FormEvent) {
         e.preventDefault();
+        const button = e.target as HTMLButtonElement;
+
         if (!inputNameRef || !inputTelRef) return;
 
         const telValue = inputTelRef.current?.value;
@@ -44,11 +52,20 @@ export default function CallBackPopup({ closePopup }: { closePopup: () => void }
         }
 
         if (!isFromValid) {
-            console.log("form NOT VALID");
             return;
         } else {
-            // TODO request
-            closePopup();
+            fetch("/api/formSubmissions/consultationSubmission", {
+                method: "post",
+                body: JSON.stringify({
+                    telValue,
+                    nameValue,
+                }),
+            });
+            button.textContent = "Отправлено!";
+            setTimeout(() => {
+                clearFields();
+                button.textContent = "Отправить";
+            }, 2000);
         }
     }
 

@@ -59,8 +59,8 @@ export function MenuPopup({
                     </div>
                     <Link
                         className={styles.menuPopup_innerContent_contacts_phoneNumber}
-                        href='tel:+7 (800) 555 35 35'>
-                        8 (800) 555 35 35
+                        href={`tel: ${process.env.NEXT_PUBLIC_MAIN_TEL}`}>
+                        {process.env.NEXT_PUBLIC_MAIN_TEL}
                     </Link>
                     <CallBackButton text='Заказать звонок' />
                 </div>

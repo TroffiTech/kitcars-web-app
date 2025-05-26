@@ -1,4 +1,9 @@
+"use client";
+
+import { FormEvent, useContext, useRef, useState } from "react";
 import styles from "./FormRegisterChanges.module.scss";
+import isTelStringValid from "@/lib/validators/validateTelInput";
+import { SmallPopupContext } from "@/hooks/smallPopupsProvider";
 
 export default function FormRegisterChanges() {
     return (
@@ -15,7 +20,7 @@ export default function FormRegisterChanges() {
             </div>
             <div className={styles.form_inputGroup}>
                 <label htmlFor='tel'>Контактный телефон*</label>
-                <input className='input' id='tel' name='tel' placeholder='89005553321' type='tel' />
+                <input className='input' id='tel' name='tel' placeholder='88003332211' type='tel' />
             </div>
             <p>Отправляя форму, вы соглашаетесь с политикой обработки персональных данных</p>
 
@@ -25,6 +30,54 @@ export default function FormRegisterChanges() {
 }
 
 export function FormRegisterChangesVariant() {
+    const inputTelRef = useRef<HTMLInputElement>(null);
+    const [isTelValid, setIsTelValid] = useState(true);
+
+    const setIsPopupVisible = useContext(SmallPopupContext).setIsVisible;
+    const setPopupText = useContext(SmallPopupContext).setPopupText;
+
+    function showPopup() {
+        if (!setIsPopupVisible || !setPopupText) return;
+        setPopupText("Ваш запрос успешно отправлен!");
+        setIsPopupVisible(true);
+        return;
+    }
+
+    function clearInputs() {
+        if (!inputTelRef.current) return;
+        inputTelRef.current.value = "";
+    }
+
+    function submit(e: FormEvent) {
+        e.preventDefault();
+        if (!inputTelRef) return;
+
+        const telValue = inputTelRef.current?.value;
+
+        let isFromValid = 1;
+
+        // validate tel
+        if (!isTelStringValid(telValue)) {
+            isFromValid *= 0;
+            setTimeout(() => {
+                setIsTelValid(true);
+            }, 3000);
+            setIsTelValid(false);
+        }
+
+        if (!isFromValid) {
+            return;
+        } else {
+            fetch("/api/formSubmissions/registrationSubmission", {
+                method: "post",
+                body: JSON.stringify({
+                    telValue,
+                }),
+            });
+            showPopup();
+            clearInputs();
+        }
+    }
     return (
         <form className={styles.formVariant}>
             <div className={styles.formVariant_ctaContainer}>
@@ -32,10 +85,31 @@ export function FormRegisterChangesVariant() {
                 <p>Специалисты лаборатории проконсультируют Вас по любым вопросам</p>
                 <div className={styles.formVariant_ctaContainer_inputGoup}>
                     <div>
-                        <label htmlFor='tel'>Ваш телефонный номер</label>
-                        <input type='tel' id='tel' placeholder='88003332211' pattern='[0-9]{11}' />
+                        <label
+                            style={{
+                                color: `${
+                                    !isTelValid ? "var(--red-color)" : "var(--foreground-color)"
+                                }`,
+                            }}
+                            htmlFor='tel'>
+                            {!isTelValid ? "Введите номер корректно" : "Введите контактный номер"}
+                        </label>
+                        <input
+                            style={{
+                                borderColor: `${
+                                    !isTelValid
+                                        ? "var(--red-color)"
+                                        : "var(--transparent-dark-color)"
+                                }`,
+                            }}
+                            ref={inputTelRef}
+                            type='tel'
+                            id='tel'
+                            placeholder='88003332211'
+                            pattern='[0-9]{11}'
+                        />
                     </div>
-                    <button>Отправить</button>
+                    <button onClick={submit}>Отправить</button>
                 </div>
                 <p>Отправляя форму, вы соглашаетесь с политикой обработки персональных данных</p>
             </div>

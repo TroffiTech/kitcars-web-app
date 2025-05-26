@@ -75,7 +75,6 @@ export default function CheckoutForm() {
         if (!isFromValid) {
             return;
         } else {
-            console.log("sending form");
             showPopup();
             clearInputs();
             fetch("/api/formSubmissions/orderSubmission", {
