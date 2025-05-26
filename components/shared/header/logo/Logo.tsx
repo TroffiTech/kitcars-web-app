@@ -8,3 +8,15 @@ export default function Logo() {
         </Link>
     );
 }
+
+export function LogoVariant() {
+    return (
+        <Link
+            style={{
+                background: "transparent",
+            }}
+            href='/'>
+            <Image src={"/logoWhite.png"} alt='Troffi.Ru Logo' width={200} height={60} />
+        </Link>
+    );
+}

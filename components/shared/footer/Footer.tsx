@@ -1,7 +1,7 @@
 import { contactsData } from "@/components/contactsData";
 import CallBackButton from "../ctaButtons/ctaButtons";
 import { infoLinks } from "../header/categoriesList";
-import Logo from "../header/logo/Logo";
+import { LogoVariant } from "../header/logo/Logo";
 import { mailSVG, personSVG, phoneSVG } from "../icons/icons";
 
 import styles from "./Footer.module.scss";
@@ -13,7 +13,7 @@ export default function Footer() {
             <div className={styles.footer_innerTop}>
                 {/* 1 */}
                 <div className={styles.footer_sectionOne}>
-                    <Logo />
+                    <LogoVariant />
                     <p>
                         Мы создали этот интернет-магазин, чтобы вы могли найти любой интересующий
                         Вас товар для «{process.env.NEXT_PUBLIC_SITE_NAME}» здесь, по дружественной
