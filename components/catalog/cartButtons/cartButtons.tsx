@@ -17,6 +17,7 @@ export function AddToCartButton({ productData }: { productData: Product }) {
         const selectedProduct = cart.filter((item) => item.sku === productData.sku)[0];
         if (!selectedProduct) return;
         else setIsProductInCart(true);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [cart]);
 
     const setIsPopupVisible = useContext(SmallPopupContext).setIsVisible;
@@ -25,11 +26,11 @@ export function AddToCartButton({ productData }: { productData: Product }) {
     function handleClick() {
         if (!setIsPopupVisible || !setPopupText) return;
 
-        setIsPopupVisible(true);
         setPopupText(`
             Товар добалвен в корзину!
             ${productData.name}
             `);
+        setIsPopupVisible(true);
         dispatch(addToCart({ ...productData, quantity: 1 }));
     }
 

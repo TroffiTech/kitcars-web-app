@@ -13,7 +13,7 @@ export default function DynamicPopup() {
         if (isVisible)
             setTimeout(() => {
                 setIsVisible(false);
-            }, 3000);
+            }, 5000);
     });
 
     if (!isVisible) return;
