@@ -1,6 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import styles from "./callBackPopup.module.scss";
 import { xMarkSVG } from "../../icons/icons";
+import isNameStringValid from "@/lib/validators/validateNameInput";
+import isTelStringValid from "@/lib/validators/validateTelInput";
 
 export default function CallBackPopup({ closePopup }: { closePopup: () => void }) {
     const inputNameRef = useRef<HTMLInputElement>(null);
@@ -14,15 +16,40 @@ export default function CallBackPopup({ closePopup }: { closePopup: () => void }
         return () => document.body.classList.remove("blockScroll");
     });
 
-    function submit() {
+    function submit(e: FormEvent) {
+        e.preventDefault();
         if (!inputNameRef || !inputTelRef) return;
 
         const telValue = inputTelRef.current?.value;
         const nameValue = inputNameRef.current?.value;
 
-        if (!telValue) setIsTelValid(false);
-        else if (!nameValue) setIsNameValid(false);
-        else closePopup();
+        let isFromValid = 1;
+
+        // validate name
+        if (!isNameStringValid(nameValue)) {
+            isFromValid *= 0;
+            setTimeout(() => {
+                setIsNameValid(true);
+            }, 3000);
+            setIsNameValid(false);
+        }
+
+        // validate tel
+        if (!isTelStringValid(telValue)) {
+            isFromValid *= 0;
+            setTimeout(() => {
+                setIsTelValid(true);
+            }, 3000);
+            setIsTelValid(false);
+        }
+
+        if (!isFromValid) {
+            console.log("form NOT VALID");
+            return;
+        } else {
+            // TODO request
+            closePopup();
+        }
     }
 
     return (

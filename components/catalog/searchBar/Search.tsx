@@ -12,14 +12,14 @@ export default function Search() {
 
     function handleClick() {
         const searhString: string | undefined = inputRef.current?.value;
-        if (!searhString) return;
+        if (!searhString || searhString.includes("%")) return;
         navigator.push(`/catalog/search/${searhString}`);
     }
 
     function handleEnterKeyDown(e: KeyboardEvent) {
         if (e.code !== "Enter") return;
         const searhString: string | undefined = inputRef.current?.value;
-        if (!searhString) return;
+        if (!searhString || searhString.includes("%")) return;
         navigator.push(`/catalog/search/${searhString}`);
     }
 
@@ -35,6 +35,7 @@ export default function Search() {
                 className={styles.searchInput}
                 type='text'
                 placeholder='Поиск по каталогу'
+                spellCheck={false}
             />
             <div onClick={handleClick} className={styles.svg_container}>
                 {glassSVG}

@@ -33,7 +33,7 @@ export function FormRegisterChangesVariant() {
                 <div className={styles.formVariant_ctaContainer_inputGoup}>
                     <div>
                         <label htmlFor='tel'>Ваш телефонный номер</label>
-                        <input type='tel' id='tel' placeholder='88005553535' />
+                        <input type='tel' id='tel' placeholder='88003332211' pattern='[0-9]{11}' />
                     </div>
                     <button>Отправить</button>
                 </div>

@@ -1,5 +1,7 @@
-import { useRef, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 import styles from "./checkoutForm.module.scss";
+import isTelStringValid from "@/lib/validators/validateTelInput";
+import isNameStringValid from "@/lib/validators/validateNameInput";
 
 export default function CheckoutForm() {
     const inputNameRef = useRef<HTMLInputElement>(null);
@@ -8,14 +10,39 @@ export default function CheckoutForm() {
     const [isTelValid, setIsTelValid] = useState(true);
     const [isNameValid, setIsNameValid] = useState(true);
 
-    function submit() {
+    function submit(e: FormEvent) {
+        e.preventDefault();
         if (!inputNameRef || !inputTelRef) return;
 
         const telValue = inputTelRef.current?.value;
         const nameValue = inputNameRef.current?.value;
 
-        if (!nameValue) setIsTelValid(false);
-        else if (!telValue) setIsNameValid(false);
+        let isFromValid = 1;
+
+        // validate name
+        if (!isNameStringValid(nameValue)) {
+            isFromValid *= 0;
+            setTimeout(() => {
+                setIsNameValid(true);
+            }, 3000);
+            setIsNameValid(false);
+        }
+
+        // validate tel
+        if (!isTelStringValid(telValue)) {
+            isFromValid *= 0;
+            setTimeout(() => {
+                setIsTelValid(true);
+            }, 3000);
+            setIsTelValid(false);
+        }
+
+        if (!isFromValid) {
+            console.log("form NOT VALID");
+            return;
+        } else {
+            // TODO request
+        }
     }
 
     return (
@@ -28,7 +55,7 @@ export default function CheckoutForm() {
                     style={{
                         color: `${!isNameValid ? "var(--red-color)" : "var(--foreground-color)"}`,
                     }}>
-                    {!isNameValid ? "Корректно заполните поле" : "Введите Ваше имя"}
+                    {!isNameValid ? "Используйте кириллицу" : "Введите Ваше имя"}
                 </label>
                 <input
                     style={{
@@ -40,6 +67,9 @@ export default function CheckoutForm() {
                     placeholder='Иван Петров'
                     name='name'
                     type='text'
+                    spellCheck='false'
+                    minLength={3}
+                    maxLength={50}
                     required
                 />
             </div>
@@ -51,7 +81,7 @@ export default function CheckoutForm() {
                     style={{
                         color: `${!isTelValid ? "var(--red-color)" : "var(--foreground-color)"}`,
                     }}>
-                    {!isTelValid ? "Корректно заполните поле" : "Введите контактный номер"}
+                    {!isTelValid ? "Введите номер корректно" : "Введите контактный номер"}
                 </label>
                 <input
                     style={{
@@ -60,21 +90,23 @@ export default function CheckoutForm() {
                         }`,
                     }}
                     ref={inputTelRef}
-                    placeholder='88003332211'
                     name='tel'
                     type='tel'
+                    placeholder='88003332211'
+                    minLength={11}
+                    maxLength={11}
                     required
                 />
             </div>
 
             <div className={styles.inputGroup}>
                 <label htmlFor='address'>Введите адрес доставки (не обязательно)</label>
-                <input name='address' type='text' />
+                <input name='address' type='text' pattern='\D [%]' />
             </div>
 
             <div className={styles.inputGroup}>
                 <label htmlFor='additional'>Дополнительная информация (не обязательно)</label>
-                <textarea className={styles.additionalInput} name='aditional' />
+                <textarea className={styles.additionalInput} name='aditional' maxLength={500} />
             </div>
 
             <div className={styles.buttonBackground}>
