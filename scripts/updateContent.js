@@ -6,12 +6,12 @@ import writeAllProductsFile from "./utils/writeAllProductsFile.js";
 import writeCategoriesThreeFile from "./utils/writeCategoriesThreeFile.js";
 import updateSitemap from "./utils/updateSitemap.js";
 import writeSitemapFile from "./utils/writeSitemapFile.js";
+import writeRobotsTxtFile from "./utils/writeRobotsTxtFile.js";
 
 dotenv.config();
 
 export async function update() {
     console.log("Cron Task executed at:", new Date().toISOString());
-    console.log("update .json content");
     try {
         const loadedCategories = await loadCategories();
         const categoriesThree = generateCategoriesThree(loadedCategories);
@@ -19,12 +19,11 @@ export async function update() {
 
         const allProductsLoaded = await loadAllProducts();
         writeAllProductsFile(allProductsLoaded);
-        console.log("content loaded sucessfully");
 
-        console.log("updating sitemap");
         const xmlContent = await updateSitemap(allProductsLoaded);
         writeSitemapFile(xmlContent);
-        console.log("sitemap writed");
+
+        writeRobotsTxtFile();
     } catch (e) {
         console.error(e);
     }
