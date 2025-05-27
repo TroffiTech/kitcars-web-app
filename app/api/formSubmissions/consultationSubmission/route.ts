@@ -4,7 +4,7 @@ import generateBitrixLeadFields from "../utils/generateBitrixLeadFields";
 export async function POST(req: Request) {
     const { nameValue, telValue } = await req.json();
 
-    const leadFields = generateBitrixLeadFields(nameValue, telValue);
+    const leadFields = generateBitrixLeadFields(telValue, nameValue);
     postNewLead(JSON.stringify(leadFields));
 
     return new Response(null, {

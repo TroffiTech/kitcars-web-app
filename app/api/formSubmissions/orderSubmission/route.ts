@@ -9,8 +9,8 @@ export async function POST(req: Request) {
 
     const { bitrixProductRows, totalPrice } = generateBitrixProductsFields(cart);
     const leadFields = generateBitrixLeadFields(
-        nameValue,
         telValue,
+        nameValue,
         additionalInfoValue,
         deliveryAddressValue,
         totalPrice
