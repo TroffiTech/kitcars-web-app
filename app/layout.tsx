@@ -1,6 +1,6 @@
 import { Analytics } from "@vercel/analytics/next";
 import { Montserrat } from "next/font/google";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 const montserratSans = Montserrat({
@@ -14,6 +14,11 @@ export const metadata: Metadata = {
     description: `Запчасти для тюнинга ${process.env.NEXT_PUBLIC_SITE_NAME}`,
 };
 
+export const viewport: Viewport = {
+    initialScale: 0.9,
+    width: "device-width",
+};
+
 export default function RootLayout({
     children,
 }: Readonly<{
@@ -21,6 +26,13 @@ export default function RootLayout({
 }>) {
     return (
         <html lang='ru'>
+            <head>
+                <meta name='robots' content='all' />
+                <meta
+                    name='keywords'
+                    content={`пикапы, внедорожники, тюнинг, детали, запчасти, ${process.env.NEXT_PUBLIC_SITE_NAME}`}
+                />
+            </head>
             <body className={`${montserratSans.className}`}>
                 {children}
                 <Analytics />
