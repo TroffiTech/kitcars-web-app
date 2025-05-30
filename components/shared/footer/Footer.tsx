@@ -36,12 +36,7 @@ export default function Footer() {
                     <Link href='https://yandex.ru/maps/44/izhevsk/house/spartakovskiy_pereulok_13/YUoYdAFiTEMPQFtsfXR0cHRrbQ==/?ll=53.262569%2C56.851889&z=17.09'>
                         {process.env.NEXT_PUBLIC_ADDRESS}
                     </Link>
-                    <Image
-                        height={300}
-                        width={300}
-                        alt='Мы на картах'
-                        src={`/maps/${process.env.NEXT_PUBLIC_CITY_LOCATION}.jpg`}
-                    />
+                    <Image height={300} width={300} alt='Мы на картах' src={`/maps/Москва.jpg`} />
                 </div>
 
                 {/* 4 */}
