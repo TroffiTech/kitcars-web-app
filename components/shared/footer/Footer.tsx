@@ -3,6 +3,7 @@ import CallBackButton from "../ctaButtons/ctaButtons";
 import { infoLinks } from "../header/categoriesList";
 import { LogoVariant } from "../header/logo/Logo";
 import { mailSVG, personSVG, phoneSVG } from "../icons/icons";
+import Image from "next/image";
 
 import styles from "./Footer.module.scss";
 import Link from "next/link";
@@ -35,11 +36,11 @@ export default function Footer() {
                     <Link href='https://yandex.ru/maps/44/izhevsk/house/spartakovskiy_pereulok_13/YUoYdAFiTEMPQFtsfXR0cHRrbQ==/?ll=53.262569%2C56.851889&z=17.09'>
                         {process.env.NEXT_PUBLIC_ADDRESS}
                     </Link>
-                    <img
+                    <Image
                         height={300}
                         width={300}
                         alt='Мы на картах'
-                        src='http://static-maps.yandex.ru/1.x/?pt=53.262568,56.851889,pm2rdm&amp;theme=dark&amp;ll=53.242568,56.851889&amp;spn=0.03,0.03&amp;size=300,300&amp;l=map&amp;key=AKgqHEkBAAAA-WzMYwIAeAeamm8ETZZZpdfp2R07eIuGyX4AAAAAAAAAAACjUCDoHIHZJ2pcl5mSL1zWVp2Myw=='
+                        src={`/maps/${process.env.NEXT_PUBLIC_CITY_LOCATION}.jpg`}
                     />
                 </div>
 
