@@ -66,8 +66,6 @@
 
     z-index: 999;
 
-    border: 1px solid red;
-
     form{
         @include flex-col(1rem,start ,center );
         animation: appearance 0.4s ease;
