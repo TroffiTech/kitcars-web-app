@@ -8,18 +8,20 @@ export default function generateCategoriesThree(allLoadedCategoriesData) {
             slug: category.slug,
             id: category.id,
             parent: category.parent,
+            count: category.count,
         });
     });
 
     const categoriesThree = [];
 
     categoriesList.map((category) => {
-        if (category.parent === 0) categoriesThree.push({ ...category, childrens: [] });
+        if (category.parent === 0 && category.count !== 0)
+            categoriesThree.push({ ...category, childrens: [] });
     });
 
     categoriesList.map((categoryInList) => {
         categoriesThree.map((categoryInThree, index) => {
-            if (categoryInThree.id === categoryInList.parent)
+            if (categoryInThree.id === categoryInList.parent && categoryInList.count !== 0)
                 categoriesThree[index].childrens?.push(categoryInList);
         });
     });

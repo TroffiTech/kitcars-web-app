@@ -1,6 +1,6 @@
-import Link from "next/link";
 import useSWR from "swr";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 import styles from "./subCategorySelector.module.scss";
 import { Category } from "@/types/productsType";
@@ -16,28 +16,46 @@ export default function SubCategorySelector({ categorySlug }: { categorySlug: st
 
     const { data } = useSWR(`/api/store/categories/getCategory?category=${categorySlug}`, fetcher);
 
-    function hide(e: { type: string; code?: string }) {
-        if (e.type === "click" || e.code === "Escape") setIsExpanded(false);
+    function controlBodyClick(e: MouseEvent) {
+        if ((e.target as HTMLElement)?.id === "selector") return;
+        setIsExpanded(false);
+    }
+
+    function controlEscapePress(e: KeyboardEvent) {
+        if (e.code !== "Escape") return;
+        setIsExpanded(false);
+    }
+
+    function handleClick() {
+        switch (isExpanded) {
+            case true:
+                setIsExpanded(false);
+                return;
+            case false:
+                setIsExpanded(true);
+                return;
+        }
     }
 
     useEffect(() => {
-        document.body.addEventListener("click", hide);
-        return () => document.body.removeEventListener("click", hide);
+        document.body.addEventListener("click", controlBodyClick);
+        return () => document.body.removeEventListener("click", controlBodyClick);
     });
 
     useEffect(() => {
-        document.body.addEventListener("keydown", hide);
-        return () => document.body.removeEventListener("keydown", hide);
+        document.body.addEventListener("keydown", controlEscapePress);
+        return () => document.body.removeEventListener("keydown", controlEscapePress);
     });
 
     return (
         <div
-            onClick={() => setIsExpanded((prev) => !prev)}
+            id='selector'
+            onClick={handleClick}
             style={{
                 boxShadow: isExpanded ? "var(--box-shadow-variant)" : "var(--box-shadow)",
             }}
             className={styles.selector}>
-            {data && <p>{data.name}</p>}
+            {data && <p>{data[1]}</p>}
             <div
                 style={{
                     transform: isExpanded ? "rotate(180deg)" : undefined,
@@ -54,7 +72,7 @@ export default function SubCategorySelector({ categorySlug }: { categorySlug: st
                 }}
                 className={styles.expandedList}>
                 {data &&
-                    data.childrens.map((childrenCategory: Category, index: number) => (
+                    data[0].childrens.map((childrenCategory: Category, index: number) => (
                         <li key={index}>
                             <Link
                                 className={styles.link}

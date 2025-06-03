@@ -2,15 +2,16 @@
 
 import { useState } from "react";
 import styles from "./Tabs.module.scss";
-import { HitsFeed, HeroSaleFeed } from "@/components/catalog/feeds/productsFeeds";
+import { HitsFeed } from "@/components/catalog/feeds/productsFeeds";
 
 export default function Tabs() {
-    const [tab, setTab] = useState<"Выгодно" | "Новинки">("Выгодно");
+    const [tab, setTab] = useState<"Выгодно" | "Новинки">("Новинки");
 
     return (
         <div className={styles.tabs}>
             <div className={styles.tabs_head}>
-                <div
+                {/* Managers are not ready to sales yet :((  */}
+                {/* <div
                     onClick={() => setTab("Выгодно")}
                     className={
                         tab === "Выгодно"
@@ -18,7 +19,7 @@ export default function Tabs() {
                             : styles.tabs_head_selector
                     }>
                     Скидки
-                </div>
+                </div> */}
                 <div
                     onClick={() => setTab("Новинки")}
                     className={
@@ -30,7 +31,7 @@ export default function Tabs() {
                 </div>
             </div>
             <div className={styles.tabs_feed}>
-                {tab === "Выгодно" && <HeroSaleFeed />}
+                {/* {tab === "Выгодно" && <HeroSaleFeed />} */}
                 {tab === "Новинки" && <HitsFeed />}
             </div>
         </div>

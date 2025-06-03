@@ -27,8 +27,8 @@
 
     .expandedList{
         position: absolute;
-        padding: 10px 5px;
-        min-height: 100px;
+        // padding: 10px 5px;
+        // min-height: 100px;
         width: 100%;
         top: 120%;
         left: 0;
@@ -43,8 +43,18 @@
         transition: all 0.3s ease;
         z-index: 1;
 
-        li, .link, p{
+        li, p{
             background: transparent;
+        }
+
+        li {
+            padding-left: 10px;
+            &:first-child{
+                padding-top: 10px;
+            }
+            &:last-child{
+                 padding-bottom: 10px;
+            }
         }
     }
 }

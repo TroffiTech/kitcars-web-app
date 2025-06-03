@@ -7,8 +7,11 @@ import SideSlideWidget from "@/components/shared/sideSlideWidget/sideSlideWidget
 import ModalDescriptionProvider from "@/hooks/modalDescriptionProvider";
 import ReduxStoreProvider from "@/hooks/reduxStoreProvider";
 import SmallPopupProvider from "@/hooks/smallPopupsProvider";
+import { redirect } from "next/navigation";
 
 export default async function Sales() {
+    // Managers are not ready to use sales yet :((
+    redirect("/not-found");
     return (
         <main>
             <section className='flex-box__column'>

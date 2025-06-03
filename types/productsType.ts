@@ -31,6 +31,6 @@ export interface ProductInCart extends Product {
     quantity: number;
 }
 
-export type Category = { name: string; slug: string; id: number; parent: number };
+export type Category = { name: string; slug: string; id: number; parent: number; count: number };
 
 export type CategoriesThree = Array<Category & { childrens?: Category[] }>;

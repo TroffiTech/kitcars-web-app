@@ -7,17 +7,23 @@ export async function GET(req: Request) {
     const categoriesThree = await readCategoriesThreeFile();
 
     let objToReturn;
+    let currentCategoryName;
 
     categoriesThree.map((parentCategory) => {
-        if (parentCategory.slug === category) objToReturn = { ...parentCategory };
-        else {
+        if (parentCategory.slug === category) {
+            currentCategoryName = parentCategory.name;
+            objToReturn = { ...parentCategory };
+        } else {
             parentCategory.childrens?.map((childrenCategory: Category) => {
-                if (childrenCategory.slug === category) objToReturn = { ...parentCategory };
+                if (childrenCategory.slug === category) {
+                    currentCategoryName = childrenCategory.name;
+                    objToReturn = { ...parentCategory };
+                }
             });
         }
     });
 
-    return new Response(JSON.stringify(objToReturn), {
+    return new Response(JSON.stringify([objToReturn, currentCategoryName]), {
         headers: {
             "content-type": "application/json",
         },

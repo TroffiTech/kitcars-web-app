@@ -17,6 +17,7 @@ async function fetcher(url: string) {
 }
 
 export default function Header() {
+    "use client";
     const [isMenuVisible, setIsMenuVisible] = useState(false);
     const [isMobile, setIsMobile] = useState<boolean>(false);
 
