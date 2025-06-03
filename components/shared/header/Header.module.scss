@@ -142,8 +142,8 @@
 
             a {
                 padding: 10px 2px;
-                color: var(--background-color) !important;
-                background-color: var(--foreground-color) !important;
+                background-color: var(--foreground-color);
+                color: var(--background-color);
             }
         }
 

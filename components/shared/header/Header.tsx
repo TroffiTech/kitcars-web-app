@@ -10,6 +10,7 @@ import { infoLinks } from "./categoriesList";
 import CallBackButton from "../ctaButtons/ctaButtons";
 import { Category } from "@/types/productsType";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 async function fetcher(url: string) {
     const res = await fetch(url);
@@ -17,7 +18,6 @@ async function fetcher(url: string) {
 }
 
 export default function Header() {
-    "use client";
     const [isMenuVisible, setIsMenuVisible] = useState(false);
     const [isMobile, setIsMobile] = useState<boolean>(false);
 
@@ -46,6 +46,7 @@ export default function Header() {
 }
 
 function DesctopHeader() {
+    const pathname = usePathname();
     const { data } = useSWR("/api/store/categories/getCategoriesFile", fetcher);
 
     return (
@@ -73,7 +74,15 @@ function DesctopHeader() {
                     {data &&
                         data.map((category: Category, index: number) => (
                             <li key={index}>
-                                <Link href={`/catalog/category/${category.slug}`}>
+                                <Link
+                                    style={{
+                                        color: `${
+                                            pathname.includes(category.slug)
+                                                ? "var(--orange-color)"
+                                                : "var(--background-color)"
+                                        }`,
+                                    }}
+                                    href={`/catalog/category/${category.slug}`}>
                                     {category.name}
                                 </Link>
                             </li>
