@@ -12,6 +12,8 @@ export default function ModalDescription() {
     const setIsVisible = useContext(ModalDescriptionContext)?.setIsVisible;
     const productData = useContext(ModalDescriptionContext)?.productData;
 
+    console.log(productData?.images);
+
     function generateDescription(hmtlText: string) {
         const description = { __html: hmtlText };
         return <div dangerouslySetInnerHTML={description} />;

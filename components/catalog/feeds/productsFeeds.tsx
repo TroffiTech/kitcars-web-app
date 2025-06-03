@@ -19,6 +19,7 @@ import SortOrderSelector from "./sortSelector/sortSelector";
 import { Product } from "@/types/productsType";
 import Search from "../searchBar/Search";
 import { LinkButton } from "@/components/shared/ctaButtons/ctaButtons";
+import Filters from "./filters/filters";
 
 async function fetcher(url: string) {
     const res = await fetch(url);
@@ -154,6 +155,9 @@ export function DefaultFeed() {
                 />
             </div>
             <div className={styles.defaultFeed}>
+                <div className={styles.filters}>
+                    <Filters />
+                </div>
                 {/* TODO filters */}
                 {/* <div className={styles.filters}>filters</div> */}
                 {isLoading &&
