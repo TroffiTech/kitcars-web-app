@@ -17,24 +17,17 @@ export default function SubCategorySelector({ categorySlug }: { categorySlug: st
     const { data } = useSWR(`/api/store/categories/getCategory?category=${categorySlug}`, fetcher);
 
     function controlBodyClick(e: MouseEvent) {
-        if ((e.target as HTMLElement)?.id === "selector") return;
-        setIsExpanded(false);
+        const button = (e.target as HTMLElement).closest("#subcategory_selector");
+        if (button) {
+            setIsExpanded((prev) => !prev);
+        } else {
+            setIsExpanded(false);
+        }
     }
 
     function controlEscapePress(e: KeyboardEvent) {
         if (e.code !== "Escape") return;
         setIsExpanded(false);
-    }
-
-    function handleClick() {
-        switch (isExpanded) {
-            case true:
-                setIsExpanded(false);
-                return;
-            case false:
-                setIsExpanded(true);
-                return;
-        }
     }
 
     useEffect(() => {
@@ -49,8 +42,7 @@ export default function SubCategorySelector({ categorySlug }: { categorySlug: st
 
     return (
         <div
-            id='selector'
-            onClick={handleClick}
+            id='subcategory_selector'
             style={{
                 boxShadow: isExpanded ? "var(--box-shadow-variant)" : "var(--box-shadow)",
             }}

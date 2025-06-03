@@ -49,6 +49,18 @@ function DesctopHeader() {
     const pathname = usePathname();
     const { data } = useSWR("/api/store/categories/getCategoriesFile", fetcher);
 
+    function generateLinkColor(category: Category) {
+        const slugFromPathname = pathname.split("/")[3];
+
+        if (category.slug.includes(slugFromPathname)) return "var(--orange-color)";
+
+        if (category.childrens)
+            for (const childrenCategory of category.childrens) {
+                if (childrenCategory.slug === slugFromPathname) return "var(--orange-color)";
+            }
+        return "var(--background-color)";
+    }
+
     return (
         <>
             <nav className={styles.header_topInner}>
@@ -76,11 +88,7 @@ function DesctopHeader() {
                             <li key={index}>
                                 <Link
                                     style={{
-                                        color: `${
-                                            pathname.includes(category.slug)
-                                                ? "var(--orange-color)"
-                                                : "var(--background-color)"
-                                        }`,
+                                        color: generateLinkColor(category),
                                     }}
                                     href={`/catalog/category/${category.slug}`}>
                                     {category.name}

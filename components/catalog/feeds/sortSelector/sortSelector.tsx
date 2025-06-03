@@ -13,18 +13,28 @@ export default function SortOrderSelector({
 }) {
     const [isExpanded, setIsExpanded] = useState(false);
 
-    function hide(e: { type: string; code?: string }) {
-        if (e.type === "click" || e.code === "Escape") setIsExpanded(false);
+    function controlEscapePress(e: KeyboardEvent) {
+        if (e.code !== "Escape") return;
+        setIsExpanded(false);
+    }
+
+    function controlBodyClick(e: MouseEvent) {
+        const button = (e.target as HTMLElement).closest("#sort_selector");
+        if (button) {
+            setIsExpanded((prev) => !prev);
+        } else {
+            setIsExpanded(false);
+        }
     }
 
     useEffect(() => {
-        document.body.addEventListener("click", hide);
-        return () => document.body.removeEventListener("click", hide);
+        document.body.addEventListener("click", controlBodyClick);
+        return () => document.body.removeEventListener("click", controlBodyClick);
     });
 
     useEffect(() => {
-        document.body.addEventListener("keydown", hide);
-        return () => document.body.removeEventListener("keydown", hide);
+        document.body.addEventListener("keydown", controlEscapePress);
+        return () => document.body.removeEventListener("keydown", controlEscapePress);
     });
 
     function handleSelect() {
@@ -36,7 +46,7 @@ export default function SortOrderSelector({
 
     return (
         <div
-            onClick={() => setIsExpanded((prev) => !prev)}
+            id='sort_selector'
             style={{
                 boxShadow: isExpanded ? "var(--box-shadow-variant)" : "var(--box-shadow)",
             }}
