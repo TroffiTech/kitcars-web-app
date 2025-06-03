@@ -34,7 +34,7 @@
 
 @keyframes scrolling {
     0% {
-        transform: translateX(0);
+        transform: translateX(0%);
     }
     100% {
         transform: translateX(-100%);
@@ -48,7 +48,7 @@
 
     padding-right: 80px;
     will-change: transform;
-    animation: scrolling 25s linear infinite;
+    animation: scrolling 15s linear infinite;
 
     @media (max-width: 900px){
         gap: 40px;

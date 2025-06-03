@@ -60,11 +60,8 @@
         border-bottom-right-radius: 12px;
 
         overflow: hidden;
-        
-        img{
-            min-height: 100%;
-            width: 100%;   
-        }
+
+        background: #fff;
     }
 
     h3 {
@@ -315,14 +312,11 @@
     .imageContainer {
         @include center-all();
         width: 240px;
+        height: 240px;
+        background: #fff;
         overflow: hidden;
-        img {
-            max-height: 150px;
-            border-radius: 12px;
-        }
+        border-radius: 12px;
     }
-
-
 
     .name {
         padding: 0 5px;

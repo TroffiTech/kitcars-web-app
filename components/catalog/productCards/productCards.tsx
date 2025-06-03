@@ -5,6 +5,7 @@ import { ModalDescriptionContext } from "@/hooks/modalDescriptionProvider";
 import { AddToCartButton, RemoveFromCartButton } from "../cartButtons/cartButtons";
 import Counter from "./counter/counter";
 import { Product, ProductInCart } from "@/types/productsType";
+import Image from "next/image";
 
 export function FeedProductCard({ product }: { product: Product }) {
     const setIsDescriptionVisible = useContext(ModalDescriptionContext).setIsVisible;
@@ -24,7 +25,15 @@ export function FeedProductCard({ product }: { product: Product }) {
         <div className={styles.feedProductCard}>
             {sale_price && <div className={styles.saleBadge}>% Скидки</div>}
             <div className={styles.imageContainer}>
-                <img src={images[0].src} alt={images[0].alt} />
+                <Image
+                    unoptimized
+                    src={images[0].src}
+                    alt={images[0].alt}
+                    width={300}
+                    height={240}
+                    layout='responsive'
+                    loading='lazy'
+                />
             </div>
             <h3>{name}</h3>
             <p className={styles.sku}>Арт. : {sku}</p>
@@ -55,7 +64,15 @@ export function CartProductCard({ product }: { product: ProductInCart }) {
     return (
         <div className={styles.cartCard}>
             <div className={styles.imageContainer}>
-                <img src={product.images[0].src} alt={product.images[0].alt} />
+                <Image
+                    unoptimized
+                    src={product.images[0]?.src}
+                    alt={product.images[0]?.alt}
+                    width={150}
+                    height={150}
+                    layout='responsive'
+                    loading='lazy'
+                />
             </div>
             <h3 className={styles.name}>{product.name}</h3>
             <Counter product={product} />

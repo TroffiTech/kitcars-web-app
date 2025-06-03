@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import styles from "./BrandLine.module.scss";
 
 export default function BrandLine() {
@@ -6,37 +7,37 @@ export default function BrandLine() {
             <div className={styles.brandLine_group}>
                 <img
                     className={styles.brandLine_image}
-                    alt='4Revo Logo'
+                    alt='Partner Logo'
                     src={"/brandLogos/4revo-logo.png"}
                 />
                 <img
                     className={styles.brandLine_image}
-                    alt='4Revo Logo'
+                    alt='Partner Logo'
                     src={"/brandLogos/comeup-logo.png"}
                 />
                 <img
                     className={styles.brandLine_image}
-                    alt='4Revo Logo'
+                    alt='Partner Logo'
                     src={"/brandLogos/ironman-logo.png"}
                 />
                 <img
                     className={styles.brandLine_image}
-                    alt='4Revo Logo'
+                    alt='Partner Logo'
                     src={"/brandLogos/maxboxPro-logo.png"}
                 />
                 <img
                     className={styles.brandLine_image}
-                    alt='4Revo Logo'
+                    alt='Partner Logo'
                     src={"/brandLogos/oj-logo.png"}
                 />
                 <img
                     className={styles.brandLine_image}
-                    alt='4Revo Logo'
+                    alt='Partner Logo'
                     src={"/brandLogos/rif-logo.png"}
                 />
                 <img
                     className={styles.brandLine_image}
-                    alt='4Revo Logo'
+                    alt='Partner Logo'
                     src={"/brandLogos/runvawinch-logo.png"}
                 />
                 <img
@@ -58,42 +59,42 @@ export default function BrandLine() {
                 />
                 <img
                     className={styles.brandLine_image}
-                    alt='4Revo Logo'
+                    alt='Partner Logo'
                     src={"/brandLogos/comeup-logo.png"}
                 />
                 <img
                     className={styles.brandLine_image}
-                    alt='4Revo Logo'
+                    alt='Partner Logo'
                     src={"/brandLogos/ironman-logo.png"}
                 />
                 <img
                     className={styles.brandLine_image}
-                    alt='4Revo Logo'
+                    alt='Partner Logo'
                     src={"/brandLogos/maxboxPro-logo.png"}
                 />
                 <img
                     className={styles.brandLine_image}
-                    alt='4Revo Logo'
+                    alt='Partner Logo'
                     src={"/brandLogos/oj-logo.png"}
                 />
                 <img
                     className={styles.brandLine_image}
-                    alt='4Revo Logo'
+                    alt='Partner Logo'
                     src={"/brandLogos/rif-logo.png"}
                 />
                 <img
                     className={styles.brandLine_image}
-                    alt='4Revo Logo'
+                    alt='Partner Logo'
                     src={"/brandLogos/runvawinch-logo.png"}
                 />
                 <img
                     className={styles.brandLine_image}
-                    alt='4Revo Logo'
+                    alt='Partner Logo'
                     src={"/brandLogos/tmax-logo.png"}
                 />
                 <img
                     className={styles.brandLine_image}
-                    alt='4Revo Logo'
+                    alt='Partner Logo'
                     src={"/brandLogos/warn-logo.png"}
                 />
             </div>
