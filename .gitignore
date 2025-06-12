@@ -21,7 +21,7 @@
 /build
 
 # content
-/app/content/*
+/app/content/*.json
 
 # misc
 .DS_Store
