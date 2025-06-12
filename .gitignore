@@ -20,6 +20,9 @@
 # production
 /build
 
+# content
+/app/content/*
+
 # misc
 .DS_Store
 *.pem
