@@ -21,7 +21,8 @@
 /build
 
 # content
-/app/content/*.json
+/app/content/allProducts.json
+/app/content/categoriesThree.json
 /app/sitemap.xml
 
 # misc
