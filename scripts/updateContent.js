@@ -11,7 +11,6 @@ import writeRobotsTxtFile from "./utils/writeRobotsTxtFile.js";
 dotenv.config();
 
 export async function update() {
-    console.log("Cron Task executed at:", new Date().toISOString());
     try {
         const loadedCategories = await loadCategories();
         const categoriesThree = generateCategoriesThree(loadedCategories);
