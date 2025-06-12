@@ -8,6 +8,14 @@ import Image from "next/image";
 import styles from "./Footer.module.scss";
 import Link from "next/link";
 
+function selectMapImage(){
+    switch (process.env.NEXT_PUBLIC_CITY_LOCATION) {
+        case "Москва": return `/maps/Москва.jpg`
+        case "Воронеж": return `/maps/Воронеж.jpg`
+        default: return ''
+    }
+}
+
 export default function Footer() {
     return (
         <footer className={styles.footer}>
@@ -36,7 +44,7 @@ export default function Footer() {
                     <Link href={process.env.NEXT_PUBLIC_YNDEX_MAP_URL || "/"}>
                         {process.env.NEXT_PUBLIC_ADDRESS}
                     </Link>
-                    <Image height={300} width={300} alt='Мы на картах' src={`/maps/Москва.jpg`} />
+                    <Image height={300} width={300} alt='Мы на картах' src={selectMapImage()} />
                 </div>
 
                 {/* 4 */}

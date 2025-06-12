@@ -76,6 +76,13 @@ export default function HeroGallery() {
     );
 }
 
+function generateWhereCompanyAre(){
+    switch (process.env.NEXT_PUBLIC_CITY_LOCATION) {
+        case "Москва": return <p>Работаем по Москве и московской области</p>
+        case "Воронеж": return <p>Работаем по Воронежу и воронежской области</p>
+    }
+}
+
 function FirstSlide() {
     return (
         <div className={styles.firstSlide}>
@@ -85,7 +92,7 @@ function FirstSlide() {
             <h1>{process.env.NEXT_PUBLIC_SITE_NAME}</h1>
             <div className={styles.textCont}>
                 <p>Интернет-магазин деталей для тюнинга</p>
-                <p>Работаем по Москве и московской области</p>
+                {generateWhereCompanyAre()}
             </div>
             <div className={styles.buttonCont}>
                 <LinkButton text={"Каталог деталей"} link={"/catalog"} />
