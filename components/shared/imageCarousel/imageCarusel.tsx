@@ -36,6 +36,7 @@ export default function ImageCarousel({ images }: { images: ImageType[] }) {
                     }}>
                     {images.map((image, index) => (
                         <div
+                            itemProp="image"
                             key={image.src + index}
                             className={styles.img}
                             style={{

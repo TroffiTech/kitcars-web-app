@@ -12,7 +12,7 @@ const montserratSans = Montserrat({
 
 export const metadata: Metadata = {
     title: `${process.env.NEXT_PUBLIC_SITE_NAME}`,
-    description: `Запчасти для тюнинга ${process.env.NEXT_PUBLIC_SITE_NAME}`,
+    description: `Запчасти для тюнинга ${process.env.NEXT_PUBLIC_SITE_NAME} в Москве по доступным ценам! Звоните ☎️${process.env.NEXT_PUBLIC_MAIN_TEL}`,
 };
 
 export const viewport: Viewport = {
@@ -31,7 +31,7 @@ export default function RootLayout({
                 <meta name='robots' content='all' />
                 <meta
                     name='keywords'
-                    content={`пикапы, внедорожники, тюнинг, детали, запчасти, ${process.env.NEXT_PUBLIC_SITE_NAME}`}
+                    content={`${process.env.NEXT_PUBLIC_SITE_NAME}, тюнинг, троффи, Москва`}
                 />
             </head>
             <body className={`${montserratSans.className}`}>

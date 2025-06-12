@@ -22,7 +22,7 @@ export function FeedProductCard({ product }: { product: Product }) {
     }
 
     return (
-        <div className={styles.feedProductCard}>
+        <div itemScope itemType="http://schema.org/Product" className={styles.feedProductCard}>
             {sale_price && <div className={styles.saleBadge}>% Скидки</div>}
             <div className={styles.imageContainer}>
                 <Image
@@ -33,23 +33,24 @@ export function FeedProductCard({ product }: { product: Product }) {
                     height={240}
                     layout='responsive'
                     loading='lazy'
+                    itemProp="image"
                 />
             </div>
-            <h3>{name}</h3>
+            <h3 itemProp="name">{name}</h3>
             <p className={styles.sku}>Арт. : {sku}</p>
             <p className={styles.brand}>
                 {attributes[0]?.name}: {attributes[0]?.options}
             </p>
-            <div className={styles.priceBlock}>
+            <div itemProp="offers" itemScope itemType="http://schema.org/Offer" className={styles.priceBlock}>
                 {sale_price ? (
                     <>
                         <p className={styles.sale}>{sale_price}</p>
                         <p className={styles.regular}>
-                            <span>{regular_price}</span> руб.
+                            <span itemProp="price">{regular_price}</span> руб.
                         </p>
                     </>
                 ) : (
-                    <p>{regular_price} руб.</p>
+                    <p itemProp="priceCurrency">{regular_price} руб.</p>
                 )}
             </div>
             <div className={styles.buttonsCont}>
