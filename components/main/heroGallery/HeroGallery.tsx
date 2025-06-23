@@ -82,11 +82,11 @@ export default function HeroGallery() {
 function generateWhereCompanyAre() {
 	switch (process.env.NEXT_PUBLIC_CITY_LOCATION) {
 		case "Москва":
-			return <p>Работаем по Москве и московской области</p>;
+			return <p>Работаем по Москве и Московской области</p>;
 		case "Воронеж":
-			return <p>Работаем по Воронежу и воронежской области</p>;
+			return <p>Работаем по Воронежу и Воронежской области</p>;
 		case "Санкт-Петербург":
-			return <p>Работаем по Санкт-Петербургу и ленинградской области</p>;
+			return <p>Работаем по Санкт-Петербургу и Ленинградской области</p>;
 	}
 }
 
