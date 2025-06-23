@@ -3,4 +3,4 @@ Allow: /*
 Allow: /catalog/product/*
 Disallow: /checkout/
 Disallow: /catalog/search/
-Sitemap: https://voronezh.uazpickup.ru/sitemap.xml
+Sitemap: https://voronezh.uazbuh.ru/sitemap.xml
