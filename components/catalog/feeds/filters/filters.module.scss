@@ -1,74 +1,74 @@
-@mixin flex-col($gap, $align, $justify){
-    display: flex;
-    flex-direction: column;
-    align-items: $align;
-    justify-content: $justify;
-    gap: $gap;
+@mixin flex-col($gap, $align, $justify) {
+	display: flex;
+	flex-direction: column;
+	align-items: $align;
+	justify-content: $justify;
+	gap: $gap;
 }
 
-@mixin flex-row($gap, $align, $justify){
-    display: flex;
-    flex-direction: row;
-    align-items: $align;
-    justify-content: $justify;
-    gap: $gap;
+@mixin flex-row($gap, $align, $justify) {
+	display: flex;
+	flex-direction: row;
+	align-items: $align;
+	justify-content: $justify;
+	gap: $gap;
 }
 
-@mixin center-all{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center
+@mixin center-all {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
 }
 
-.filters{
-    @include flex-col(0, start, center);
-    padding-left: 30px;
+.filters {
+	@include flex-col(0, start, center);
+	padding-left: 30px;
 
-    @media (max-width:1040px){
-        display: none;
-        visibility: hidden;
-    }
+	@media (max-width: 1040px) {
+		display: none;
+		visibility: hidden;
+	}
 
-    .parentCategory {
-        width: 100%;
+	.parentCategory {
+		width: 100%;
 
-        .title {
-            @include flex-row(0.5rem, center, space-between);
-            background: var(--foreground-color);
-            border-radius: 8px;
-            box-shadow: var(--box-shadow);
-            padding: 15px 10px;
+		.title {
+			@include flex-row(0.5rem, center, space-between);
+			background: var(--foreground-color);
+			border-radius: 8px;
+			box-shadow: var(--box-shadow);
+			padding: 15px 10px;
 
-            color: var(--background-color);
-            transition: all 0.3s ease;
-            cursor: pointer;
+			color: var(--background-color);
+			transition: all 0.3s ease;
+			cursor: pointer;
 
-            &:hover{
-                box-shadow: var(--box-shadow-variant);
-            }
-        }
-    }
+			&:hover {
+				box-shadow: var(--box-shadow-variant);
+			}
+		}
+	}
 
-   .childrens {
-        @include flex-col(0.5rem, start, center);
-        margin:10px 15px ;
-        max-height: 0;
-        overflow: hidden;
+	.childrens {
+		@include flex-col(0.5rem, start, center);
+		margin: 10px 15px;
+		max-height: 0;
+		overflow: hidden;
 
-        transition: all 0.4s linear;
-   }
+		transition: all 0.4s linear;
+	}
 
-   .link {
-        background: transparent;
-        color: inherit;
-        transition: all 0.2s ease;
+	.link {
+		background: transparent;
+		color: inherit;
+		transition: all 0.2s ease;
 
-        padding-bottom: 3px;
-        border-bottom:1px solid transparent;
+		padding-bottom: 3px;
+		border-bottom: 1px solid transparent;
 
-        &:hover{
-            border-color: inherit;
-        }
-   }
+		&:hover {
+			border-color: inherit;
+		}
+	}
 }
