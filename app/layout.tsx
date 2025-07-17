@@ -36,10 +36,10 @@ export default function RootLayout({
                 />
             </head>
             <body className={`${montserratSans.className}`}>
-                <YandexMetrika />
                 {children}
                 {/* <Analytics />
                 <SpeedInsights /> */}
+                <YandexMetrika />
             </body>
         </html>
     );
