@@ -3,7 +3,7 @@
 import { Montserrat } from "next/font/google";
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import YandexMetrika from "@/components/yandexMetrika/yandexMetrika";
+import YandexMetrikaContainer from "@/components/yandexMetrika/yandexMetrika";
 
 const montserratSans = Montserrat({
     variable: "--font-montserrat-sans",
@@ -39,7 +39,7 @@ export default function RootLayout({
                 {children}
                 {/* <Analytics />
                 <SpeedInsights /> */}
-                <YandexMetrika />
+                <YandexMetrikaContainer enabled={true} />
             </body>
         </html>
     );
