@@ -18,26 +18,30 @@ export default function StaticDescription({ productData }: { productData: Produc
                 <div className={styles.upperInner}>
                     <ImageCarousel images={productData.images} />
                 </div>
-                <div itemScope itemType="http://schema.org/Product" className={styles.lowerInner}>
+                <div itemScope itemType='http://schema.org/Product' className={styles.lowerInner}>
                     <div className={styles.categoriesString}>
                         {productData.categories.map((category) => (
                             <p key={category.id}>&gt;{category.name + " "}</p>
                         ))}
                     </div>
 
-                    <h2 itemProp="name">{productData.name}</h2>
+                    <h2 itemProp='name'>{productData.name}</h2>
                     <p className={styles.sku}>Арт. : {productData.sku}</p>
 
-                    <div itemProp="offers" itemScope itemType="http://schema.org/Offer" className={styles.priceBlock}>
+                    <div
+                        itemProp='offers'
+                        itemScope
+                        itemType='http://schema.org/Offer'
+                        className={styles.priceBlock}>
                         {productData.sale_price ? (
                             <>
                                 <p className={styles.sale}>{productData.sale_price}</p>
                                 <p className={styles.regular}>
-                                    <span itemProp="price">{productData.regular_price}</span> руб.
+                                    <span itemProp='price'>{productData.regular_price}</span> руб.
                                 </p>
                             </>
                         ) : (
-                            <p itemProp="price">{productData.regular_price} руб.</p>
+                            <p itemProp='price'>{productData.regular_price} руб.</p>
                         )}
                     </div>
 
@@ -51,7 +55,7 @@ export default function StaticDescription({ productData }: { productData: Produc
                     </div>
 
                     <h3>О товаре</h3>
-                    <div itemProp="description" className={styles.generatedDescription}>
+                    <div itemProp='description' className={styles.generatedDescription}>
                         {generateDescription(productData.description)}
                     </div>
                 </div>

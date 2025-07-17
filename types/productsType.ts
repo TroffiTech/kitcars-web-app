@@ -25,6 +25,7 @@ export type Product = {
     sku: string;
     status: "draft" | "publish";
     stock_quantity: null | number;
+    slug?: string;
 };
 
 export interface ProductInCart extends Product {
