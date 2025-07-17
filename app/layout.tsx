@@ -1,8 +1,9 @@
-import { Analytics } from "@vercel/analytics/next";
+// import { Analytics } from "@vercel/analytics/next";
+// import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Montserrat } from "next/font/google";
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import { SpeedInsights } from "@vercel/speed-insights/next";
+import YandexMetrika from "@/components/yandexMetrika/yandexMetrika";
 
 const montserratSans = Montserrat({
     variable: "--font-montserrat-sans",
@@ -35,9 +36,10 @@ export default function RootLayout({
                 />
             </head>
             <body className={`${montserratSans.className}`}>
+                <YandexMetrika />
                 {children}
-                <Analytics />
-                <SpeedInsights />
+                {/* <Analytics />
+                <SpeedInsights /> */}
             </body>
         </html>
     );
