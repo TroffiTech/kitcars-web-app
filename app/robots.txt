@@ -3,4 +3,4 @@ Allow: /*
 Allow: /catalog/product/*
 Disallow: /checkout/
 Disallow: /catalog/search/
-Sitemap: https://msk.uazpatr.ru/sitemap.xml
+Sitemap: http://localhost:3000/sitemap.xml

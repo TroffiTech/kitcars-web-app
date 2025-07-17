@@ -66,7 +66,7 @@ ${process.env.NEXT_PUBLIC_DOMEN}/catalog/category/reshyotki-radiatora
     const productsUrls = [];
     allProducts.map((product) => {
         productsUrls.push({
-            loc: `${process.env.NEXT_PUBLIC_DOMEN}/catalog/product/${product.sku}`,
+            loc: `${process.env.NEXT_PUBLIC_DOMEN}/catalog/product/${product.slug}`,
             priority: 0.9,
             lastmod: new Date().toISOString(),
             changefreq: "monthly",
