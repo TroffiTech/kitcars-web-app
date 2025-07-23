@@ -13,7 +13,7 @@ type Props = {
 const YandexMetrikaContainer: React.FC<Props> = ({ enabled }) => {
     const hit = useCallback(
         (url: string) => {
-            if (!enabled) {
+            if (!enabled || typeof window === "undefined") {
                 console.log(`%c[YandexMetrika](HIT)`, `color: orange`, url);
                 return;
             }
@@ -47,7 +47,7 @@ const YandexMetrikaContainer: React.FC<Props> = ({ enabled }) => {
         <YMInitializer
             accounts={[Number(counterID)]}
             options={{
-                defer: true,
+                defer: false,
                 webvisor: true,
                 clickmap: true,
                 trackLinks: true,
