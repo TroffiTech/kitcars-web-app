@@ -5,129 +5,126 @@ import isNameStringValid from "@/lib/validators/validateNameInput";
 import isTelStringValid from "@/lib/validators/validateTelInput";
 
 export default function CallBackPopup({ closePopup }: { closePopup: () => void }) {
-    const inputNameRef = useRef<HTMLInputElement>(null);
-    const inputTelRef = useRef<HTMLInputElement>(null);
+	const inputNameRef = useRef<HTMLInputElement>(null);
+	const inputTelRef = useRef<HTMLInputElement>(null);
 
-    const [isTelValid, setIsTelValid] = useState(true);
-    const [isNameValid, setIsNameValid] = useState(true);
+	const [isTelValid, setIsTelValid] = useState(true);
+	const [isNameValid, setIsNameValid] = useState(true);
 
-    useEffect(() => {
-        document.body.classList.add("blockScroll");
-        return () => document.body.classList.remove("blockScroll");
-    });
+	useEffect(() => {
+		document.body.classList.add("blockScroll");
+		return () => document.body.classList.remove("blockScroll");
+	});
 
-    function clearFields() {
-        if (!inputNameRef.current || !inputTelRef.current) return;
-        inputNameRef.current.value = "";
-        inputTelRef.current.value = "";
-    }
+	function clearFields() {
+		if (!inputNameRef.current || !inputTelRef.current) return;
+		inputNameRef.current.value = "";
+		inputTelRef.current.value = "";
+	}
 
-    function submit(e: FormEvent) {
-        e.preventDefault();
-        const button = e.target as HTMLButtonElement;
+	function submit(e: FormEvent) {
+		e.preventDefault();
+		const button = e.target as HTMLButtonElement;
 
-        if (!inputNameRef || !inputTelRef) return;
+		if (!inputNameRef || !inputTelRef) return;
 
-        const telValue = inputTelRef.current?.value;
-        const nameValue = inputNameRef.current?.value;
+		const telValue = inputTelRef.current?.value;
+		const nameValue = inputNameRef.current?.value;
 
-        let isFromValid = 1;
+		let isFromValid = 1;
 
-        // validate name
-        if (!isNameStringValid(nameValue)) {
-            isFromValid *= 0;
-            setTimeout(() => {
-                setIsNameValid(true);
-            }, 3000);
-            setIsNameValid(false);
-        }
+		// validate name
+		if (!isNameStringValid(nameValue)) {
+			isFromValid *= 0;
+			setTimeout(() => {
+				setIsNameValid(true);
+			}, 3000);
+			setIsNameValid(false);
+		}
 
-        // validate tel
-        if (!isTelStringValid(telValue)) {
-            isFromValid *= 0;
-            setTimeout(() => {
-                setIsTelValid(true);
-            }, 3000);
-            setIsTelValid(false);
-        }
+		// validate tel
+		if (!isTelStringValid(telValue)) {
+			isFromValid *= 0;
+			setTimeout(() => {
+				setIsTelValid(true);
+			}, 3000);
+			setIsTelValid(false);
+		}
 
-        if (!isFromValid) {
-            return;
-        } else {
-            fetch("/api/formSubmissions/consultationSubmission", {
-                method: "post",
-                body: JSON.stringify({
-                    telValue,
-                    nameValue,
-                }),
-            });
-            button.textContent = "Отправлено!";
-            setTimeout(() => {
-                clearFields();
-                button.textContent = "Отправить";
-            }, 2000);
-        }
-    }
+		if (!isFromValid) {
+			return;
+		} else {
+			fetch("/api/formSubmissions/consultationSubmission", {
+				method: "post",
+				body: JSON.stringify({
+					telValue,
+					nameValue,
+				}),
+			});
+			button.textContent = "Отправлено!";
+			setTimeout(() => {
+				clearFields();
+				button.textContent = "Отправить";
+			}, 2000);
+		}
+	}
 
-    return (
-        <div className={styles.callBackPopup}>
-            <form>
-                <button className={styles.closeButton} onClick={closePopup}>
-                    {xMarkSVG}
-                </button>
-                <h3>Перезвоните мне</h3>
-                <p>Оставьте ваш номер и мы вам перезвоним в ближайшее время</p>
+	return (
+		<div className={styles.callBackPopup}>
+			<form>
+				<button className={styles.closeButton} onClick={closePopup}>
+					{xMarkSVG}
+				</button>
+				<h3>Перезвоните мне</h3>
+				<p>Оставьте ваш номер и мы вам перезвоним в ближайшее время</p>
 
-                <label
-                    style={{
-                        color: `${!isNameValid ? "var(--red-color)" : "var(--foreground-color)"}`,
-                    }}
-                    className='callBackForm_nameLabel'
-                    htmlFor='name'>
-                    {!isNameValid ? "Корректно заполните поле" : "Введите имя"}
-                </label>
-                <input
-                    style={{
-                        borderColor: `${
-                            !isNameValid ? "var(--red-color)" : "var(--transparent-dark-color)"
-                        }`,
-                    }}
-                    spellCheck={false}
-                    name='name'
-                    ref={inputNameRef}
-                    type='text'
-                    required
-                />
+				<label
+					style={{
+						color: `${!isNameValid ? "var(--red-color)" : "var(--foreground-color)"}`,
+					}}
+					className="callBackForm_nameLabel"
+					htmlFor="name"
+				>
+					{!isNameValid ? "Корректно заполните поле" : "Введите имя"}
+				</label>
+				<input
+					style={{
+						borderColor: `${!isNameValid ? "var(--red-color)" : "var(--transparent-dark-color)"}`,
+					}}
+					spellCheck={false}
+					name="name"
+					ref={inputNameRef}
+					type="text"
+					required
+				/>
 
-                <label
-                    style={{
-                        color: `${!isTelValid ? "var(--red-color)" : "var(--foreground-color)"}`,
-                    }}
-                    className='callBackForm_telLabel'
-                    htmlFor='tel'>
-                    {!isTelValid ? "Корректно заполните поле" : "Введите номер"}
-                </label>
-                <input
-                    style={{
-                        borderColor: `${
-                            !isTelValid ? "var(--red-color)" : "var(--transparent-dark-color)"
-                        }`,
-                    }}
-                    spellCheck={false}
-                    name='tel'
-                    ref={inputTelRef}
-                    type='tel'
-                    required
-                />
+				<label
+					style={{
+						color: `${!isTelValid ? "var(--red-color)" : "var(--foreground-color)"}`,
+					}}
+					className="callBackForm_telLabel"
+					htmlFor="tel"
+				>
+					{!isTelValid ? "Корректно заполните поле" : "Введите номер"}
+				</label>
+				<input
+					style={{
+						borderColor: `${!isTelValid ? "var(--red-color)" : "var(--transparent-dark-color)"}`,
+					}}
+					spellCheck={false}
+					name="tel"
+					ref={inputTelRef}
+					type="tel"
+					required
+				/>
 
-                <div className={styles.buttonBackground}>
-                    <button onClick={submit}>Отправить</button>
-                </div>
-                <p className={styles.policyWarn}>
-                    Подтверждая отправку формы Вы соглашаетесь с политикой использования
-                    персональных данных
-                </p>
-            </form>
-        </div>
-    );
+				<div className={styles.buttonBackground}>
+					<button onClick={submit}>Отправить</button>
+				</div>
+				<p className={styles.policyWarn}>
+					Подтверждая отправку формы Вы соглашаетесь с политикой использования персональных данных
+				</p>
+			</form>
+		</div>
+	);
 }

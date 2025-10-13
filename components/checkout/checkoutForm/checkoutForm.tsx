@@ -1,175 +1,223 @@
 import { useDispatch, useSelector } from "react-redux";
-import { FormEvent, useContext, useRef, useState } from "react";
 import styles from "./checkoutForm.module.scss";
-import isTelStringValid from "@/lib/validators/validateTelInput";
-import isNameStringValid from "@/lib/validators/validateNameInput";
-import { SmallPopupContext } from "@/hooks/smallPopupsProvider";
-import { resetCart } from "@/store/cart/cartSlice";
 import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { useCallback, useContext, useEffect, useState } from "react";
+
+import { clearFormData, loadFormData, saveFormData } from "./formSaver";
+import isNameStringValid from "@/lib/validators/validateNameInput";
+import isTelStringValid from "@/lib/validators/validateTelInput";
+import { SmallPopupContext } from "@/hooks/smallPopupsProvider";
+import { CheckoutFormData } from "@/types/formTypes";
+import { resetCart } from "@/store/cart/cartSlice";
 import { RootState } from "@/store/store";
+import debounce from "@/lib/debounce";
 
 export default function CheckoutForm() {
-    const dispatch = useDispatch();
-    const cart = useSelector((state: RootState) => state.cart.value);
-    const navigator = useRouter();
+	const dispatch = useDispatch();
+	const cart = useSelector((state: RootState) => state.cart.value);
+	const navigator = useRouter();
+	const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const inputNameRef = useRef<HTMLInputElement>(null);
-    const inputTelRef = useRef<HTMLInputElement>(null);
-    const inputDeliveryAddressRef = useRef<HTMLInputElement>(null);
-    const inputAdditionalInfoRef = useRef<HTMLTextAreaElement>(null);
+	const {
+		register,
+		handleSubmit,
+		formState: { errors, isDirty, isValid },
+		reset,
+		watch,
+	} = useForm<CheckoutFormData>({
+		mode: "onBlur",
+		defaultValues: {
+			name: "",
+			tel: "",
+			address: "",
+			additional: "",
+		},
+	});
 
-    const [isTelValid, setIsTelValid] = useState(true);
-    const [isNameValid, setIsNameValid] = useState(true);
+	const setIsPopupVisible = useContext(SmallPopupContext).setIsVisible;
+	const setPopupText = useContext(SmallPopupContext).setPopupText;
 
-    const setIsPopupVisible = useContext(SmallPopupContext).setIsVisible;
-    const setPopupText = useContext(SmallPopupContext).setPopupText;
+	const debouncedSaveRef = useCallback(
+		debounce((data: CheckoutFormData) => {
+			if (isDirty) saveFormData(data);
+		}, 500),
+		[isDirty]
+	);
 
-    function showPopup() {
-        if (!setIsPopupVisible || !setPopupText) return;
-        setPopupText("Ваш запрос успешно отправлен!");
-        setIsPopupVisible(true);
-        return;
-    }
+	const formData = watch();
+	useEffect(() => {
+		debouncedSaveRef(formData);
+	}, [formData]);
 
-    function clearInputs() {
-        if (!inputNameRef.current || !inputTelRef.current) return;
-        inputNameRef.current.value = "";
-        inputTelRef.current.value = "";
+	useEffect(() => {
+		const savedData = loadFormData();
+		if (savedData) reset(savedData);
+	}, [reset]);
 
-        if (!inputDeliveryAddressRef.current) return;
-        inputDeliveryAddressRef.current.value = "";
+	function showSuccessPopup() {
+		if (!setIsPopupVisible || !setPopupText) return;
+		setPopupText(`Ваш запрос успешно отправлен! 
+      Вы будете перенаправлены на главную страницу`);
+		setIsPopupVisible(true);
+	}
 
-        if (!inputAdditionalInfoRef.current) return;
-        inputAdditionalInfoRef.current.value = "";
-    }
+	function showErrorPopup() {
+		if (!setIsPopupVisible || !setPopupText) return;
+		setPopupText(`Невозможно выполнить запрос.
+       Попробуйте позже`);
+		setIsPopupVisible(true);
+	}
 
-    function submit(e: FormEvent) {
-        e.preventDefault();
-        if (!inputNameRef || !inputTelRef) return;
+	const onSubmit = async (data: CheckoutFormData) => {
+		if (isSubmitting) return;
 
-        const telValue = inputTelRef.current?.value;
-        const nameValue = inputNameRef.current?.value;
-        const deliveryAddressValue = inputDeliveryAddressRef.current?.value;
-        const additionalInfoValue = inputAdditionalInfoRef.current?.value;
+		setIsSubmitting(true);
 
-        let isFromValid = 1;
+		try {
+			const response = await fetch("/api/formSubmissions/orderSubmission", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					telValue: data.tel,
+					nameValue: data.name,
+					additionalInfoValue: data.additional,
+					deliveryAddressValue: data.address,
+					cart,
+				}),
+			});
 
-        // validate name
-        if (!isNameStringValid(nameValue)) {
-            isFromValid *= 0;
-            setTimeout(() => {
-                setIsNameValid(true);
-            }, 3000);
-            setIsNameValid(false);
-        }
+			if (!response.ok) {
+				showErrorPopup();
+				return;
+			}
 
-        // validate tel
-        if (!isTelStringValid(telValue)) {
-            isFromValid *= 0;
-            setTimeout(() => {
-                setIsTelValid(true);
-            }, 3000);
-            setIsTelValid(false);
-        }
+			showSuccessPopup();
+			clearFormData();
+			dispatch(resetCart());
+			reset();
 
-        if (!isFromValid) {
-            return;
-        } else {
-            showPopup();
-            clearInputs();
-            fetch("/api/formSubmissions/orderSubmission", {
-                method: "post",
-                body: JSON.stringify({
-                    telValue,
-                    nameValue,
-                    additionalInfoValue,
-                    deliveryAddressValue,
-                    cart,
-                }),
-            });
-            dispatch(resetCart());
-            setTimeout(() => {
-                navigator.push("/");
-            }, 3000);
-        }
-    }
+			setTimeout(() => {
+				navigator.push("/");
+			}, 2000);
+		} catch (error) {
+			console.error("Ошибка при отправке формы:", error);
+		} finally {
+			setIsSubmitting(false);
+		}
+	};
 
-    return (
-        <form className={styles.checkoutForm}>
-            <h2>Контактная информация</h2>
-            <div className={styles.inputGroup}>
-                <label
-                    htmlFor='name'
-                    className='callBackForm_nameLabel'
-                    style={{
-                        color: `${!isNameValid ? "var(--red-color)" : "var(--foreground-color)"}`,
-                    }}>
-                    {!isNameValid ? "Используйте кириллицу" : "Введите Ваше имя"}
-                </label>
-                <input
-                    style={{
-                        borderColor: `${
-                            !isNameValid ? "var(--red-color)" : "var(--transparent-dark-color)"
-                        }`,
-                    }}
-                    ref={inputNameRef}
-                    placeholder='Иван Петров'
-                    name='name'
-                    type='text'
-                    spellCheck='false'
-                    minLength={3}
-                    maxLength={50}
-                    required
-                />
-            </div>
+	return (
+		<form className={styles.checkoutForm} onSubmit={handleSubmit(onSubmit)}>
+			<h2>Контактная информация</h2>
 
-            <div className={styles.inputGroup}>
-                <label
-                    htmlFor='tel'
-                    className='callBackForm_telLabel'
-                    style={{
-                        color: `${!isTelValid ? "var(--red-color)" : "var(--foreground-color)"}`,
-                    }}>
-                    {!isTelValid ? "Введите номер корректно" : "Введите контактный номер"}
-                </label>
-                <input
-                    style={{
-                        borderColor: `${
-                            !isTelValid ? "var(--red-color)" : "var(--transparent-dark-color)"
-                        }`,
-                    }}
-                    ref={inputTelRef}
-                    name='tel'
-                    type='tel'
-                    placeholder='88003332211'
-                    minLength={11}
-                    maxLength={11}
-                    required
-                />
-            </div>
+			<div className={styles.inputGroup}>
+				<label
+					htmlFor="name"
+					className="callBackForm_nameLabel"
+					style={{
+						color: `${errors.name ? "var(--red-color)" : "var(--foreground-color)"}`,
+					}}
+				>
+					{errors.name ? errors.name.message : "Ваше имя*"}
+				</label>
+				<input
+					style={{
+						borderColor: `${errors.name ? "var(--red-color)" : "var(--transparent-dark-color)"}`,
+					}}
+					{...register("name", {
+						required: "Имя обязательно",
+						minLength: {
+							value: 3,
+							message: "Минимум 3 символа",
+						},
+						maxLength: {
+							value: 50,
+							message: "Максимум 50 символов",
+						},
+						validate: {
+							cyrillic: (value) => isNameStringValid(value) || "Используйте кириллицу",
+						},
+					})}
+					placeholder="Иван Петров"
+					type="text"
+					spellCheck="false"
+					disabled={isSubmitting}
+				/>
+			</div>
 
-            <div className={styles.inputGroup}>
-                <label htmlFor='address'>Введите адрес доставки (не обязательно)</label>
-                <input ref={inputDeliveryAddressRef} name='address' type='text' pattern='\D [%]' />
-            </div>
+			<div className={styles.inputGroup}>
+				<label
+					htmlFor="tel"
+					className="callBackForm_telLabel"
+					style={{
+						color: `${errors.tel ? "var(--red-color)" : "var(--foreground-color)"}`,
+					}}
+				>
+					{errors.tel ? errors.tel.message : "Контактный номер*"}
+				</label>
+				<input
+					style={{
+						borderColor: `${errors.tel ? "var(--red-color)" : "var(--transparent-dark-color)"}`,
+					}}
+					{...register("tel", {
+						required: "Телефон обязателен",
+						minLength: {
+							value: 11,
+							message: "Номер должен содержать 11 цифр",
+						},
+						maxLength: {
+							value: 11,
+							message: "Номер должен содержать 11 цифр",
+						},
+						pattern: {
+							value: /^[0-9]+$/,
+							message: "Только цифры",
+						},
+						validate: {
+							valid: (value) => isTelStringValid(value) || "Введите номер корректно",
+						},
+					})}
+					placeholder="88003332211"
+					type="tel"
+					disabled={isSubmitting}
+				/>
+			</div>
 
-            <div className={styles.inputGroup}>
-                <label htmlFor='additional'>Дополнительная информация (не обязательно)</label>
-                <textarea
-                    ref={inputAdditionalInfoRef}
-                    className={styles.additionalInput}
-                    name='aditional'
-                    maxLength={500}
-                />
-            </div>
+			<div className={styles.inputGroup}>
+				<label htmlFor="address">Адрес доставки</label>
+				<input {...register("address")} type="text" pattern="\D [%]" disabled={isSubmitting} />
+			</div>
 
-            <div className={styles.buttonBackground}>
-                <button onClick={submit}>Заказать</button>
-            </div>
-            <p className={styles.policyWarn}>
-                Подтверждая отправку формы Вы соглашаетесь с политикой использования персональных
-                данных
-            </p>
-        </form>
-    );
+			<div className={styles.inputGroup}>
+				<label htmlFor="additional">Дополнительная информация</label>
+				<textarea
+					className={styles.additionalInput}
+					{...register("additional", {
+						maxLength: {
+							value: 500,
+							message: "Максимум 500 символов",
+						},
+					})}
+					disabled={isSubmitting}
+				/>
+				{errors.additional && (
+					<span style={{ color: "var(--red-color)", fontSize: "0.8rem" }}>
+						{errors.additional.message}
+					</span>
+				)}
+			</div>
+
+			<div className={styles.buttonBackground}>
+				<button type="submit" disabled={isSubmitting || !isDirty || !isValid}>
+					{isSubmitting ? "Отправка..." : "Заказать"}
+				</button>
+			</div>
+			<p className={styles.policyWarn}>
+				Подтверждая отправку формы Вы соглашаетесь с политикой использования персональных данных
+			</p>
+		</form>
+	);
 }
