@@ -4,52 +4,37 @@ import useSWR from "swr";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 
+import CardReplacerFirstVariant, { CardReplacerSecondVariant } from "../productCards/replacerCards";
+import { LinkButton } from "@/components/shared/ctaButtons/ctaButtons";
+import UseInfiniteScroll, { fetcher } from "@/hooks/useInfiniteScroll";
+import Selector from "./subCategoriesSelector/subCategorySelector";
+import SortOrderSelector from "./sortSelector/sortSelector";
+import styles from "./productFeeds.module.scss";
+import { Product } from "@/types/productsType";
+import Paginator from "./paginator/paginator";
+import { RootState } from "@/store/store";
+import Search from "../searchBar/Search";
+import Filters from "./filters/filters";
 import {
 	CartProductCard,
 	FeedProductCard,
 	ProductCardSkeleton,
 } from "../productCards/productCards";
-import { RootState } from "@/store/store";
-import CardReplacerFirstVariant, {
-	CardReplacerSecondVariant,
-} from "../productCards/replacerCards";
-import Paginator from "./paginator/paginator";
 
-import Selector from "./subCategoriesSelector/subCategorySelector";
-import styles from "./productFeeds.module.scss";
-import SortOrderSelector from "./sortSelector/sortSelector";
-import { Product } from "@/types/productsType";
-import Search from "../searchBar/Search";
-import { LinkButton } from "@/components/shared/ctaButtons/ctaButtons";
-import Filters from "./filters/filters";
-
-async function fetcher(url: string) {
-	const res = await fetch(url);
-	const totalPages = res.headers.get("x-total-count");
-	return {
-		data: (await res.json()) as Product[],
-		totalPages: totalPages ? +totalPages : 0,
-	};
-}
-
-function insertMockCardsInFeed(
-	data: Array<"firstFlag" | "secondFlag" | Product>
-) {
-	const firstMockCardposition = Math.floor(Math.random() * data.length);
-	const secondMockCardposition = Math.floor(Math.random() * data.length);
+function insertMockCardsInFeed(data: Array<"firstFlag" | "secondFlag" | Product>) {
+	const firstMockCardPosition = 0;
+	const secondMockCardPosition = data.length + 1;
 	return data
-		.toSpliced(firstMockCardposition, 0, "firstFlag")
-		.toSpliced(secondMockCardposition, 0, "secondFlag");
+		.toSpliced(firstMockCardPosition, 0, "firstFlag")
+		.toSpliced(secondMockCardPosition, 0, "secondFlag");
 }
 
 export function CategoryFeed({ categorySlug }: { categorySlug: string }) {
-	const [priceSortOrder, setPriceSortOrder] = useState("increase");
-	const [curPage, setCurPage] = useState(1);
-
-	const { data, isLoading } = useSWR(
-		`/api/store/categories/getProductsInCategory/?page=${curPage}&category=${categorySlug}&order=${priceSortOrder}`,
-		fetcher
-	);
+	const { priceSortOrder, setPriceSortOrder, isLoading, allProducts, isValidating } =
+		UseInfiniteScroll({
+			action: "category",
+			payload: categorySlug,
+		});
 
 	return (
 		<div className={styles.defaultFeed_container}>
@@ -70,36 +55,26 @@ export function CategoryFeed({ categorySlug }: { categorySlug: string }) {
 					<Filters />
 				</div>
 				{isLoading &&
-					[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((item) => (
-						<ProductCardSkeleton key={item} />
+					Array.from({ length: 12 }).map((_, index) => <ProductCardSkeleton key={index} />)}
+				{allProducts.length > 0 &&
+					allProducts.map((product, index) => (
+						<FeedProductCard key={`product-${product.id}-${index + 1}`} product={product} />
 					))}
-				{data &&
-					insertMockCardsInFeed(data.data).map((product, index) => {
-						if (product === "firstFlag")
-							return <CardReplacerFirstVariant key={index} />;
-						if (product === "secondFlag")
-							return <CardReplacerSecondVariant key={index} />;
-						return <FeedProductCard key={index} product={product} />;
-					})}
+				{(isLoading || isValidating) &&
+					allProducts.length > 0 &&
+					Array.from({ length: 12 }).map((_, index) => (
+						<ProductCardSkeleton key={`loading-${index + 1}`} />
+					))}
 			</div>
-			{data && (
-				<Paginator
-					pagesStateSetter={setCurPage}
-					totalPages={data.totalPages}
-					curPage={curPage}
-				/>
-			)}
 		</div>
 	);
 }
 
 export function SearchFeed({ searchRequest }: { searchRequest: string }) {
-	const [curPage, setCurPage] = useState(1);
-
-	const { data, isLoading } = useSWR(
-		`/api/store/products/getSearchedProducts/?request=${searchRequest}&page=${curPage}`,
-		fetcher
-	);
+	const { isLoading, allProducts, isValidating } = UseInfiniteScroll({
+		action: "search",
+		payload: searchRequest,
+	});
 
 	return (
 		<div className={styles.defaultFeed_container}>
@@ -119,73 +94,48 @@ export function SearchFeed({ searchRequest }: { searchRequest: string }) {
 			</h2>
 			<div className={styles.defaultFeed}>
 				{isLoading &&
-					[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((item) => (
-						<ProductCardSkeleton key={item} />
+					Array.from({ length: 12 }).map((_, index) => <ProductCardSkeleton key={index} />)}
+				{allProducts.length > 0 &&
+					allProducts.map((product, index) => (
+						<FeedProductCard key={`product-${product.id}-${index}`} product={product} />
 					))}
-				{data &&
-					insertMockCardsInFeed(data.data).map((product, index) => {
-						if (product === "firstFlag")
-							return <CardReplacerFirstVariant key={index} />;
-						if (product === "secondFlag")
-							return <CardReplacerSecondVariant key={index} />;
-						return <FeedProductCard key={index} product={product} />;
-					})}
+				{(isLoading || isValidating) &&
+					allProducts.length > 0 &&
+					Array.from({ length: 12 }).map((_, index) => (
+						<ProductCardSkeleton key={`loading-${index + 1}`} />
+					))}
 			</div>
-			{data && (
-				<Paginator
-					pagesStateSetter={setCurPage}
-					totalPages={data.totalPages}
-					curPage={curPage}
-				/>
-			)}
 		</div>
 	);
 }
 
 export function DefaultFeed() {
-	const [curPage, setCurPage] = useState(1);
-	const [priceSortOrder, setPriceSortOrder] = useState("increase");
-
-	const { data, isLoading } = useSWR(
-		`/api/store/products/getAllProducts/?page=${curPage}&order=${priceSortOrder}`,
-		fetcher
-	);
-
+	const { priceSortOrder, setPriceSortOrder, isLoading, allProducts, isValidating } =
+		UseInfiniteScroll();
 	return (
 		<div className={styles.defaultFeed_container}>
 			<div className={styles.topInner}>
 				<div className={styles.searchBar}>
 					<Search />
 				</div>
-				<SortOrderSelector
-					currentSortOrder={priceSortOrder}
-					sortOrderSetter={setPriceSortOrder}
-				/>
+				<SortOrderSelector currentSortOrder={priceSortOrder} sortOrderSetter={setPriceSortOrder} />
 			</div>
 			<div className={styles.defaultFeed}>
 				<div className={styles.filters}>
 					<Filters />
 				</div>
 				{isLoading &&
-					[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((item) => (
-						<ProductCardSkeleton key={item} />
+					Array.from({ length: 12 }).map((_, index) => <ProductCardSkeleton key={index} />)}
+				{allProducts.length > 0 &&
+					allProducts.map((product, index) => (
+						<FeedProductCard key={`product-${product.id}-${index}`} product={product} />
 					))}
-				{data &&
-					insertMockCardsInFeed(data.data).map((product, index) => {
-						if (product === "firstFlag")
-							return <CardReplacerFirstVariant key={index} />;
-						if (product === "secondFlag")
-							return <CardReplacerSecondVariant key={index} />;
-						return <FeedProductCard key={index} product={product} />;
-					})}
+				{(isLoading || isValidating) &&
+					allProducts.length > 0 &&
+					Array.from({ length: 12 }).map((_, index) => (
+						<ProductCardSkeleton key={`loading-${index + 1}`} />
+					))}
 			</div>
-			{data && (
-				<Paginator
-					pagesStateSetter={setCurPage}
-					totalPages={data.totalPages}
-					curPage={curPage}
-				/>
-			)}
 		</div>
 	);
 }
@@ -205,54 +155,36 @@ export function SalesFeed() {
 				<div className={styles.searchBar}>
 					<Search />
 				</div>
-				<SortOrderSelector
-					currentSortOrder={priceSortOrder}
-					sortOrderSetter={setPriceSortOrder}
-				/>
+				<SortOrderSelector currentSortOrder={priceSortOrder} sortOrderSetter={setPriceSortOrder} />
 			</div>
 			<div className={styles.defaultFeed}>
 				{isLoading &&
-					[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((item) => (
-						<ProductCardSkeleton key={item} />
-					))}
+					Array.from({ length: 12 }).map((_, index) => <ProductCardSkeleton key={index} />)}
 				{data &&
 					insertMockCardsInFeed(data.data).map((product, index) => {
-						if (product === "firstFlag")
-							return <CardReplacerFirstVariant key={index} />;
-						if (product === "secondFlag")
-							return <CardReplacerSecondVariant key={index} />;
+						if (product === "firstFlag") return <CardReplacerFirstVariant key={index} />;
+						if (product === "secondFlag") return <CardReplacerSecondVariant key={index} />;
 						return <FeedProductCard key={index} product={product} />;
 					})}
 			</div>
 			{data && (
-				<Paginator
-					pagesStateSetter={setCurPage}
-					totalPages={data.totalPages}
-					curPage={curPage}
-				/>
+				<Paginator pagesStateSetter={setCurPage} totalPages={data.totalPages} curPage={curPage} />
 			)}
 		</div>
 	);
 }
 
 export function HeroSaleFeed() {
-	const { data, isLoading } = useSWR(
-		"/api/store/products/getOnSaleProducts",
-		fetcher
-	);
+	const { data, isLoading } = useSWR("/api/store/products/getOnSaleProducts", fetcher);
 
 	return (
 		<>
 			{isLoading &&
-				[1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
-					<ProductCardSkeleton key={item} />
-				))}
+				Array.from({ length: 8 }).map((_, index) => <ProductCardSkeleton key={index} />)}
 			{data &&
 				insertMockCardsInFeed(data.data).map((product, index) => {
-					if (product === "firstFlag")
-						return <CardReplacerFirstVariant key={index} />;
-					if (product === "secondFlag")
-						return <CardReplacerSecondVariant key={index} />;
+					if (product === "firstFlag") return <CardReplacerFirstVariant key={index} />;
+					if (product === "secondFlag") return <CardReplacerSecondVariant key={index} />;
 					return <FeedProductCard key={index} product={product} />;
 				})}
 		</>
@@ -260,22 +192,15 @@ export function HeroSaleFeed() {
 }
 
 export function HitsFeed() {
-	const { data, isLoading } = useSWR(
-		"/api/store/products/getNewestProducts",
-		fetcher
-	);
+	const { data, isLoading } = useSWR("/api/store/products/getNewestProducts", fetcher);
 	return (
 		<>
 			{isLoading &&
-				[1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
-					<ProductCardSkeleton key={item} />
-				))}
+				Array.from({ length: 12 }).map((_, index) => <ProductCardSkeleton key={index} />)}
 			{data &&
 				insertMockCardsInFeed(data.data).map((product, index) => {
-					if (product === "firstFlag")
-						return <CardReplacerFirstVariant key={index} />;
-					if (product === "secondFlag")
-						return <CardReplacerSecondVariant key={index} />;
+					if (product === "firstFlag") return <CardReplacerFirstVariant key={index} />;
+					if (product === "secondFlag") return <CardReplacerSecondVariant key={index} />;
 					return <FeedProductCard key={index} product={product} />;
 				})}
 		</>
@@ -301,10 +226,7 @@ export function CartFeed() {
 					<div className={styles.cartFeed_cta}>
 						<div className={styles.buttonContainer}>
 							<LinkButton text="Оформить заказ" link="/checkout" />
-							<p>
-								Способ доставки и оплаты можно будет выбрать при оформлении
-								заказа
-							</p>
+							<p>Способ доставки и оплаты можно будет выбрать при оформлении заказа</p>
 						</div>
 						<div className={styles.totalPrice}>
 							<p>Итого:</p>
