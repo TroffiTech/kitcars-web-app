@@ -1,20 +1,20 @@
-import { getQueries } from "@/app/api/utils/readQueries";
 import { readAllProductsFile } from "../utils/readAllProductsFile";
+import { getQueries } from "@/app/api/utils/readQueries";
 
 export async function GET(req: Request) {
-    const queries = getQueries(req.url);
-    const page: number = +queries.page;
-    const sortOrder = queries.order;
+	const queries = getQueries(req.url);
+	const page: number = +queries.page;
+	const sortOrder = queries.order;
 
-    const data = (await readAllProductsFile()).sort((a, b) =>
-        sortOrder === "increase" ? +a.price - +b.price : +b.price - +a.price
-    );
+	const data = (await readAllProductsFile()).sort((a, b) =>
+		sortOrder === "increase" ? +a.price - +b.price : +b.price - +a.price
+	);
 
-    return new Response(JSON.stringify(data.slice(page * 10 - 10, page * 10)), {
-        headers: {
-            "content-type": "application/json",
-            "x-total-count": `${Math.ceil(data.length / 10)}`,
-        },
-        status: 200,
-    });
+	return new Response(JSON.stringify(data.slice(page * 12 - 12, page * 12)), {
+		headers: {
+			"content-type": "application/json",
+			"x-total-count": `${Math.ceil(data.length / 12)}`,
+		},
+		status: 200,
+	});
 }
