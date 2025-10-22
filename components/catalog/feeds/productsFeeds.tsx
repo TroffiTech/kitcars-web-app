@@ -7,7 +7,6 @@ import { useSelector } from "react-redux";
 import CardReplacerFirstVariant, { CardReplacerSecondVariant } from "../productCards/replacerCards";
 import { LinkButton } from "@/components/shared/ctaButtons/ctaButtons";
 import UseInfiniteScroll, { fetcher } from "@/hooks/useInfiniteScroll";
-import Selector from "./subCategoriesSelector/subCategorySelector";
 import SortOrderSelector from "./sortSelector/sortSelector";
 import styles from "./productFeeds.module.scss";
 import { Product } from "@/types/productsType";
@@ -43,7 +42,7 @@ export function CategoryFeed({ categorySlug }: { categorySlug: string }) {
 					<Search />
 				</div>
 				<div className={styles.sortInputs}>
-					<Selector categorySlug={categorySlug} />
+					{/* <Selector categorySlug={categorySlug} /> */}
 					<SortOrderSelector
 						currentSortOrder={priceSortOrder}
 						sortOrderSetter={setPriceSortOrder}

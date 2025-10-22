@@ -1,13 +1,11 @@
-// import { Analytics } from "@vercel/analytics/next";
-// import { SpeedInsights } from "@vercel/speed-insights/next";
-import { Montserrat } from "next/font/google";
+import { Manrope } from "next/font/google";
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import YandexMetrikaContainer from "@/components/yandexMetrika/yandexMetrika";
 
-const montserratSans = Montserrat({
+const montserratSans = Manrope({
 	variable: "--font-montserrat-sans",
-	weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+	weight: ["200", "300", "400", "500", "600", "700", "800"],
 	subsets: ["latin", "cyrillic"],
 });
 

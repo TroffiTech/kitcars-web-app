@@ -1,25 +1,11 @@
+import { mailSVG, personSVG, phoneSVG } from "../icons/icons";
 import { contactsData } from "@/components/contactsData";
 import CallBackButton from "../ctaButtons/ctaButtons";
 import { infoLinks } from "../header/categoriesList";
 import { LogoVariant } from "../header/logo/Logo";
-import { mailSVG, personSVG, phoneSVG } from "../icons/icons";
-import Image from "next/image";
 
 import styles from "./Footer.module.scss";
 import Link from "next/link";
-
-function selectMapImage() {
-	switch (process.env.NEXT_PUBLIC_CITY_LOCATION) {
-		case "Москва":
-			return `/maps/Москва.jpg`;
-		case "Воронеж":
-			return `/maps/Воронеж.jpg`;
-		case "Санкт-Петербург":
-			return `/maps/Санкт-Петербург.jpg`;
-		default:
-			return "";
-	}
-}
 
 export default function Footer() {
 	return (
@@ -29,9 +15,8 @@ export default function Footer() {
 				<div className={styles.footer_sectionOne}>
 					<LogoVariant />
 					<p>
-						Мы создали этот интернет-магазин, чтобы вы могли найти любой
-						интересующий Вас товар для «{process.env.NEXT_PUBLIC_SITE_NAME}»
-						здесь, по дружественной цене!
+						Мы создали этот интернет-магазин, чтобы вы могли найти любой интересующий Вас товар для
+						«{process.env.NEXT_PUBLIC_SITE_NAME}» здесь, по дружественной цене!
 					</p>
 				</div>
 				{/* 2 */}
@@ -42,19 +27,6 @@ export default function Footer() {
 							{link.name}
 						</Link>
 					))}
-				</div>
-				{/* 3 */}
-				<div className={styles.footer_sectionThree}>
-					<h2>Наш Адрес</h2>
-					<Link href={process.env.NEXT_PUBLIC_YNDEX_MAP_URL || "/"}>
-						{process.env.NEXT_PUBLIC_ADDRESS}
-					</Link>
-					<Image
-						height={300}
-						width={300}
-						alt="Мы на картах"
-						src={selectMapImage()}
-					/>
 				</div>
 
 				{/* 4 */}
@@ -90,10 +62,7 @@ export default function Footer() {
 				</div>
 			</div>
 			<div className={styles.footer_innerBottom}>
-				<p>
-					© ООО &quot;Вип&quot;, {new Date(Date.now()).getFullYear()}. Все права
-					защищены.
-				</p>
+				<p>© ООО &quot;Вип&quot;, {new Date(Date.now()).getFullYear()}. Все права защищены.</p>
 				<Link href="/offer">Договор публичной оферты</Link>
 				<Link href="/policy">Политика конфиденциальности</Link>
 			</div>

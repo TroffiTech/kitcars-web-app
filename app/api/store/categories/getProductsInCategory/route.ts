@@ -13,14 +13,17 @@ export async function GET(req: Request) {
 		order === "increase" ? +a.price - +b.price : +b.price - +a.price
 	);
 
-	const relatedCategoriesId = findRelatedCategoriesIdBySlug(categoriesThree, category);
+	const relatedCategoriesId = findRelatedCategoriesIdBySlug(
+		categoriesThree,
+		decodeURIComponent(category)
+	);
 
 	const data: Product[] = [];
 
-	relatedCategoriesId.map((categoryId) => {
+	relatedCategoriesId.map((categoryId: number) => {
 		allProducts.map((product) => {
 			product.categories.map((categoryOfProduct: Category) => {
-				if (categoryId === +categoryOfProduct.id) data.push(product);
+				if (categoryId == categoryOfProduct.id) data.push(product);
 			});
 		});
 	});

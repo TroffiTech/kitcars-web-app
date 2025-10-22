@@ -21,9 +21,28 @@
 	text-align: center;
 }
 
+@mixin glass-morphism {
+	background: var(--foreground-color);
+	backdrop-filter: blur(20px);
+	border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@mixin hover-glow {
+	transition: all 0.3s ease;
+
+	&:hover {
+		background: var(--foreground-color);
+		filter: brightness(1.1);
+		border-color: rgba(255, 255, 255, 0.2);
+		box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+	}
+}
+
 .filters {
-	@include flex-col(0, start, center);
-	padding-left: 30px;
+	@include flex-col(1rem, stretch, flex-start);
+	padding: 2rem 1.5rem;
+	width: 100%;
+	max-width: 300px;
 
 	@media (max-width: 1040px) {
 		display: none;
@@ -34,41 +53,267 @@
 		width: 100%;
 
 		.title {
-			@include flex-row(0.5rem, center, space-between);
-			background: var(--foreground-color);
-			border-radius: 8px;
-			box-shadow: var(--box-shadow);
-			padding: 15px 10px;
+			@include flex-row(1rem, center, space-between);
+			@include glass-morphism;
+			@include hover-glow;
 
-			color: var(--background-color);
-			transition: all 0.3s ease;
+			padding: 1rem 1.2rem;
+			border-radius: 12px;
 			cursor: pointer;
+			position: relative;
+			overflow: hidden;
+
+			// Декоративный акцент
+			&::before {
+				content: "";
+				position: absolute;
+				left: 0;
+				top: 0;
+				height: 100%;
+				width: 3px;
+				background: var(--orange-color);
+				opacity: 0;
+				transition: opacity 0.3s ease;
+			}
+
+			&:hover::before {
+				opacity: 1;
+			}
+
+			.link {
+				font-weight: 600;
+				font-size: 0.95rem;
+				color: var(--background-color);
+				text-decoration: none;
+				letter-spacing: 0.2px;
+				flex: 1;
+				transition: all 0.3s ease;
+
+				&:hover {
+					color: var(--orange-color);
+				}
+			}
+
+			.arrow {
+				width: 20px;
+				height: 20px;
+				@include center-all;
+				transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+				svg {
+					width: 16px;
+					height: 16px;
+					fill: var(--background-color);
+					opacity: 0.8;
+					transition: all 0.3s ease;
+				}
+			}
 
 			&:hover {
-				box-shadow: var(--box-shadow-variant);
+				.link {
+					color: var(--orange-color);
+				}
+
+				.arrow svg {
+					opacity: 1;
+					fill: var(--orange-color);
+				}
+			}
+		}
+
+		// Стили для активной категории
+		&.activeCategory {
+			.title {
+				background: var(--foreground-color);
+				border-color: var(--orange-color);
+				box-shadow: 0 4px 20px rgba(255, 107, 0, 0.3);
+
+				&::before {
+					opacity: 1;
+					background: var(--orange-color);
+				}
+
+				.link {
+					color: var(--orange-color);
+					font-weight: 700;
+				}
+
+				.arrow svg {
+					fill: var(--orange-color);
+					opacity: 1;
+				}
 			}
 		}
 	}
 
-	.childrens {
-		@include flex-col(0.5rem, start, center);
-		margin: 10px 15px;
+	.children {
+		@include flex-col(0.3rem, stretch, flex-start);
+		margin: 0.8rem 0 0 1rem;
+		padding: 0;
 		max-height: 0;
 		overflow: hidden;
+		transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 
-		transition: all 0.4s linear;
+		// Декоративная линия
+		position: relative;
+
+		&::before {
+			content: "";
+			position: absolute;
+			left: -0.8rem;
+			top: 0;
+			bottom: 0;
+			width: 1px;
+			background: linear-gradient(to bottom, transparent, var(--orange-color), transparent);
+			opacity: 0;
+			transition: opacity 0.3s ease 0.1s;
+		}
+
+		&.expanded::before {
+			opacity: 0.6;
+		}
+
+		li {
+			list-style: none;
+			margin: 0;
+
+			.link {
+				@include flex-row(0.5rem, center, flex-start);
+				padding: 0.8rem 1rem;
+				text-decoration: none;
+				color: var(--foreground-color);
+				font-size: 0.9rem;
+				font-weight: 400;
+				border-radius: 8px;
+				transition: all 0.3s ease;
+				position: relative;
+				background: rgba(255, 255, 255, 0.05);
+
+				// Индикатор перед ссылкой
+				&::before {
+					content: "";
+					width: 4px;
+					height: 4px;
+					background: var(--foreground-color);
+					border-radius: 50%;
+					opacity: 0.5;
+					transition: all 0.3s ease;
+				}
+
+				&:hover {
+					background: rgba(255, 255, 255, 0.1);
+					color: var(--orange-color);
+					padding-left: 1.2rem;
+
+					&::before {
+						background: var(--orange-color);
+						opacity: 1;
+						transform: scale(1.2);
+					}
+				}
+			}
+
+			// Активная дочерняя категория
+			&.activeChild .link {
+				background: rgba(255, 107, 0, 0.15);
+				color: var(--orange-color);
+				font-weight: 500;
+
+				&::before {
+					background: var(--orange-color);
+					opacity: 1;
+					transform: scale(1.2);
+				}
+			}
+		}
+	}
+}
+
+// Анимации
+@keyframes slideInDown {
+	from {
+		opacity: 0;
+		transform: translateY(-10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes pulseGlow {
+	0%,
+	100% {
+		box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+	}
+	50% {
+		box-shadow: 0 6px 20px rgba(255, 107, 0, 0.3);
+	}
+}
+
+// Применяем анимацию к родительским категориям
+.parentCategory {
+	animation: slideInDown 0.5s ease-out;
+
+	&:nth-child(1) {
+		animation-delay: 0.1s;
+	}
+	&:nth-child(2) {
+		animation-delay: 0.15s;
+	}
+	&:nth-child(3) {
+		animation-delay: 0.2s;
+	}
+	&:nth-child(4) {
+		animation-delay: 0.25s;
+	}
+	&:nth-child(5) {
+		animation-delay: 0.3s;
+	}
+	&:nth-child(6) {
+		animation-delay: 0.35s;
 	}
 
-	.link {
-		background: transparent;
-		color: inherit;
-		transition: all 0.2s ease;
+	animation-fill-mode: both;
+}
 
-		padding-bottom: 3px;
-		border-bottom: 1px solid transparent;
+// Стили для состояния загрузки
+.loading {
+	.parentCategory {
+		.title {
+			background: var(--foreground-color);
+			animation: pulseGlow 2s ease-in-out infinite;
 
-		&:hover {
-			border-color: inherit;
+			.link {
+				color: transparent;
+				background: rgba(255, 255, 255, 0.3);
+				border-radius: 4px;
+				min-height: 1rem;
+			}
+
+			.arrow {
+				opacity: 0.3;
+
+				svg {
+					fill: var(--background-color);
+				}
+			}
+		}
+	}
+}
+
+// Адаптивность
+@media (max-width: 1200px) {
+	.filters {
+		padding: 1.5rem 1rem;
+		max-width: 280px;
+
+		.parentCategory .title {
+			padding: 0.9rem 1rem;
+
+			.link {
+				font-size: 0.9rem;
+			}
 		}
 	}
 }

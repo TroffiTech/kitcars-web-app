@@ -1,76 +1,71 @@
-"use state";
+"use client";
 
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import styles from "./sortSelector.module.scss";
 import { arrowDownMiniSVG } from "@/components/shared/icons/icons";
 
 export default function SortOrderSelector({
-    currentSortOrder,
-    sortOrderSetter,
+	currentSortOrder,
+	sortOrderSetter,
 }: {
-    currentSortOrder: string;
-    sortOrderSetter: Dispatch<SetStateAction<string>>;
+	currentSortOrder: string;
+	sortOrderSetter: Dispatch<SetStateAction<string>>;
 }) {
-    const [isExpanded, setIsExpanded] = useState(false);
+	const [isExpanded, setIsExpanded] = useState(false);
+	const containerRef = useRef<HTMLDivElement>(null);
 
-    function controlEscapePress(e: KeyboardEvent) {
-        if (e.code !== "Escape") return;
-        setIsExpanded(false);
-    }
+	function controlEscapePress(e: KeyboardEvent) {
+		if (e.code !== "Escape") return;
+		setIsExpanded(false);
+	}
 
-    function controlBodyClick(e: MouseEvent) {
-        const button = (e.target as HTMLElement).closest("#sort_selector");
-        if (button) {
-            setIsExpanded((prev) => !prev);
-        } else {
-            setIsExpanded(false);
-        }
-    }
+	function handleClickOutside(e: MouseEvent) {
+		if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+			setIsExpanded(false);
+		}
+	}
 
-    useEffect(() => {
-        document.body.addEventListener("click", controlBodyClick);
-        return () => document.body.removeEventListener("click", controlBodyClick);
-    });
+	function handleToggle() {
+		setIsExpanded((prev) => !prev);
+	}
 
-    useEffect(() => {
-        document.body.addEventListener("keydown", controlEscapePress);
-        return () => document.body.removeEventListener("keydown", controlEscapePress);
-    });
+	function handleSelect() {
+		sortOrderSetter((prev) => {
+			if (prev === "increase") return "decrease";
+			else return "increase";
+		});
+		setIsExpanded(false);
+	}
 
-    function handleSelect() {
-        sortOrderSetter((prev) => {
-            if (prev === "increase") return "decrease";
-            else return "increase";
-        });
-    }
+	useEffect(() => {
+		document.addEventListener("click", handleClickOutside);
+		document.addEventListener("keydown", controlEscapePress);
 
-    return (
-        <div
-            id='sort_selector'
-            style={{
-                boxShadow: isExpanded ? "var(--box-shadow-variant)" : "var(--box-shadow)",
-            }}
-            className={styles.sortOrderSelector}>
-            <p>{currentSortOrder === "increase" ? "Сначала дешевле" : "Сначала дороже"}</p>
-            <div
-                style={{
-                    transform: isExpanded ? "rotate(180deg)" : undefined,
-                }}
-                className={styles.icon}>
-                {arrowDownMiniSVG}
-            </div>
-            <ul
-                style={{
-                    background: isExpanded ? "var(--background-color)" : "transparent",
-                    color: isExpanded ? "var(--foreground-color)" : "foreground",
-                    boxShadow: isExpanded ? undefined : "none",
-                    visibility: isExpanded ? "visible" : "hidden",
-                }}
-                className={styles.expandedList}>
-                <li onClick={handleSelect}>
-                    {currentSortOrder === "increase" ? "Сначала дороже" : "Сначала дешевле"}
-                </li>
-            </ul>
-        </div>
-    );
+		return () => {
+			document.removeEventListener("click", handleClickOutside);
+			document.removeEventListener("keydown", controlEscapePress);
+		};
+	}, []);
+
+	const getDisplayText = (order: string) => {
+		return order === "increase" ? "Сначала дешевле" : "Сначала дороже";
+	};
+
+	const getOppositeText = (order: string) => {
+		return order === "increase" ? "Сначала дороже" : "Сначала дешевле";
+	};
+
+	return (
+		<div
+			ref={containerRef}
+			className={`${styles.sortOrderSelector} ${isExpanded ? styles.expanded : ""}`}
+			onClick={handleToggle}
+		>
+			<p>{getDisplayText(currentSortOrder)}</p>
+			<div className={styles.icon}>{arrowDownMiniSVG}</div>
+			<ul className={`${styles.expandedList} ${isExpanded ? styles.visible : ""}`}>
+				<li onClick={handleSelect}>{getOppositeText(currentSortOrder)}</li>
+			</ul>
+		</div>
+	);
 }

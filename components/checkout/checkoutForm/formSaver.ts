@@ -6,7 +6,6 @@ const FORM_DATA_TTL = 24 * 60 * 60 * 1000;
 
 export function saveFormData(data: CheckoutFormData) {
 	if (typeof window !== "undefined") {
-		console.log("saving form");
 		try {
 			localStorage.setItem(FORM_STORAGE_KEY, JSON.stringify(data));
 			localStorage.setItem(FORM_TIMESTAMP_KEY, Date.now().toString());

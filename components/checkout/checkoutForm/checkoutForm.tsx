@@ -1,8 +1,9 @@
+// CheckoutForm.tsx
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./checkoutForm.module.scss";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 
 import { clearFormData, loadFormData, saveFormData } from "./formSaver";
 import isNameStringValid from "@/lib/validators/validateNameInput";
@@ -12,12 +13,16 @@ import { CheckoutFormData } from "@/types/formTypes";
 import { resetCart } from "@/store/cart/cartSlice";
 import { RootState } from "@/store/store";
 import debounce from "@/lib/debounce";
+import { usePhoneMask } from "@/hooks/usePhoneMask";
 
 export default function CheckoutForm() {
 	const dispatch = useDispatch();
 	const cart = useSelector((state: RootState) => state.cart.value);
 	const navigator = useRouter();
 	const [isSubmitting, setIsSubmitting] = useState(false);
+	const phoneInputRef = useRef<HTMLInputElement>(null);
+
+	const { phoneValue, handlePhoneChange, getRawPhone } = usePhoneMask();
 
 	const {
 		register,
@@ -25,6 +30,8 @@ export default function CheckoutForm() {
 		formState: { errors, isDirty, isValid },
 		reset,
 		watch,
+		setValue,
+		trigger,
 	} = useForm<CheckoutFormData>({
 		mode: "onBlur",
 		defaultValues: {
@@ -48,12 +55,80 @@ export default function CheckoutForm() {
 	const formData = watch();
 	useEffect(() => {
 		debouncedSaveRef(formData);
-	}, [formData]);
+	}, [formData, debouncedSaveRef]);
 
 	useEffect(() => {
 		const savedData = loadFormData();
-		if (savedData) reset(savedData);
-	}, [reset]);
+		if (savedData) {
+			reset(savedData);
+			// Восстанавливаем маску телефона если есть сохраненное значение
+			if (savedData.tel) {
+				const rawPhone = savedData.tel;
+				setValue("tel", rawPhone, { shouldValidate: true });
+			}
+		}
+	}, [reset, setValue, handlePhoneChange]);
+
+	// Обработчик изменения телефона с маской
+	const handlePhoneInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const input = e.target;
+		const value = input.value;
+		const cursorPosition = input.selectionStart || 0;
+
+		const { formatted, newCursorPosition } = handlePhoneChange(value, cursorPosition);
+
+		// Устанавливаем сырое значение в форму
+		const rawPhone = getRawPhone(formatted);
+		setValue("tel", rawPhone, { shouldValidate: true });
+
+		// Триггерим валидацию
+		setTimeout(() => trigger("tel"), 0);
+
+		// Сохраняем позицию курсора
+		setTimeout(() => {
+			if (phoneInputRef.current) {
+				phoneInputRef.current.setSelectionRange(newCursorPosition, newCursorPosition);
+			}
+		}, 0);
+	};
+
+	// Обработчик событий клавиатуры для корректного удаления
+	const handlePhoneKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+		if (e.key === "Backspace") {
+			const input = e.target as HTMLInputElement;
+			const value = input.value;
+			const cursorPosition = input.selectionStart || 0;
+
+			// Если курсор в начале маски, блокируем удаление
+			if (cursorPosition <= 4) {
+				e.preventDefault();
+				return;
+			}
+
+			// Получаем текущее значение до backspace
+			const newValue = value.slice(0, cursorPosition - 1) + value.slice(cursorPosition);
+			const newCursorPosition = cursorPosition - 1;
+
+			const { formatted, newCursorPosition: adjustedPosition } = handlePhoneChange(
+				newValue,
+				newCursorPosition,
+				true // Флаг backspace
+			);
+
+			// Устанавливаем сырое значение в форму
+			const rawPhone = getRawPhone(formatted);
+			setValue("tel", rawPhone, { shouldValidate: true });
+
+			// Устанавливаем скорректированную позицию курсора
+			setTimeout(() => {
+				if (phoneInputRef.current) {
+					phoneInputRef.current.setSelectionRange(adjustedPosition, adjustedPosition);
+				}
+			}, 0);
+
+			e.preventDefault(); // Предотвращаем стандартное поведение
+		}
+	};
 
 	function showSuccessPopup() {
 		if (!setIsPopupVisible || !setPopupText) return;
@@ -98,6 +173,8 @@ export default function CheckoutForm() {
 			clearFormData();
 			dispatch(resetCart());
 			reset();
+			// Сбрасываем маску телефона
+			handlePhoneChange("+7 ");
 
 			setTimeout(() => {
 				navigator.push("/");
@@ -109,115 +186,119 @@ export default function CheckoutForm() {
 		}
 	};
 
+	// Кастомная валидация для телефона с учетом маски
+	const validatePhone = (value: string) => {
+		if (!value) return "Телефон обязателен";
+
+		const rawValue = value.replace(/\D/g, "");
+		if (rawValue.length !== 11) return "Номер должен содержать 11 цифр";
+
+		if (!isTelStringValid(rawValue)) return "Введите номер корректно";
+
+		return true;
+	};
+
 	return (
 		<form className={styles.checkoutForm} onSubmit={handleSubmit(onSubmit)}>
 			<h2>Контактная информация</h2>
 
-			<div className={styles.inputGroup}>
-				<label
-					htmlFor="name"
-					className="callBackForm_nameLabel"
-					style={{
-						color: `${errors.name ? "var(--red-color)" : "var(--foreground-color)"}`,
-					}}
+			<div className={styles.formFields}>
+				<div className={`${styles.inputGroup} ${errors.name ? styles.error : ""}`}>
+					<label htmlFor="name">{errors.name ? errors.name.message : "Ваше имя*"}</label>
+					<input
+						{...register("name", {
+							required: "Имя обязательно",
+							minLength: {
+								value: 3,
+								message: "Минимум 3 символа",
+							},
+							maxLength: {
+								value: 50,
+								message: "Максимум 50 символов",
+							},
+							validate: {
+								cyrillic: (value) => isNameStringValid(value) || "Используйте кириллицу",
+							},
+						})}
+						placeholder="Иван Петров"
+						type="text"
+						spellCheck="false"
+						disabled={isSubmitting}
+					/>
+					{errors.name && <span className={styles.errorMessage}>{errors.name.message}</span>}
+				</div>
+
+				<div className={`${styles.inputGroup} ${errors.tel ? styles.error : ""}`}>
+					<label htmlFor="tel">{errors.tel ? errors.tel.message : "Контактный номер*"}</label>
+					<input
+						ref={phoneInputRef}
+						value={phoneValue}
+						onChange={handlePhoneInputChange}
+						onKeyDown={handlePhoneKeyDown}
+						placeholder="+7 (999) 123-45-67"
+						type="tel"
+						disabled={isSubmitting}
+						// Скрываем валидацию браузера для кастомной маски
+						pattern="[0-9]*"
+						inputMode="numeric"
+					/>
+					<input
+						type="hidden"
+						{...register("tel", {
+							required: "Телефон обязателен",
+							validate: {
+								valid: validatePhone,
+							},
+						})}
+					/>
+					{errors.tel && <span className={styles.errorMessage}>{errors.tel.message}</span>}
+				</div>
+
+				<div className={styles.inputGroup}>
+					<label htmlFor="address">Адрес доставки</label>
+					<input
+						{...register("address")}
+						type="text"
+						placeholder="Улица, дом, квартира"
+						disabled={isSubmitting}
+					/>
+				</div>
+
+				<div className={`${styles.inputGroup} ${errors.additional ? styles.error : ""}`}>
+					<label htmlFor="additional">
+						Дополнительная информация
+						{errors.additional && ` - ${errors.additional.message}`}
+					</label>
+					<textarea
+						className={styles.additionalInput}
+						{...register("additional", {
+							maxLength: {
+								value: 500,
+								message: "Максимум 500 символов",
+							},
+						})}
+						placeholder="Дополнительные пожелания к заказу..."
+						disabled={isSubmitting}
+					/>
+					{errors.additional && (
+						<span className={styles.errorMessage}>{errors.additional.message}</span>
+					)}
+				</div>
+			</div>
+
+			<div className={styles.submitSection}>
+				<button
+					type="submit"
+					className={`${styles.submitButton} ${styles.beamAnimation}`}
+					disabled={isSubmitting || !isDirty || !isValid}
 				>
-					{errors.name ? errors.name.message : "Ваше имя*"}
-				</label>
-				<input
-					style={{
-						borderColor: `${errors.name ? "var(--red-color)" : "var(--transparent-dark-color)"}`,
-					}}
-					{...register("name", {
-						required: "Имя обязательно",
-						minLength: {
-							value: 3,
-							message: "Минимум 3 символа",
-						},
-						maxLength: {
-							value: 50,
-							message: "Максимум 50 символов",
-						},
-						validate: {
-							cyrillic: (value) => isNameStringValid(value) || "Используйте кириллицу",
-						},
-					})}
-					placeholder="Иван Петров"
-					type="text"
-					spellCheck="false"
-					disabled={isSubmitting}
-				/>
-			</div>
-
-			<div className={styles.inputGroup}>
-				<label
-					htmlFor="tel"
-					className="callBackForm_telLabel"
-					style={{
-						color: `${errors.tel ? "var(--red-color)" : "var(--foreground-color)"}`,
-					}}
-				>
-					{errors.tel ? errors.tel.message : "Контактный номер*"}
-				</label>
-				<input
-					style={{
-						borderColor: `${errors.tel ? "var(--red-color)" : "var(--transparent-dark-color)"}`,
-					}}
-					{...register("tel", {
-						required: "Телефон обязателен",
-						minLength: {
-							value: 11,
-							message: "Номер должен содержать 11 цифр",
-						},
-						maxLength: {
-							value: 11,
-							message: "Номер должен содержать 11 цифр",
-						},
-						pattern: {
-							value: /^[0-9]+$/,
-							message: "Только цифры",
-						},
-						validate: {
-							valid: (value) => isTelStringValid(value) || "Введите номер корректно",
-						},
-					})}
-					placeholder="88003332211"
-					type="tel"
-					disabled={isSubmitting}
-				/>
-			</div>
-
-			<div className={styles.inputGroup}>
-				<label htmlFor="address">Адрес доставки</label>
-				<input {...register("address")} type="text" pattern="\D [%]" disabled={isSubmitting} />
-			</div>
-
-			<div className={styles.inputGroup}>
-				<label htmlFor="additional">Дополнительная информация</label>
-				<textarea
-					className={styles.additionalInput}
-					{...register("additional", {
-						maxLength: {
-							value: 500,
-							message: "Максимум 500 символов",
-						},
-					})}
-					disabled={isSubmitting}
-				/>
-				{errors.additional && (
-					<span style={{ color: "var(--red-color)", fontSize: "0.8rem" }}>
-						{errors.additional.message}
-					</span>
-				)}
-			</div>
-
-			<div className={styles.buttonBackground}>
-				<button type="submit" disabled={isSubmitting || !isDirty || !isValid}>
 					{isSubmitting ? "Отправка..." : "Заказать"}
 				</button>
+
+				<p className={styles.policyWarn}>
+					Подтверждая отправку формы Вы соглашаетесь с политикой использования персональных данных
+				</p>
 			</div>
-			<p className={styles.policyWarn}>
-				Подтверждая отправку формы Вы соглашаетесь с политикой использования персональных данных
-			</p>
 		</form>
 	);
 }

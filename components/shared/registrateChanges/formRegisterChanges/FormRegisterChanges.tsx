@@ -1,140 +1,204 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { FormEvent, useContext, useRef, useState } from "react";
+import { useRef, FormEvent, useContext } from "react";
 import styles from "./FormRegisterChanges.module.scss";
-import isTelStringValid from "@/lib/validators/validateTelInput";
+import { usePhoneMask } from "@/hooks/usePhoneMask";
 import { SmallPopupContext } from "@/hooks/smallPopupsProvider";
 
-export default function FormRegisterChanges() {
-    return (
-        <form className={styles.form}>
-            <div className={styles.form_inputGroup}>
-                <label htmlFor='name'>Ваше Имя*</label>
-                <input
-                    className='input'
-                    id='name'
-                    name='name'
-                    placeholder='Иван Петров'
-                    type='text'
-                />
-            </div>
-            <div className={styles.form_inputGroup}>
-                <label htmlFor='tel'>Контактный телефон*</label>
-                <input className='input' id='tel' name='tel' placeholder='88003332211' type='tel' />
-            </div>
-            <p>Отправляя форму, вы соглашаетесь с политикой обработки персональных данных</p>
-
-            <button>Отправить</button>
-        </form>
-    );
-}
-
 export function FormRegisterChangesVariant() {
-    const inputTelRef = useRef<HTMLInputElement>(null);
-    const [isTelValid, setIsTelValid] = useState(true);
+	const { setIsVisible: setIsPopupVisible, setPopupText } = useContext(SmallPopupContext);
 
-    const setIsPopupVisible = useContext(SmallPopupContext).setIsVisible;
-    const setPopupText = useContext(SmallPopupContext).setPopupText;
+	const phoneInputRef = useRef<HTMLInputElement>(null);
+	const formRef = useRef<HTMLFormElement>(null);
+	const { phoneValue, handlePhoneChange, getRawPhone } = usePhoneMask();
 
-    function showPopup() {
-        if (!setIsPopupVisible || !setPopupText) return;
-        setPopupText("Ваш запрос успешно отправлен!");
-        setIsPopupVisible(true);
-        return;
-    }
+	const handlePhoneInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const input = e.target;
+		const value = input.value;
+		const cursorPosition = input.selectionStart || 0;
 
-    function clearInputs() {
-        if (!inputTelRef.current) return;
-        inputTelRef.current.value = "";
-    }
+		const { newCursorPosition } = handlePhoneChange(value, cursorPosition);
 
-    function submit(e: FormEvent) {
-        e.preventDefault();
-        if (!inputTelRef) return;
+		// Сохраняем позицию курсора
+		setTimeout(() => {
+			if (phoneInputRef.current) {
+				phoneInputRef.current.setSelectionRange(newCursorPosition, newCursorPosition);
+			}
+		}, 0);
+	};
 
-        const telValue = inputTelRef.current?.value;
+	const handlePhoneKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+		if (e.key === "Backspace") {
+			const input = e.target as HTMLInputElement;
+			const value = input.value;
+			const cursorPosition = input.selectionStart || 0;
 
-        let isFromValid = 1;
+			// Если курсор в начале маски, блокируем удаление
+			if (cursorPosition <= 4) {
+				e.preventDefault();
+				return;
+			}
 
-        // validate tel
-        if (!isTelStringValid(telValue)) {
-            isFromValid *= 0;
-            setTimeout(() => {
-                setIsTelValid(true);
-            }, 3000);
-            setIsTelValid(false);
-        }
+			// Получаем текущее значение до backspace
+			const newValue = value.slice(0, cursorPosition - 1) + value.slice(cursorPosition);
+			const newCursorPosition = cursorPosition - 1;
 
-        if (!isFromValid) {
-            return;
-        } else {
-            fetch("/api/formSubmissions/registrationSubmission", {
-                method: "post",
-                body: JSON.stringify({
-                    telValue,
-                }),
-            });
-            showPopup();
-            clearInputs();
-        }
-    }
-    return (
-        <form className={styles.formVariant}>
-            <div className={styles.formVariant_ctaContainer}>
-                <h3>Заполните Форму</h3>
-                <p>Специалисты лаборатории проконсультируют Вас по любым вопросам</p>
-                <div className={styles.formVariant_ctaContainer_inputGoup}>
-                    <div>
-                        <label
-                            style={{
-                                color: `${
-                                    !isTelValid ? "var(--red-color)" : "var(--foreground-color)"
-                                }`,
-                            }}
-                            htmlFor='tel'>
-                            {!isTelValid ? "Введите номер корректно" : "Введите контактный номер"}
-                        </label>
-                        <input
-                            style={{
-                                borderColor: `${
-                                    !isTelValid
-                                        ? "var(--red-color)"
-                                        : "var(--transparent-dark-color)"
-                                }`,
-                            }}
-                            ref={inputTelRef}
-                            type='tel'
-                            id='tel'
-                            placeholder='88003332211'
-                            pattern='[0-9]{11}'
-                        />
-                    </div>
-                    <button onClick={submit}>Отправить</button>
-                </div>
-                <p>Отправляя форму, вы соглашаетесь с политикой обработки персональных данных</p>
-            </div>
-            <div
-                style={{
-                    background: "transparent",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "center",
-                }}>
-                <img
-                    style={{
-                        background: "transparent",
-                        width: "90%",
-                    }}
-                    src='/testDrive-lab-logo.png'
-                    alt='Test Drive Lab logo'
-                />
-                <p className={styles.descriptionText}>
-                    Помогли уже более 5000 автовладельцам получить документы на ТС в ГИБДД после
-                    внесения изменения в конструкцию
-                </p>
-            </div>
-        </form>
-    );
+			const { newCursorPosition: adjustedPosition } = handlePhoneChange(
+				newValue,
+				newCursorPosition,
+				true // Флаг backspace
+			);
+
+			// Устанавливаем скорректированную позицию курсора
+			setTimeout(() => {
+				if (phoneInputRef.current) {
+					phoneInputRef.current.setSelectionRange(adjustedPosition, adjustedPosition);
+				}
+			}, 0);
+
+			e.preventDefault(); // Предотвращаем стандартное поведение
+		}
+	};
+
+	// Обработчик вставки текста (paste)
+	const handlePhonePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+		e.preventDefault();
+		const pastedText = e.clipboardData.getData("text");
+		const numbers = pastedText.replace(/\D/g, "");
+
+		if (numbers) {
+			const currentValue = phoneValue.replace(/\D/g, "");
+			const newValue = "+7 " + (currentValue.slice(2) + numbers).slice(0, 10);
+
+			const { formatted } = handlePhoneChange(newValue);
+
+			// Ставим курсор в конец
+			setTimeout(() => {
+				if (phoneInputRef.current) {
+					phoneInputRef.current.setSelectionRange(formatted.length, formatted.length);
+				}
+			}, 0);
+		}
+	};
+
+	const handlePhoneFocus = () => {
+		// При фокусе устанавливаем курсор после +7
+		if (phoneValue.length <= 4) {
+			setTimeout(() => {
+				if (phoneInputRef.current) {
+					phoneInputRef.current.setSelectionRange(4, 4);
+				}
+			}, 0);
+		}
+	};
+
+	const clearForm = () => {
+		// Очищаем форму
+		if (formRef.current) {
+			formRef.current.reset();
+		}
+
+		// Сбрасываем маску телефона
+		handlePhoneChange("+7 ", 4);
+
+		// Очищаем localStorage для этой формы
+		const formKeys = ["consultation_name", "consultation_phone", "consultation_message"];
+
+		formKeys.forEach((key) => {
+			localStorage.removeItem(key);
+		});
+	};
+
+	const handleSubmit = async (e: FormEvent) => {
+		e.preventDefault();
+		const form = e.target as HTMLFormElement;
+		const formData = new FormData(form);
+
+		const nameValue = formData.get("name") as string;
+		const messageValue = formData.get("message") as string;
+		const rawPhone = getRawPhone(phoneValue);
+
+		try {
+			const response = await fetch("/api/formSubmissions/consultationSubmission", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					nameValue,
+					telValue: rawPhone,
+					messageValue,
+				}),
+			});
+
+			if (!response.ok) {
+				throw new Error("Ошибка отправки формы");
+			}
+
+			setPopupText!("Ваш запрос успешно отправлен!");
+			setIsPopupVisible!(true);
+		} catch (error) {
+			console.error("Ошибка при отправке формы:", error);
+			setPopupText!("Отправка формы не выполнена! Попробуйте позже");
+			setIsPopupVisible!(true);
+		} finally {
+			// Всегда очищаем форму после отправки (и успешной, и неуспешной)
+			clearForm();
+		}
+	};
+
+	return (
+		<form ref={formRef} className={styles.formVariant} onSubmit={handleSubmit}>
+			<div className={styles.formVariant_ctaContainer}>
+				<h3>
+					Получите <span>консультацию</span>
+				</h3>
+				<p>Оставьте заявку и наш специалист свяжется с вами в течение 15 минут</p>
+			</div>
+
+			<div className={styles.formVariant_inputGroup}>
+				<div className={styles.inputRow}>
+					<div className={styles.inputField}>
+						<label htmlFor="name">Ваше имя</label>
+						<input type="text" id="name" name="name" placeholder="Иван Иванов" required />
+					</div>
+					<div className={styles.inputField}>
+						<label htmlFor="phone">Телефон</label>
+						<input
+							ref={phoneInputRef}
+							type="tel"
+							id="phone"
+							name="phone"
+							value={phoneValue}
+							onChange={handlePhoneInput}
+							onKeyDown={handlePhoneKeyDown}
+							onPaste={handlePhonePaste}
+							onFocus={handlePhoneFocus}
+							placeholder="+7 (999) 999-99-99"
+							required
+							inputMode="numeric"
+						/>
+					</div>
+				</div>
+
+				<div className={styles.inputField}>
+					<label htmlFor="message">Сообщение</label>
+					<input
+						type="text"
+						id="message"
+						name="message"
+						placeholder="Расскажите о вашем автомобиле..."
+					/>
+				</div>
+
+				<button type="submit" className={styles.submitButton}>
+					Отправить заявку
+				</button>
+
+				<p className={styles.descriptionText}>
+					Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности
+				</p>
+			</div>
+		</form>
+	);
 }
