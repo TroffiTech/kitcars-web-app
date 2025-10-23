@@ -1,37 +1,89 @@
-# Next project for TROFFI
+# Troffi Kitkars - Next.js E-commerce Website
 
-It realise headless web-sites architecture, updating stores content from WC databases.
+Документация по развертыванию и управлению приложения
 
-## Features
+## 📋 Оглавление
 
-1. Fetching and caching stores data from WC databases
-2. Updates scheduling by Versel cron tasks
-3. Displaying variabel content as tels, addresses, etc., using .env variables
-4. Recieving lids to bitrix
+- [Архитектура](#архитектура)
+- [Быстрый старт](#быстрый-старт)
+- [Развертывание на сервере](#развертывание-на-сервере)
+- [GitHub Actions](#github-actions)
+- [Переменные окружения](#переменные-окружения)
+- [Мониторинг и логи](#мониторинг-и-логи)
+- [Обновление контента](#обновление-контента)
+- [Устранение неисправностей](#устранение-неисправностей)
 
-## Environment
+## 🏗 Архитектура
 
-1. node v18.19.1
-2. npm v9.2.0
+Проект состоит из двух Docker-контейнеров:
 
-### Environment variables list
+### 🐳 Контейнеры
 
-place .env file in root directory
+1. **nextjs-app** - основное Next.js приложение
 
-NEXT_PUBLIC_YNDEX_MAP_URL
-NEXT_PUBLIC_CITY_LOCATION
-NEXT_PUBLIC_DOMEN
-NEXT_PUBLIC_MAIN_TEL
-NEXT_PUBLIC_SITE_NAME
-NEXT_PUBLIC_ADDRESS
-BITRIX_KEY
-UPDATE_PASSWORD
-DB_URL
-WC_KEY
-WC_SECRET
-FIRST_MANAGER_TEL
-FIRST_MANAGER_NAME
-FIRST_MANAGER_EMAIL
-SECOND_MANAGER_TEL
-SECOND_MANAGER_NAME
-SECOND_MANAGER_EMAIL
+   - Порт: настраивается через `APP_PORT` (по умолчанию 3000)
+   - Читает данные из `/app/app/content/`
+   - Автоматически перезагружается при изменении данных
+
+2. **scripts-runner** - сервис для обновления контента
+   - Запускает скрипты обновления по расписанию (9:00 и 21:00)
+   - Записывает данные в `/app/app/content/`
+   - Использует cron для планирования задач
+
+### 📁 Структура данных
+
+```text
+  /app/app/content/
+  ├── allProducts.json # Все товары из WooCommerce
+  ├── categoriesThree.json # Дерево категорий
+  ├── sitemap.xml # Карта сайта
+  └── robots.txt # Robots.txt
+```
+
+## 🚀 Быстрый старт
+
+### Предварительные требования
+
+- Docker 20.10+
+- Docker Compose 2.0+
+- Node.js 18+ (только для разработки)
+
+### Локальный запуск
+
+1. **Клонируйте репозиторий**
+
+```bash
+git clone <repository-url>
+cd <directory name>
+```
+
+2. **Настройте переменные окружения**
+
+```bash
+# Скопируйте и настройте файлы окружения
+cp .env.production.example .env.production
+
+# Отредактируйте файлы
+nano .env.production
+nano .env.secrets
+```
+
+3. **Запустите приложение**
+
+```bash
+# Сборка и запуск
+docker compose up --build -d
+
+# Только запуск (если уже собрано)
+docker compose up -d
+
+# Просмотр логов
+docker compose logs -f
+```
+
+4. **Проверьте работу**
+
+```bash
+# Приложение должно быть доступно по http://localhost:3000
+curl http://localhost:3000/api/health
+```
