@@ -9,8 +9,11 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 	const { slug } = await params;
 
 	const allProducts = await readAllProductsFile();
+
+	if (!allProducts) throw new Error("Endpoint: Failed to read allProducts.json");
+
 	const productData = allProducts.filter(
-		(item) => decodeURIComponent(item.slug) === decodeURIComponent(slug)
+		(item) => decodeURIComponent(item.sku!) === decodeURIComponent(slug)
 	)[0];
 	if (!productData) redirect("/not-found");
 	return (

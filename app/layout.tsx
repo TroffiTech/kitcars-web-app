@@ -1,5 +1,5 @@
 import { Manrope } from "next/font/google";
-import type { Metadata, Viewport } from "next";
+import type { Metadata } from "next";
 import "./globals.css";
 import YandexMetrikaContainer from "@/components/yandexMetrika/yandexMetrika";
 
@@ -14,11 +14,6 @@ export const metadata: Metadata = {
 	description: `Запчасти для тюнинга ${process.env.NEXT_PUBLIC_SITE_NAME} в Москве по доступным ценам! Звоните ☎️${process.env.NEXT_PUBLIC_MAIN_TEL}`,
 };
 
-export const viewport: Viewport = {
-	initialScale: 0.9,
-	width: "device-width",
-};
-
 export default function RootLayout({
 	children,
 }: Readonly<{
@@ -27,10 +22,11 @@ export default function RootLayout({
 	return (
 		<html lang="ru">
 			<head>
+				<meta name="viewport" content="width=device-width, initial-scale=0.8" />
 				<meta name="robots" content="all" />
 				<meta
 					name="keywords"
-					content={`${process.env.NEXT_PUBLIC_SITE_NAME}, тюнинг, троффи, Москва`}
+					content={`${process.env.NEXT_PUBLIC_SITE_NAME}, тюнинг, троффи, ${process.env.NEXT_PUBLIC_CITY_LOCATION}`}
 				/>
 			</head>
 			<body className={`${montserratSans.className}`}>

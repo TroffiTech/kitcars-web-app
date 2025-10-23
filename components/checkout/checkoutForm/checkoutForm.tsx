@@ -239,7 +239,6 @@ export default function CheckoutForm() {
 						type="tel"
 						disabled={isSubmitting}
 						// Скрываем валидацию браузера для кастомной маски
-						pattern="[0-9]*"
 						inputMode="numeric"
 					/>
 					<input

@@ -8,52 +8,52 @@ import { LinkButton } from "@/components/shared/ctaButtons/ctaButtons";
 export default function SubcategoriesGrid() {
 	const cardLinks = [
 		{
-			slug: "Tank",
+			slug: "tank",
 			name: "Tank",
 			image: "/brandLogos/tank.png",
 		},
 		{
-			slug: "JAC",
+			slug: "jac",
 			name: "JAC",
 			image: "/brandLogos/jac.png",
 		},
 		{
-			slug: "Huanghai",
+			slug: "huanghai",
 			name: "Huanghai",
 			image: "/brandLogos/huanghai.png",
 		},
 		{
-			slug: "Dongfeng",
+			slug: "dongfeng",
 			name: "Dongfeng",
 			image: "/brandLogos/dongfeng.png",
 		},
 		{
-			slug: "Foton",
+			slug: "fonot",
 			name: "Foton",
 			image: "/brandLogos/foton.png",
 		},
 		{
-			slug: "Changan",
+			slug: "changan",
 			name: "Changan",
 			image: "/brandLogos/changan.png",
 		},
 		{
-			slug: "Baic",
+			slug: "baic",
 			name: "Baic",
 			image: "/brandLogos/baic.png",
 		},
 		{
-			slug: "Great_Wall",
+			slug: "great_wall",
 			name: "Great Wall",
 			image: "/brandLogos/gwm.png",
 		},
 		{
-			slug: "Sollers",
+			slug: "sollers",
 			name: "Sollers",
 			image: "/brandLogos/sollers.png",
 		},
 		{
-			slug: "JMC",
+			slug: "jmc",
 			name: "JMC",
 			image: "/brandLogos/jmc.png",
 		},

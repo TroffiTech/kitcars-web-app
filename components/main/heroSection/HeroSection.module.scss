@@ -1,7 +1,8 @@
 .hero {
 	position: relative;
 	width: 100%;
-	height: 100vh;
+	height: fit-content;
+	min-height: 100vh;
 	overflow: hidden;
 	background: var(--background-color);
 	display: flex;
@@ -63,8 +64,8 @@
 
 	.content {
 		width: 60%;
-		height: 60%;
-		align-self: center;
+		height: 500px;
+		margin-top: 270px;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;

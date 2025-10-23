@@ -14,10 +14,12 @@ import updateSitemap from "./utils/updateSitemap.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-dotenv.config({ path: path.resolve(__dirname, "../.env") });
+dotenv.config({ path: "/app/.env" });
 
-export async function update() {
+async function update() {
 	try {
+		console.log("Starting content update...", new Date().toISOString());
+
 		const loadedCategories = await loadCategories();
 		const categoriesThree = generateCategoriesThree(loadedCategories);
 		writeCategoriesThreeFile(categoriesThree);
@@ -29,9 +31,30 @@ export async function update() {
 		writeSitemapFile(xmlContent);
 
 		writeRobotsTxtFile();
+
+		console.log("Content update completed successfully", new Date().toISOString());
+
+		try {
+			const response = await fetch("http://nextjs-app:3000/api/health", { timeout: 5000 });
+			if (response.ok) {
+				// Вызываем revalidate только если nextjs-app доступен
+				await fetch("http://nextjs-app:3000/api/revalidate", {
+					method: "POST",
+					headers: { Authorization: `Bearer ${process.env.REVALIDATE_SECRET}` },
+				});
+			}
+		} catch (error) {
+			console.log("Next.js app not available for revalidation, skipping...");
+		}
 	} catch (e) {
-		console.error(e);
+		console.error("Error during content update:", e);
+		process.exit(1);
 	}
 }
 
-update();
+// Запуск если файл вызван напрямую
+if (import.meta.url === `file://${process.argv[1]}`) {
+	update();
+}
+
+export default update;

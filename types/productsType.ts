@@ -10,10 +10,7 @@ export type Product = {
 		name: string;
 		options: string[];
 	}[];
-	categories: {
-		id: string;
-		name: string;
-	}[];
+	categories: Category[];
 	description: string;
 	id: number;
 	images: ImageType[];

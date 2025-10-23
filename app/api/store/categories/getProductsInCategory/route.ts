@@ -9,9 +9,12 @@ export async function GET(req: Request) {
 	const { category, page, order } = queries;
 
 	const categoriesThree = await readCategoriesThreeFile();
-	const allProducts = (await readAllProductsFile()).sort((a, b) =>
+	const allProducts = (await readAllProductsFile())?.sort((a, b) =>
 		order === "increase" ? +a.price - +b.price : +b.price - +a.price
 	);
+
+	if (!allProducts) throw new Error("Endpoint: Failed to read AllProducts.json");
+	if (!categoriesThree) throw new Error("Endpoint: Failed to read categoriesThree");
 
 	const relatedCategoriesId = findRelatedCategoriesIdBySlug(
 		categoriesThree,

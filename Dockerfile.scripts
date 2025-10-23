@@ -1,0 +1,38 @@
+FROM node:18-alpine
+
+ARG DB_URL_ARG
+ARG WC_KEY_ARG
+ARG WC_SECRET_ARG
+ARG REVALIDATE_SECRET_ARG
+
+RUN apk add --no-cache cronie
+
+WORKDIR /app
+
+# Копируем только нужное для скриптов
+COPY package.json package-lock.json* ./
+RUN npm ci --only=production
+
+# Копируем scripts и utils которые внутри scripts
+COPY scripts/ ./scripts/
+
+# Копируем crontab
+COPY crontab /etc/crontabs/root
+
+ENV DB_URL=${DB_URL_ARG}
+ENV WC_KEY=${WC_KEY_ARG}
+ENV WC_SECRET=${WC_SECRET_ARG}
+ENV REVALIDATE_SECRET=${REVALIDATE_SECRET_ARG}
+
+ENV NODE_ENV=production
+
+#Запуск скрипта для формирования контента
+RUN mkdir -p /app/app/content
+RUN node scripts/updateContent.js
+
+RUN mkdir -p /var/log && \
+    touch /var/log/cron.log && \
+    chmod 0644 /var/log/cron.log
+
+# Просто запускаем cron в foreground режиме
+CMD ["crond", "-f"]

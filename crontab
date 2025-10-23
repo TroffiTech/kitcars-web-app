@@ -1,0 +1,1 @@
+0 9,21 * * * cd /app && node scripts/update.js >> /var/log/cron.log 2>&1

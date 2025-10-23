@@ -119,7 +119,7 @@ export function FormRegisterChangesVariant() {
 		const rawPhone = getRawPhone(phoneValue);
 
 		try {
-			const response = await fetch("/api/formSubmissions/consultationSubmission", {
+			const response = await fetch("/api/formSubmissions/registrationSubmission", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",

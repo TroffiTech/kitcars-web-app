@@ -6,6 +6,9 @@ export async function GET(req: Request) {
 	const productSku = queries.sku;
 
 	const data = await readAllProductsFile();
+
+	if (!data) throw new Error("Endpoint: Failed to read allProducts.json");
+
 	const productData = data.filter((item) => item.sku === productSku);
 
 	return new Response(JSON.stringify(productData), {
