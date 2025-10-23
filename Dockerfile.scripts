@@ -9,9 +9,16 @@ RUN apk add --no-cache cronie
 
 WORKDIR /app
 
-# Копируем только нужное для скриптов
-COPY package.json package-lock.json* ./
-RUN npm ci --only=production
+RUN echo '{ \
+  "name": "kitkars-scripts", \
+  "version": "1.0.0", \
+  "type": "module", \
+  "dependencies": { \
+    "dotenv": "^16.0.0", \
+    "fast-xml-parser": "^4.0.0" \
+  } \
+}' > package.json
+RUN npm install
 
 # Копируем scripts и utils которые внутри scripts
 COPY scripts/ ./scripts/

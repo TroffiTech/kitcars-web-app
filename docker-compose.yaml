@@ -19,6 +19,7 @@ services:
         - BITRIX_KEY_ARG=${BITRIX_KEY}
         - REVALIDATE_SECRET_ARG=${REVALIDATE_SECRET}
         - PORT_ARG=${APP_PORT:-3000}
+    image: kitkars-nextjs-app:latest
     ports:
       - "${APP_PORT:-3000}:3000"
     volumes:
@@ -38,6 +39,7 @@ services:
         - WC_KEY_ARG=${WC_KEY}
         - WC_SECRET_ARG=${WC_SECRET}
         - REVALIDATE_SECRET_ARG=${REVALIDATE_SECRET}
+    image: kitkars-scripts:latest
     volumes:
       - content_data:/app/app/content
     environment:
