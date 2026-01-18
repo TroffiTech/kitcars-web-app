@@ -21,299 +21,278 @@
 	text-align: center;
 }
 
-@mixin glass-morphism {
-	background: var(--foreground-color);
-	backdrop-filter: blur(20px);
-	border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-@mixin hover-glow {
-	transition: all 0.3s ease;
-
-	&:hover {
-		background: var(--foreground-color);
-		filter: brightness(1.1);
-		border-color: rgba(255, 255, 255, 0.2);
-		box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-	}
-}
-
 .filters {
-	@include flex-col(1rem, stretch, flex-start);
-	padding: 2rem 1.5rem;
-	width: 100%;
-	max-width: 300px;
+	@include flex-col(0, stretch, flex-start);
+	width: 320px;
+	background: var(--background-color);
+	border-radius: 12px;
+	padding: 20px;
+	padding-top: 0;
+	height: fit-content;
+	max-height: none;
+	overflow: visible;
 
-	@media (max-width: 1040px) {
-		display: none;
-		visibility: hidden;
+	.header {
+		@include flex-row(0, center, space-between);
+		margin-bottom: 20px;
+		padding-bottom: 12px;
+		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+
+		h3 {
+			font-size: 20px;
+			font-weight: 800;
+			color: var(--foreground-color);
+			margin: 0;
+		}
+
+		.clearBtn {
+			font-size: 16px;
+			color: var(--orange-color);
+			background: none;
+			border: none;
+			cursor: pointer;
+			padding: 4px 8px;
+			border-radius: 4px;
+			transition: all 0.2s ease;
+
+			&:hover:not(:disabled) {
+				background: rgba(255, 107, 0, 0.1);
+			}
+
+			&:disabled {
+				opacity: 0.3;
+				cursor: not-allowed;
+			}
+		}
 	}
 
-	.parentCategory {
+	.categoriesList {
+		@include flex-col(0, stretch, flex-start);
+		list-style: none;
+		padding: 0;
+		margin: 0;
 		width: 100%;
+		overflow: visible;
+		max-height: none;
+	}
+
+	.categoryItem {
+		width: 100%;
+		margin: 0;
+
+		&.selected {
+			.title {
+				.categoryName {
+					color: var(--orange-color);
+					font-weight: 500;
+				}
+
+				.checkbox {
+					accent-color: var(--orange-color);
+				}
+			}
+		}
 
 		.title {
-			@include flex-row(1rem, center, space-between);
-			@include glass-morphism;
-			@include hover-glow;
-
-			padding: 1rem 1.2rem;
-			border-radius: 12px;
+			@include flex-row(12px, center, space-between);
+			padding: 10px 12px;
+			border-radius: 8px;
 			cursor: pointer;
-			position: relative;
-			overflow: hidden;
+			transition: all 0.2s ease;
+			min-height: 44px;
+			width: 100%;
+			margin-bottom: 2px;
 
-			// Декоративный акцент
-			&::before {
-				content: "";
-				position: absolute;
-				left: 0;
-				top: 0;
-				height: 100%;
-				width: 3px;
-				background: var(--orange-color);
-				opacity: 0;
-				transition: opacity 0.3s ease;
-			}
+			&:hover {
+				background: rgba(0, 0, 0, 0.03);
 
-			&:hover::before {
-				opacity: 1;
-			}
-
-			.link {
-				font-weight: 600;
-				font-size: 0.95rem;
-				color: var(--background-color);
-				text-decoration: none;
-				letter-spacing: 0.2px;
-				flex: 1;
-				transition: all 0.3s ease;
-
-				&:hover {
+				.categoryName {
 					color: var(--orange-color);
+				}
+
+				.checkbox {
+					accent-color: var(--orange-color);
+				}
+			}
+
+			.categoryInfo {
+				@include flex-row(12px, center, flex-start);
+				flex: 1;
+				min-width: 0;
+				cursor: pointer;
+
+				.checkbox {
+					width: 18px;
+					height: 18px;
+					cursor: pointer;
+					flex-shrink: 0;
+					margin: 0;
+					accent-color: var(--foreground-color);
+					transition: all 0.2s ease;
+
+					&:checked {
+						accent-color: var(--orange-color);
+					}
+
+					&:focus {
+						outline: 2px solid rgba(255, 107, 0, 0.3);
+						outline-offset: 2px;
+					}
+				}
+
+				.categoryName {
+					font-size: 16px;
+					font-weight: 400;
+					color: var(--foreground-color);
+					transition: color 0.2s ease;
+					line-height: 1.4;
+					word-break: break-word;
+					white-space: normal;
+					overflow: visible;
+					text-overflow: unset;
+					cursor: pointer;
+					flex: 1;
+					margin-left: 4px;
 				}
 			}
 
 			.arrow {
-				width: 20px;
-				height: 20px;
+				width: 24px;
+				height: 24px;
 				@include center-all;
-				transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+				transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+				flex-shrink: 0;
+				cursor: pointer;
+				background: none;
+				border: none;
+				padding: 0;
+				margin: 0;
 
 				svg {
 					width: 16px;
 					height: 16px;
-					fill: var(--background-color);
-					opacity: 0.8;
-					transition: all 0.3s ease;
-				}
-			}
-
-			&:hover {
-				.link {
-					color: var(--orange-color);
-				}
-
-				.arrow svg {
-					opacity: 1;
-					fill: var(--orange-color);
-				}
-			}
-		}
-
-		// Стили для активной категории
-		&.activeCategory {
-			.title {
-				background: var(--foreground-color);
-				border-color: var(--orange-color);
-				box-shadow: 0 4px 20px rgba(255, 107, 0, 0.3);
-
-				&::before {
-					opacity: 1;
-					background: var(--orange-color);
-				}
-
-				.link {
-					color: var(--orange-color);
-					font-weight: 700;
-				}
-
-				.arrow svg {
-					fill: var(--orange-color);
-					opacity: 1;
-				}
-			}
-		}
-	}
-
-	.children {
-		@include flex-col(0.3rem, stretch, flex-start);
-		margin: 0.8rem 0 0 1rem;
-		padding: 0;
-		max-height: 0;
-		overflow: hidden;
-		transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-
-		// Декоративная линия
-		position: relative;
-
-		&::before {
-			content: "";
-			position: absolute;
-			left: -0.8rem;
-			top: 0;
-			bottom: 0;
-			width: 1px;
-			background: linear-gradient(to bottom, transparent, var(--orange-color), transparent);
-			opacity: 0;
-			transition: opacity 0.3s ease 0.1s;
-		}
-
-		&.expanded::before {
-			opacity: 0.6;
-		}
-
-		li {
-			list-style: none;
-			margin: 0;
-
-			.link {
-				@include flex-row(0.5rem, center, flex-start);
-				padding: 0.8rem 1rem;
-				text-decoration: none;
-				color: var(--foreground-color);
-				font-size: 0.9rem;
-				font-weight: 400;
-				border-radius: 8px;
-				transition: all 0.3s ease;
-				position: relative;
-				background: rgba(255, 255, 255, 0.05);
-
-				// Индикатор перед ссылкой
-				&::before {
-					content: "";
-					width: 4px;
-					height: 4px;
-					background: var(--foreground-color);
-					border-radius: 50%;
-					opacity: 0.5;
+					fill: rgba(0, 0, 0, 0.5);
 					transition: all 0.3s ease;
 				}
 
 				&:hover {
-					background: rgba(255, 255, 255, 0.1);
-					color: var(--orange-color);
-					padding-left: 1.2rem;
+					svg {
+						fill: var(--orange-color);
+					}
+				}
 
-					&::before {
-						background: var(--orange-color);
-						opacity: 1;
-						transform: scale(1.2);
+				&.expanded {
+					transform: rotate(180deg);
+
+					svg {
+						fill: var(--orange-color);
 					}
 				}
 			}
+		}
 
-			// Активная дочерняя категория
-			&.activeChild .link {
-				background: rgba(255, 107, 0, 0.15);
-				color: var(--orange-color);
-				font-weight: 500;
+		.childrenContainer {
+			max-height: 0;
+			overflow: hidden;
+			transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+			opacity: 0;
 
-				&::before {
-					background: var(--orange-color);
-					opacity: 1;
-					transform: scale(1.2);
-				}
+			&.expanded {
+				max-height: 2000px;
+				opacity: 1;
 			}
+
+			.children {
+				@include flex-col(0, stretch, flex-start);
+				list-style: none;
+				padding: 0 0 0 16px;
+				margin: 0;
+				width: calc(100% - 28px);
+				overflow: visible;
+				border-left: 1px solid rgba(0, 0, 0, 0.1);
+				margin-left: 28px;
+			}
+		}
+	}
+
+	.error {
+		padding: 20px;
+		text-align: center;
+		color: #666;
+		font-size: 14px;
+	}
+
+	.submitBtn {
+		@include center-all;
+		margin-top: 20px;
+		padding: 14px 20px;
+		width: 100%;
+		border: none;
+		border-radius: 8px;
+		background: var(--orange-color);
+		color: white;
+		font-weight: 600;
+		font-size: 15px;
+		cursor: pointer;
+		transition: all 0.3s ease;
+
+		&:hover {
+			background: #ff6b00;
+			transform: translateY(-2px);
+			box-shadow: 0 6px 20px rgba(255, 107, 0, 0.25);
+		}
+
+		&:active {
+			transform: translateY(0);
+			box-shadow: 0 2px 10px rgba(255, 107, 0, 0.2);
 		}
 	}
 }
 
-// Анимации
-@keyframes slideInDown {
-	from {
-		opacity: 0;
-		transform: translateY(-10px);
-	}
-	to {
-		opacity: 1;
-		transform: translateY(0);
-	}
-}
+// Кастомные стили для чекбокса (опционально, для лучшего вида)
+input[type="checkbox"].checkbox {
+	appearance: none;
+	-webkit-appearance: none;
+	width: 18px;
+	height: 18px;
+	border: 2px solid rgba(0, 0, 0, 0.3);
+	border-radius: 4px;
+	background-color: white;
+	position: relative;
+	cursor: pointer;
+	transition: all 0.2s ease;
 
-@keyframes pulseGlow {
-	0%,
-	100% {
-		box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-	}
-	50% {
-		box-shadow: 0 6px 20px rgba(255, 107, 0, 0.3);
-	}
-}
+	&:checked {
+		background-color: var(--orange-color);
+		border-color: var(--orange-color);
 
-// Применяем анимацию к родительским категориям
-.parentCategory {
-	animation: slideInDown 0.5s ease-out;
-
-	&:nth-child(1) {
-		animation-delay: 0.1s;
-	}
-	&:nth-child(2) {
-		animation-delay: 0.15s;
-	}
-	&:nth-child(3) {
-		animation-delay: 0.2s;
-	}
-	&:nth-child(4) {
-		animation-delay: 0.25s;
-	}
-	&:nth-child(5) {
-		animation-delay: 0.3s;
-	}
-	&:nth-child(6) {
-		animation-delay: 0.35s;
-	}
-
-	animation-fill-mode: both;
-}
-
-// Стили для состояния загрузки
-.loading {
-	.parentCategory {
-		.title {
-			background: var(--foreground-color);
-			animation: pulseGlow 2s ease-in-out infinite;
-
-			.link {
-				color: transparent;
-				background: rgba(255, 255, 255, 0.3);
-				border-radius: 4px;
-				min-height: 1rem;
-			}
-
-			.arrow {
-				opacity: 0.3;
-
-				svg {
-					fill: var(--background-color);
-				}
-			}
+		&::after {
+			content: "";
+			position: absolute;
+			top: 2px;
+			left: 5px;
+			width: 6px;
+			height: 10px;
+			border: solid white;
+			border-width: 0 2px 2px 0;
+			transform: rotate(45deg);
 		}
+	}
+
+	&:hover {
+		border-color: var(--orange-color);
+	}
+
+	&:focus {
+		outline: 2px solid rgba(255, 107, 0, 0.3);
+		outline-offset: 2px;
 	}
 }
 
 // Адаптивность
-@media (max-width: 1200px) {
+@media (max-width: 1040px) {
 	.filters {
-		padding: 1.5rem 1rem;
-		max-width: 280px;
-
-		.parentCategory .title {
-			padding: 0.9rem 1rem;
-
-			.link {
-				font-size: 0.9rem;
-			}
-		}
+		display: none;
+		visibility: hidden;
 	}
 }

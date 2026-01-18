@@ -1,7 +1,7 @@
 "use client";
 
 import useSWR from "swr";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 import CardReplacerFirstVariant, { CardReplacerSecondVariant } from "../productCards/replacerCards";
@@ -28,11 +28,11 @@ function insertMockCardsInFeed(data: Array<"firstFlag" | "secondFlag" | Product>
 		.toSpliced(secondMockCardPosition, 0, "secondFlag");
 }
 
-export function CategoryFeed({ categorySlug }: { categorySlug: string }) {
+export function CategoryFeed({ filterCategoryIds }: { filterCategoryIds: string | undefined }) {
 	const { priceSortOrder, setPriceSortOrder, isLoading, allProducts, isValidating } =
 		UseInfiniteScroll({
 			action: "category",
-			payload: categorySlug,
+			payload: filterCategoryIds,
 		});
 
 	return (
@@ -53,17 +53,19 @@ export function CategoryFeed({ categorySlug }: { categorySlug: string }) {
 				<div className={styles.filters}>
 					<Filters />
 				</div>
-				{isLoading &&
-					Array.from({ length: 12 }).map((_, index) => <ProductCardSkeleton key={index} />)}
-				{allProducts.length > 0 &&
-					allProducts.map((product, index) => (
-						<FeedProductCard key={`product-${product.id}-${index + 1}`} product={product} />
-					))}
-				{(isLoading || isValidating) &&
-					allProducts.length > 0 &&
-					Array.from({ length: 12 }).map((_, index) => (
-						<ProductCardSkeleton key={`loading-${index + 1}`} />
-					))}
+				<div className={styles.cards}>
+					{isLoading &&
+						Array.from({ length: 12 }).map((_, index) => <ProductCardSkeleton key={index} />)}
+					{allProducts.length > 0 &&
+						allProducts.map((product, index) => (
+							<FeedProductCard key={`product-${product.id}-${index + 1}`} product={product} />
+						))}
+					{(isLoading || isValidating) &&
+						allProducts.length > 0 &&
+						Array.from({ length: 12 }).map((_, index) => (
+							<ProductCardSkeleton key={`loading-${index + 1}`} />
+						))}
+				</div>
 			</div>
 		</div>
 	);
@@ -111,6 +113,7 @@ export function SearchFeed({ searchRequest }: { searchRequest: string }) {
 export function DefaultFeed() {
 	const { priceSortOrder, setPriceSortOrder, isLoading, allProducts, isValidating } =
 		UseInfiniteScroll();
+
 	return (
 		<div className={styles.defaultFeed_container}>
 			<div className={styles.topInner}>
@@ -123,17 +126,19 @@ export function DefaultFeed() {
 				<div className={styles.filters}>
 					<Filters />
 				</div>
-				{isLoading &&
-					Array.from({ length: 12 }).map((_, index) => <ProductCardSkeleton key={index} />)}
-				{allProducts.length > 0 &&
-					allProducts.map((product, index) => (
-						<FeedProductCard key={`product-${product.id}-${index}`} product={product} />
-					))}
-				{(isLoading || isValidating) &&
-					allProducts.length > 0 &&
-					Array.from({ length: 12 }).map((_, index) => (
-						<ProductCardSkeleton key={`loading-${index + 1}`} />
-					))}
+				<div className={styles.cards}>
+					{isLoading &&
+						Array.from({ length: 12 }).map((_, index) => <ProductCardSkeleton key={index} />)}
+					{allProducts.length > 0 &&
+						allProducts.map((product, index) => (
+							<FeedProductCard key={`product-${product.id}-${index}`} product={product} />
+						))}
+					{(isLoading || isValidating) &&
+						allProducts.length > 0 &&
+						Array.from({ length: 12 }).map((_, index) => (
+							<ProductCardSkeleton key={`loading-${index + 1}`} />
+						))}
+				</div>
 			</div>
 		</div>
 	);
@@ -145,7 +150,7 @@ export function SalesFeed() {
 
 	const { data, isLoading } = useSWR(
 		`/api/store/products/getAllOnSaleProducts/?page=${curPage}&order=${priceSortOrder}`,
-		fetcher
+		fetcher,
 	);
 
 	return (
@@ -214,7 +219,9 @@ export function CartFeed() {
 	});
 	return (
 		<div className={styles.cartFeed_container}>
-			{data.length === 0 ? <h2>Корзина пуста</h2> : <h2>Корзина</h2>}
+			{data.length === 0 ?
+				<h2>Корзина пуста</h2>
+			:	<h2>Корзина</h2>}
 			{data.length !== 0 && (
 				<div className={styles.feedContent}>
 					<div className={styles.cardsContainer}>

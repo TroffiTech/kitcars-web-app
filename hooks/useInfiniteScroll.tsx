@@ -17,7 +17,7 @@ export default function UseInfiniteScroll(
 	opt: {
 		action: "default" | "category" | "search";
 		payload?: string;
-	} = { action: "default" }
+	} = { action: "default" },
 ) {
 	const [priceSortOrder, setPriceSortOrder] = useState("increase");
 	const getSWRKey = useCallback(
@@ -35,6 +35,7 @@ export default function UseInfiniteScroll(
 						pageIndex + 1
 					}&order=${priceSortOrder}`;
 				case "category":
+					console.log("HOOK: ", opt);
 					return `/api/store/categories/getProductsInCategory/?page=${pageIndex + 1}&category=${
 						opt.payload
 					}&order=${priceSortOrder}`;
@@ -46,7 +47,7 @@ export default function UseInfiniteScroll(
 					return null;
 			}
 		},
-		[opt.action, opt.payload, priceSortOrder]
+		[opt.action, opt.payload, priceSortOrder],
 	);
 
 	const { data, size, setSize, isLoading, isValidating } = useSWRInfinite(getSWRKey, fetcher, {
@@ -73,7 +74,7 @@ export default function UseInfiniteScroll(
 			)
 				loadMore();
 		}, 500),
-		[loadMore]
+		[loadMore],
 	);
 
 	useEffect(() => {

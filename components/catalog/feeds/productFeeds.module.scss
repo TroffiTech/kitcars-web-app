@@ -39,28 +39,34 @@
 
 	.defaultFeed {
 		width: 100%;
-
-		display: grid;
-		grid-template-columns: repeat(4, 1fr);
-		align-items: start;
-		justify-items: center;
+		display: flex;
+		align-items: flex-start;
 		gap: 2rem;
+		position: relative;
 
-		@media (max-width: 1400px) {
+		.cards {
+			flex: 1;
+			display: grid;
 			grid-template-columns: repeat(3, 1fr);
-		}
-		@media (max-width: 1040px) {
-			grid-template-columns: repeat(2, 1fr);
-		}
-		@media (max-width: 700px) {
-			grid-template-columns: repeat(1, 1fr);
+			gap: 3rem;
+			align-items: start;
+
+			@media (max-width: 1400px) {
+				grid-template-columns: repeat(3, 1fr);
+			}
+			@media (max-width: 1040px) {
+				grid-template-columns: repeat(2, 1fr);
+			}
+			@media (max-width: 700px) {
+				grid-template-columns: repeat(1, 1fr);
+			}
 		}
 
 		.filters {
-			width: 100%;
-			height: auto;
-			grid-column: 1;
-			grid-row: auto;
+			position: sticky !important;
+			top: 20px;
+			height: 98vh;
+			overflow-y: scroll;
 
 			@media (max-width: 1040px) {
 				display: none;
