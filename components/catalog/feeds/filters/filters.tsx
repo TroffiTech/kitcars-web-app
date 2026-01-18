@@ -48,7 +48,7 @@ export default function Filters() {
 	const handleApplyFilters = () => {
 		const categoriesParam = selectedCategories.join(",");
 		if (categoriesParam === "") router.push("/catalog/");
-		else router.push(`/catalog/category/?category=${categoriesParam}`);
+		else router.push(`/catalog/category?id=${categoriesParam}`);
 	};
 
 	if (isLoading) {

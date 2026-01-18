@@ -7,12 +7,10 @@ import SideSlideWidget from "@/components/shared/sideSlideWidget/sideSlideWidget
 import Footer from "@/components/shared/footer/Footer";
 
 export default async function Category(props: {
-	// УБИРАЕМ params, он нам не нужен
 	searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
 	const searchParams = await props.searchParams;
 	const categoryIds = searchParams?.id as string | undefined;
-	console.log("PAGE: получены параметры", categoryIds);
 
 	return (
 		<main>

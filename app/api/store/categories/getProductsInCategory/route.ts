@@ -4,7 +4,6 @@ import { getQueries } from "@/app/api/utils/readQueries";
 import { Product } from "@/types/productsType";
 
 export async function GET(req: Request) {
-	console.log("we are HERE");
 	const queries = getQueries(req.url);
 	const { category, page, order } = queries;
 
@@ -16,7 +15,6 @@ export async function GET(req: Request) {
 	if (!allProducts) throw new Error("Endpoint: Failed to read AllProducts.json");
 	if (!categoriesThree) throw new Error("Endpoint: Failed to read categoriesThree");
 
-	console.log("categories Ids is ", category);
 	const categoriesIds = decodeURIComponent(category)
 		.split(",")
 		.map((item) => +item.trim());

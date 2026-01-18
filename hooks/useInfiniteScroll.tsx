@@ -35,7 +35,6 @@ export default function UseInfiniteScroll(
 						pageIndex + 1
 					}&order=${priceSortOrder}`;
 				case "category":
-					console.log("HOOK: ", opt);
 					return `/api/store/categories/getProductsInCategory/?page=${pageIndex + 1}&category=${
 						opt.payload
 					}&order=${priceSortOrder}`;
