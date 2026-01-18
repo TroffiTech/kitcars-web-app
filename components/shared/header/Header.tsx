@@ -77,7 +77,7 @@ function DesctopHeader() {
 
 		if (category.children) {
 			return category.children.some(
-				(childrenCategory) => childrenCategory.slug === slugFromPathname
+				(childrenCategory) => childrenCategory.slug === slugFromPathname,
 			);
 		}
 
@@ -113,7 +113,7 @@ function DesctopHeader() {
 									style={{
 										color: generateLinkColor(category),
 									}}
-									href={`/catalog/category/${category.slug}`}
+									href={`/catalog/category/?id=${category.id}`}
 								>
 									{category.name}
 								</Link>

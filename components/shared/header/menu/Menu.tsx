@@ -43,7 +43,7 @@ export function MenuPopup({
 						data.map((category, index) => (
 							<li key={index}>
 								<Link
-									href={`/catalog/category/${category.slug}`}
+									href={`/catalog/category/?id=${category.id}`}
 									onClick={() => document.body.classList.remove("blockScroll")}
 								>
 									{category.name}
@@ -104,9 +104,9 @@ export function MenuTrigger({
 					<div
 						key={num}
 						className={
-							isVisible
-								? styles.triggerButton_container_item__pressed
-								: styles.triggerButton_container_item
+							isVisible ?
+								styles.triggerButton_container_item__pressed
+							:	styles.triggerButton_container_item
 						}
 					/>
 				))}
