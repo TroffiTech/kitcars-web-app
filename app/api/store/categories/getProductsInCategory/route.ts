@@ -1,35 +1,37 @@
-import findRelatedCategoriesIdBySlug from "../utils/findRelatedCategoriesIdBySlug";
 import { readAllProductsFile } from "../../products/utils/readAllProductsFile";
 import readCategoriesThreeFile from "../utils/readCategoriesThreeFile";
 import { getQueries } from "@/app/api/utils/readQueries";
-import { Category, Product } from "@/types/productsType";
+import { Product } from "@/types/productsType";
 
 export async function GET(req: Request) {
+	console.log("we are HERE");
 	const queries = getQueries(req.url);
 	const { category, page, order } = queries;
 
 	const categoriesThree = await readCategoriesThreeFile();
 	const allProducts = (await readAllProductsFile())?.sort((a, b) =>
-		order === "increase" ? +a.price - +b.price : +b.price - +a.price
+		order === "increase" ? +a.price - +b.price : +b.price - +a.price,
 	);
 
 	if (!allProducts) throw new Error("Endpoint: Failed to read AllProducts.json");
 	if (!categoriesThree) throw new Error("Endpoint: Failed to read categoriesThree");
 
-	const relatedCategoriesId = findRelatedCategoriesIdBySlug(
-		categoriesThree,
-		decodeURIComponent(category)
-	);
+	console.log("categories Ids is ", category);
+	const categoriesIds = decodeURIComponent(category)
+		.split(",")
+		.map((item) => +item.trim());
 
 	const data: Product[] = [];
 
-	relatedCategoriesId.map((categoryId: number) => {
-		allProducts.map((product) => {
-			product.categories.map((categoryOfProduct: Category) => {
-				if (categoryId == categoryOfProduct.id) data.push(product);
-			});
-		});
-	});
+	for (const product of allProducts) {
+		const productCategories = product.categories.map((category) => category.id);
+
+		const isGood = categoriesIds
+			.map((filteredCategory) => productCategories.includes(filteredCategory))
+			.every((item) => item === true);
+
+		if (isGood) data.push(product);
+	}
 
 	return new Response(JSON.stringify(data.slice(+page * 12 - 12, +page * 12)), {
 		headers: {

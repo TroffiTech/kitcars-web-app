@@ -6,8 +6,14 @@ import { CategoryFeed } from "@/components/catalog/feeds/productsFeeds";
 import SideSlideWidget from "@/components/shared/sideSlideWidget/sideSlideWidget";
 import Footer from "@/components/shared/footer/Footer";
 
-export default async function Category(props: { params: Promise<{ "category-slug": string }> }) {
-	const searchedCategorySlug = (await props.params)["category-slug"];
+export default async function Category(props: {
+	// УБИРАЕМ params, он нам не нужен
+	searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+	const searchParams = await props.searchParams;
+	const categoryIds = searchParams?.id as string | undefined;
+	console.log("PAGE: получены параметры", categoryIds);
+
 	return (
 		<main>
 			<section className="flex-box__column">
@@ -15,7 +21,7 @@ export default async function Category(props: { params: Promise<{ "category-slug
 				<ReduxStoreProvider>
 					<SmallPopupProvider>
 						<ModalDescriptionProvider>
-							<CategoryFeed categorySlug={searchedCategorySlug} />
+							<CategoryFeed filterCategoryIds={categoryIds} />
 						</ModalDescriptionProvider>
 					</SmallPopupProvider>
 					<SideSlideWidget />
