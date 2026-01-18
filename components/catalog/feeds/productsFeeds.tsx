@@ -1,7 +1,7 @@
 "use client";
 
 import useSWR from "swr";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 
 import CardReplacerFirstVariant, { CardReplacerSecondVariant } from "../productCards/replacerCards";
