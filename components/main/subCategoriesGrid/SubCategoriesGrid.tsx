@@ -8,52 +8,52 @@ import { LinkButton } from "@/components/shared/ctaButtons/ctaButtons";
 export default function SubcategoriesGrid() {
 	const cardLinks = [
 		{
-			slug: "tank",
+			categoryId: "34",
 			name: "Tank",
 			image: "/brandLogos/tank.png",
 		},
 		{
-			slug: "jac",
+			categoryId: "29",
 			name: "JAC",
 			image: "/brandLogos/jac.png",
 		},
 		{
-			slug: "huanghai",
+			categoryId: "40",
 			name: "Huanghai",
 			image: "/brandLogos/huanghai.png",
 		},
 		{
-			slug: "dongfeng",
+			categoryId: "19",
 			name: "Dongfeng",
 			image: "/brandLogos/dongfeng.png",
 		},
 		{
-			slug: "fonot",
+			categoryId: "20",
 			name: "Foton",
 			image: "/brandLogos/foton.png",
 		},
 		{
-			slug: "changan",
+			categoryId: "18",
 			name: "Changan",
 			image: "/brandLogos/changan.png",
 		},
 		{
-			slug: "baic",
+			categoryId: "17",
 			name: "Baic",
 			image: "/brandLogos/baic.png",
 		},
 		{
-			slug: "great_wall",
+			CategoryId: "21",
 			name: "Great Wall",
 			image: "/brandLogos/gwm.png",
 		},
 		{
-			slug: "sollers",
+			categoryId: "33",
 			name: "Sollers",
 			image: "/brandLogos/sollers.png",
 		},
 		{
-			slug: "jmc",
+			categoryId: "39",
 			name: "JMC",
 			image: "/brandLogos/jmc.png",
 		},
@@ -63,7 +63,7 @@ export default function SubcategoriesGrid() {
 		<>
 			<div className={styles.grid}>
 				{cardLinks.map((link, index) => (
-					<Link href={`/catalog/category/${link.slug}`} key={index} className={styles.grid_card}>
+					<Link href={`/catalog/category/?id=${link.categoryId}`} key={index} className={styles.grid_card}>
 						<div className={styles.grid_card_content}>
 							<div className={styles.text_content}>
 								<h3>{link.name}</h3>
