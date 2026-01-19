@@ -19,6 +19,7 @@
 
 # production
 /build
+*.tar
 
 # content
 /app/content/allProducts.json
